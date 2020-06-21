@@ -1,17 +1,47 @@
 package com.chaihq.webapp.models;
 
+import javax.persistence.*;
 import java.util.Calendar;
+import java.util.List;
 
+@Entity(name = "projects")
 public class Project {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private long id;
     private String name;
     private String description;
+
+    @Column(name = "project_type")
     private String projectType;
 
-    // private Calendar createdAt;
-    // private Calendar createdBy;
-    // private String status; // Wheter its deleted, archived or active - Default is active
-    // private int userId; // who created this project.
+    @Column(name = "created_at")
+    private Calendar createdAt;
 
+    @Column(name = "created_by")
+    private Long createdBy;
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_users",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users;
+
+
+    public Project() {
+
+    }
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -35,5 +65,29 @@ public class Project {
 
     public void setProjectType(String projectType) {
         this.projectType = projectType;
+    }
+
+    public Calendar getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Calendar createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

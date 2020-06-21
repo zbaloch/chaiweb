@@ -10,7 +10,7 @@
                 <div class="flex-shrink-0 flex items-center">
                     <%-- <img class="block lg:hidden h-8 w-auto" src="/img/logos/workflow-mark-on-white.svg" alt="Workflow logo" />
                     <img class="hidden lg:block h-8 w-auto" src="/img/logos/workflow-logo-on-white.svg" alt="Workflow logo" /> --%>
-                    <a href="/projects" class="font-bold cursor-pointer"><spring:message code="company.name.label"></spring:message></a>
+                    <a href="projects" class="font-bold cursor-pointer"><spring:message code="company.name.label"></spring:message></a>
                 </div>
                 <div class="hidden md:ml-6 md:flex">
 
@@ -50,7 +50,7 @@
                 <div class="flex-shrink-0 flex items-center">
                     <%-- <img class="block lg:hidden h-8 w-auto" src="/img/logos/workflow-mark-on-white.svg" alt="Workflow logo" />
                     <img class="hidden lg:block h-8 w-auto" src="/img/logos/workflow-logo-on-white.svg" alt="Workflow logo" /> --%>
-                    <a href="/projects" class="font-bold cursor-pointer"><spring:message code="company.name.label"></spring:message></a>
+                    <a href="projects" class="font-bold cursor-pointer"><spring:message code="company.name.label"></spring:message></a>
                 </div>
                 <div class="hidden lg:ml-6 lg:flex">
                     <!-- <a href="/" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">

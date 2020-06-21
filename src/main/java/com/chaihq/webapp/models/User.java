@@ -1,13 +1,37 @@
 package com.chaihq.webapp.models;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.List;
+
+@Entity(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username; // Use this is a handle
     private String name; // This is made up field from firstName and lastName
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
-    // private Calendar createdAt;
-    // private Calendar updateddAt;
+
+    @Column(name = "created_at")
+    private Calendar createdAt;
+    private String password;
+
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] photo;
+
+
+    @ManyToMany(mappedBy = "users")
+    private List<Project> projects;
 
 
     public long getId() {
@@ -48,5 +72,37 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Calendar getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Calendar createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }

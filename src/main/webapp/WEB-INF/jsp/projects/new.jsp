@@ -1,17 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Chai 3</title>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
-    <link rel="stylesheet" href="../resources/static/styles.css">
+    <jsp:include page="../includes/head.jsp"></jsp:include>
 </head>
-<body class="font-sans">
+<body class="font-sans bg-gray-100">
+
+<jsp:include page="../includes/nav.jsp"></jsp:include>
+
 
 <div class="max-w-4xl mx-auto px-4 sm:px-4 lg:px-4">
 
@@ -41,7 +39,7 @@
                 </div>
                 <div class="ml-3">
                     <h3 class="text-sm leading-5 font-medium text-red-700">
-                       Show errors
+                        Show errors
                         prohibited this project from being saved:
                     </h3>
                     <div class="mt-2 text-sm leading-5 text-red-700">
@@ -128,8 +126,7 @@
 </div>
 
 
-
+<jsp:include page="../includes/notifications.jsp"></jsp:include>
 
 </body>
 </html>
-
