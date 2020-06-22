@@ -10,7 +10,6 @@
 
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
-
 <div class="max-w-4xl mx-auto px-4 sm:px-4 lg:px-4">
 
     <div class="bg-white rounded-lg shadow p-6">
@@ -116,10 +115,6 @@
 
 
     </form:form>
-
-
-
-
 
 
 </div>

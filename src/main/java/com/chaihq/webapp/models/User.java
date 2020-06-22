@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "users")
 public class User {
@@ -25,6 +26,10 @@ public class User {
     private Calendar createdAt;
     private String password;
 
+    @Transient
+    private String passwordConfirm;
+    private String status;
+
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] photo;
@@ -32,6 +37,8 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Project> projects;
+
+
 
 
     public long getId() {
@@ -105,4 +112,21 @@ public class User {
     public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
 }
