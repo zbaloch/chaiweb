@@ -6,6 +6,8 @@ import com.chaihq.webapp.services.SecurityService;
 import com.chaihq.webapp.services.UserService;
 import com.chaihq.webapp.utilities.Constants;
 import com.chaihq.webapp.validator.UserValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class UsersController {
+    private static final Logger logger = LoggerFactory.getLogger(com.chaihq.webapp.controllers.UsersController.class);
+
     @Autowired
     private UserService userService;
 
@@ -35,7 +39,8 @@ public class UsersController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
-
+        logger.debug("bindingResult.hasErrors(): " + bindingResult.hasErrors());
+        System.out.println("bindingResult.hasErrors(): " + bindingResult.hasErrors());
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -46,7 +51,7 @@ public class UsersController {
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/projects";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

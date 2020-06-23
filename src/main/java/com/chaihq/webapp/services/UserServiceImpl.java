@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 
 @Service
-public class UserServiceImpl implements com.chaihq.webapp.services.UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     // @Autowired
@@ -29,4 +29,5 @@ public class UserServiceImpl implements com.chaihq.webapp.services.UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String username; // Use this is a handle
     private String name; // This is made up field from firstName and lastName
@@ -37,6 +37,8 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Project> projects;
+
+
 
 
 
