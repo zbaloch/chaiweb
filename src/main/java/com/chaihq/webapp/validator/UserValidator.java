@@ -26,26 +26,22 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        // ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "required.field");
-        // ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required.field");
-
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "required.field");
-
         if (Pattern.matches(Constants.EMAIL_REGEX, user.getUsername())) {
             errors.rejectValue("username", "email.invalid");
-            System.out.println("email.invalid");
         }
-
-
         if (userService.findByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "email.taken");
-            System.out.println("email.taken");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required.field");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "password.size");
-            System.out.println("password.size");
         }
+
+        /* Confirm password not required
+        if (!user.getPasswordConfirm().equals(user.getPassword())) {
+            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+        } */
     }
 }

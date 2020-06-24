@@ -11,7 +11,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username; // Use this is a handle
     private String name; // This is made up field from firstName and lastName
@@ -38,10 +38,9 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Project> projects;
 
-
-
-
-
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public long getId() {
         return id;
@@ -131,4 +130,11 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

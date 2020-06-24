@@ -3,6 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <html lang="en">
     <head>
         <jsp:include page="../includes/head.jsp"></jsp:include>
@@ -58,7 +60,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()" class="text-blue-500 underline cursor-pointer">Logout</a></h2>
 
     </c:if>
 

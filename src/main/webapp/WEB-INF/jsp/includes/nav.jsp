@@ -4,7 +4,8 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<nav class="">
+<c:if test="${pageContext.request.userPrincipal.name == null}">
+    <nav class="">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -47,8 +48,10 @@
 
 
 </nav>
+</c:if>
 
-<nav class="" data-controller="nav">
+<c:if test="${pageContext.request.userPrincipal.name != null}">
+    <nav class="" data-controller="nav">
     <div class="max-w-4xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex px-2 lg:px-0">
@@ -179,5 +182,6 @@
         </div>
     </div>
 </nav>
+</c:if>
 
 

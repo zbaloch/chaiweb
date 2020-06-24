@@ -12,15 +12,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SecurityServiceImpl implements com.chaihq.webapp.services.SecurityService {
+public class SecurityServiceImpl implements SecurityService{
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
-    @Qualifier("userDetailsService1")
     private UserDetailsService userDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(com.chaihq.webapp.services.SecurityServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
     @Override
     public String findLoggedInUsername() {
@@ -35,7 +35,7 @@ public class SecurityServiceImpl implements com.chaihq.webapp.services.SecurityS
     @Override
     public void autologin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 

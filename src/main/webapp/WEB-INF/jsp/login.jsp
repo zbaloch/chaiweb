@@ -4,52 +4,93 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Log in with your account</title>
-
-    <link href="${contextPath}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${contextPath}/css/common.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <jsp:include page="includes/head.jsp"></jsp:include>
 </head>
 
-<body>
+<body class="font-sans bg-gray-100">
 
-<div class="container">
+<jsp:include page="includes/nav.jsp"></jsp:include>
 
-    <form method="POST" action="${contextPath}/login" class="form-signin">
-        <h2 class="form-heading">Log in</h2>
+<div class=" min-h-screen">
+    <div class="py-10">
 
-        <div class="form-group ${error != null ? 'has-error' : ''}">
-            <span>${message}</span>
-            <input name="username" type="text" class="form-control" placeholder="Email"
-                   autofocus="true"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span>${error}</span>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
+        <div class="flex flex-col justify-center sm:px-6 lg:px-8">
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+
+                <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+                    Sign in
+                </h2>
+                <p class="mt-2 text-center text-sm leading-5 text-gray-600">
+                    Or
+                    <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextPath}/registration">sign up</a>
+                </p>
+            </div>
+
+            <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+
+
+                    <form action="${contextPath}/login" accept-charset="UTF-8" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <span>${message}</span>
+                        <span>${error}</span>
+                        <div>
+                            <label for="username" class="block text-sm font-medium leading-5 text-gray-700">
+                                Email address
+                            </label>
+                            <div class="mt-1 rounded-md shadow-sm">
+                                <input type="email" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" name="username" id="username">
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label for="password" class="block text-sm font-medium leading-5 text-gray-700">
+                                Password
+                            </label>
+                            <div class="mt-1 rounded-md shadow-sm">
+                                <input class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" type="password" name="password" id="password">
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex items-center justify-between">
+                            <!-- <div class="flex items-center">
+                                <input id="remember_me" type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out">
+                                <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900">
+                                    Remember me
+                                </label>
+                            </div> -->
+
+                            <div class="text-sm leading-5">
+                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="/passwords/new">Forgot your password?</a>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                          <span class="block w-full rounded-md shadow-sm">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                              Sign in
+                            </button>
+                          </span>
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+
+
+            </div>
         </div>
-
-    </form>
+    </div>
 
 </div>
-<!-- /container -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+
 </body>
 </html>
+
+
+

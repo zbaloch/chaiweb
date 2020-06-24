@@ -23,8 +23,8 @@
                         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                             Sign up
                             <p class="mt-2 text-center text-sm leading-5 text-gray-600">
-                                Or
-                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="/sign_in">sign in if you already joined</a>
+                                or
+                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextPath}/login">sign in if you have already joined</a>
                             </p>
                         </h2>
                     </div>

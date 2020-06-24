@@ -1,6 +1,5 @@
 package com.chaihq.webapp;
 
-import com.chaihq.webapp.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
-    @Qualifier("userDetailsService1")
     private UserDetailsService userDetailsService;
 
     @Bean
@@ -29,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/static/**", "/registration").permitAll()
+                    .antMatchers("/registration").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -45,16 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
-    @Bean(name="userDetailsService1")
-    public UserDetailsService getUserDetails(){
-        return new UserDetailsServiceImpl(); // Implementation class
-    }
-
-    @Bean
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
 
 }

@@ -39,14 +39,11 @@ public class UsersController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
-        logger.debug("bindingResult.hasErrors(): " + bindingResult.hasErrors());
-        System.out.println("bindingResult.hasErrors(): " + bindingResult.hasErrors());
+
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
-        userForm.setName( userForm.getFirstName() + " " + userForm.getLastName());
-        userForm.setStatus(Constants.USER_STATUS_ACTIVE);
         userService.save(userForm);
 
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
@@ -56,7 +53,6 @@ public class UsersController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
-        System.out.println("login method...");
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
 
@@ -66,8 +62,5 @@ public class UsersController {
         return "login";
     }
 
-    /* @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public String welcome(Model model) {
-        return "welcome";
-    } */
+
 }
