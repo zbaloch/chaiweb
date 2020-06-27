@@ -8,4 +8,6 @@ import java.util.List;
 // Find update delete save etc
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByCreatedBy(long createdBy);
+    List<Project> findByProjectTypeIs(String projectType);
+    List<Project> findByCreatedByOrProjectTypeIs(long createdBy, String projectType);
 }

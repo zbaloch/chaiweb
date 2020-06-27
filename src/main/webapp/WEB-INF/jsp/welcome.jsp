@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    <jsp:include page="includes/head.jsp"></jsp:include>
+    <%@ include file="../includes/head.jsp"%>
 </head>
 
 <body class="font-sans bg-gray-100">

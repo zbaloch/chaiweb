@@ -4,6 +4,7 @@ import com.chaihq.webapp.models.Project;
 import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.repositories.ProjectRepository;
 import com.chaihq.webapp.repositories.UserRepository;
+import com.chaihq.webapp.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,22 +30,23 @@ public class ProjectsController {
 
     // @GetMapping("/projects")
     @RequestMapping(value = {"/", "/projects"}, method = RequestMethod.GET)
-    public String index(Map<String, Object> model) {
+    public String index(Map<String, Object> model, HttpSession httpSession) {
         // List<Project> projects = projectRepository.findAll();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println( authentication.getDetails() );
         String currentPrincipalName = authentication.getName();
         System.out.println(currentPrincipalName);
 
+        // TODO: Maybe put this user in the session so that its not required to inqure from database again and again.
         User user = userRepository.findByUsername(currentPrincipalName);
+
         System.out.println(user.getId());
         System.out.println(user.getFirstName());
 
+        httpSession.setAttribute(Constants.CURRENT_USER, user); // current_user is a term used within ruby on rails framework.
 
+        List<Project> projects = projectRepository.findByCreatedByOrProjectTypeIs(user.getId(), Constants.PROJECT_TYPE_HQ);
 
-        // List<Project> projects = projectRepository.findAll();
-        List<Project> projects = projectRepository.findByCreatedBy(user.getId());
-        System.out.println("Projects size: " + projects.size());
         model.put("projects", projects);
         return "projects/index";
     }
@@ -90,6 +92,20 @@ public class ProjectsController {
         return "projects/show";
     }
 
+
+
+
+    @GetMapping("/project/{id}/users")
+    public String users(@PathVariable Long id, Map<String, Object> model, HttpSession httpSession) {
+        System.out.println("Project Id: " + id);
+        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        System.out.println("user: " + user);
+        // List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectRepository.findByCreatedBy(user.getId());
+        System.out.println("Projects size: " + projects.size());
+        model.put("projects", projects);
+        return "projects/index";
+    }
 
 
 }

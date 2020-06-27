@@ -26,6 +26,9 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "required.field");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required.field");
+
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "required.field");
         if (Pattern.matches(Constants.EMAIL_REGEX, user.getUsername())) {
             errors.rejectValue("username", "email.invalid");
@@ -34,7 +37,7 @@ public class UserValidator implements Validator {
             errors.rejectValue("username", "email.taken");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required.field");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "password.size");
         }

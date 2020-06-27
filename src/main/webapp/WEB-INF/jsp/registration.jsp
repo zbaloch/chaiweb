@@ -7,7 +7,7 @@
 
 <html>
     <head>
-        <jsp:include page="includes/head.jsp"></jsp:include>
+        <%@ include file="includes/head.jsp"%>
     </head>
 
     <body class="font-sans bg-gray-100">
@@ -41,7 +41,7 @@
                                             <form:input type="text" path="firstName" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                                         placeholder="First name"></form:input>
                                         </div>
-                                        <p class="mt-2">
+                                        <p class="mt-1 text-sm mb-4 text-red-500">
                                             <form:errors path="firstName"></form:errors>
                                         </p>
                                         <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -58,7 +58,7 @@
                                             <form:input type="text" path="lastName" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                                         placeholder="Last name"></form:input>
                                         </div>
-                                        <p class="mt-2">
+                                        <p class="mt-1 text-sm mb-4 text-red-500">
                                             <form:errors path="lastName"></form:errors>
                                         </p>
                                         <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -76,7 +76,7 @@
                                             <form:input type="email" path="username" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                                         placeholder="john@doe.com"></form:input>
                                         </div>
-                                        <p class="mt-2">
+                                        <p class="mt-1 text-sm mb-4 text-red-500">
                                             <form:errors path="username"></form:errors>
                                         </p>
                                         <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -94,7 +94,7 @@
                                             <form:input type="password" path="password" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                                         placeholder="password"></form:input>
                                         </div>
-                                        <p class="mt-2">
+                                        <p class="mt-1 text-sm mb-4 text-red-500">
                                             <form:errors path="password"></form:errors>
                                         </p>
                                         <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
