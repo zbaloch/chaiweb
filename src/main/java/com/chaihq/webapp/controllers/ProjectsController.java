@@ -60,6 +60,7 @@ public class ProjectsController {
 
     @PostMapping("/project/new")
     public String save(@ModelAttribute("project")Project project, final RedirectAttributes redirectAttributes, HttpSession httpSession) {
+        System.out.println("@PostMapping(\"/project/new\") gulp file xxxxx");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println( authentication.getDetails() );
         String currentPrincipalName = authentication.getName();
