@@ -66,6 +66,18 @@
 
 
                     </div>
+
+                    <div>
+                        <c:forEach items="${files}" var="file">
+                            <div>
+                                <a href="${file}">${file}</a>
+                            </div>
+                        </c:forEach>
+                        <%-- <c:forEach items="files" var="file">
+                            ${file}
+                        </c:forEach> --%>
+
+                    </div>
                 </div>
             </div>
         </div>
