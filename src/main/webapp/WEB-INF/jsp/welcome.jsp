@@ -8,10 +8,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%@ include file="../includes/head.jsp"%>
+    <%@ include file="includes/head.jsp"%>
 </head>
 
 <body class="font-sans bg-gray-100">
+
+<div id="app">
 
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
@@ -22,6 +24,7 @@
 
 </div>
 
+</div>
 </body>
 </html>
 

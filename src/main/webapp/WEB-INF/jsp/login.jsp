@@ -11,6 +11,7 @@
 </head>
 
 <body class="font-sans bg-gray-100">
+<div id="app">
 
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
@@ -116,8 +117,6 @@
 
 </div>
 
+</div>
 </body>
 </html>
-
-
-

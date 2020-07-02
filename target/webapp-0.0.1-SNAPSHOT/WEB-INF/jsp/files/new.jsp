@@ -9,7 +9,7 @@
     <%@ include file="../includes/head.jsp"%>
 </head>
 
-<body class="font-sans bg-gray-100" data-no-turbolink="true">
+<body class="font-sans bg-gray-100" data-no-turbolink="true" id="vue-app">
 
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 

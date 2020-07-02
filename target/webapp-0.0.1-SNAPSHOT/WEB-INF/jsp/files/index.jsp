@@ -8,7 +8,9 @@
     <head>
         <%@ include file="../includes/head.jsp"%>
     </head>
-    <body class="font-sans bg-gray-100" data-no-turbolink="true">
+    <body class="font-sans bg-gray-100" data-no-turbolink="true" id="vue-app">
+
+    {{message}}
 
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -68,11 +70,12 @@
                     </div>
 
                     <div>
-                        <c:forEach items="${files}" var="file">
+                        <c:forEach items="${activeStorageFiles}" var="activeStorageFile">
                             <div>
-                                <a href="${file}">${file}</a>
+                                ${activeStorageFile.fileName} - ${activeStorageFile.description}
                             </div>
                         </c:forEach>
+
                         <%-- <c:forEach items="files" var="file">
                             ${file}
                         </c:forEach> --%>

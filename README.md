@@ -12,3 +12,7 @@ This is my attempt to learning Spring Framework within the context of building a
 * Turbolinks - https://github.com/turbolinks/turbolinks
 
 
+maxAllowedPacket=99999999 in the URL of the database
+
+max_allowed_packet=500M in the my.ini for your mysql server
+

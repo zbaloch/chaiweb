@@ -9,6 +9,7 @@
         <%@ include file="../includes/head.jsp"%>
     </head>
     <body class="font-sans bg-gray-100">
+    <div id="app">
 
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -32,15 +33,16 @@
                                 ${project.name}
                             </div>
                             <c:if test="${project.createdBy == sessionScope.current_user.id}">
-                                <div data-controller="nav" class="relative">
-                                    <button class="text-gray-800 font-bold z-10 relative" data-action="click -> nav#toggleProjectActions">
-                                        <svg class="fill-current w-4 h-4 mr-2" fill="none" stroke-
-                                                ="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 20 20" stroke="currentColor">
+                                <div class="relative">
+                                    <button v-on:click="isProjectActionsOpen = !isProjectActionsOpen" class="text-gray-800 font-bold z-10 relative">
+                                        <svg class="fill-current w-4 h-4 mr-2" fill="none" stroke-linejoin="round" stroke-width="2" viewBox="0 0 20 20" stroke="currentColor">
                                             <path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
                                         </svg>
-                                    </button>
-                                    <button data-target="nav.toggleProjectActionsButton" tab-index="-1" data-action="click -> nav#toggleProjectActions" class="fixed inset-0 h-full w-full hidden cursor-default"></button>
-                                    <div data-target="nav.projectActions" class="absolute right-0 hidden mt-2 py-2 w-24 bg-white rounded-lg shadow-xl">
+                                    </button>          
+                                    <button v-if="isProjectActionsOpen" v-on:click="isProjectActionsOpen = false"
+                                            class="fixed top-0 right-0 bottom-0 left-0 h-full w-full cursor-default"></button>
+
+                                    <div v-cloak v-if="isProjectActionsOpen" class="absolute right-0 mt-2 py-2 w-24 bg-white rounded-lg shadow-xl">
                                         <a class="block px-4 py-1 text-gray-800 hover:bg-indigo-500 hover:text-white " href="/projects/2/edit">Edit</a>
                                         <a class="block px-4 py-1 text-red-600 hover:bg-red-500 hover:text-white" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/projects/2">Delete</a>
                                     </div>
@@ -120,6 +122,7 @@
 
     <jsp:include page="../includes/notifications.jsp"></jsp:include>
 
+    </div>
     </body>
 </html>
 

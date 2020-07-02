@@ -28,11 +28,60 @@ public class ActiveStorageFile {
     @Column(name = "created_at")
     private Calendar createdAt;
 
+    @Column(name = "file_data")
+    private byte[] fileData;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "file_size")
+    private long fileSize;
+
+
+    @Column(name = "file_type")
+    private String fileType; // content type of the file
+
+
     @Transient
     private MultipartFile multipartFile;
 
     public ActiveStorageFile() {
     }
+
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+
+    public byte[] getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(byte[] fileData) {
+        this.fileData = fileData;
+    }
+
 
     public long getId() {
         return id;

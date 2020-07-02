@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -47,14 +48,15 @@ public class FilesController {
     @Autowired
     private ActiveStorageFileRepository activeStorageFileRepository;
 
-
-
-
     @GetMapping("/project/{id}/files")
     public String show(@PathVariable Long id, Model model) {
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
+
+        List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findByProjectId(id);
+
         System.out.println(project.getName());
         model.addAttribute("project", project);
+        model.addAttribute("activeStorageFiles", activeStorageFiles);
 
         model.addAttribute("files", storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FilesController.class,
@@ -90,14 +92,19 @@ public class FilesController {
     }
 
 
-    @PostMapping("/project/{projectId}/file/new")
+    @PostMapping("/project/{project_id}/file/new")
     public String save(@ModelAttribute("activeStorageFile") ActiveStorageFile activeStorageFile,
                        // @RequestParam("file") MultipartFile file,
                        // @ModelAttribute("project")Project project,
                        HttpSession httpSession, @PathVariable Long project_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) {
+                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
-        storageService.store(activeStorageFile.getMultipartFile());
+        // storageService.store(activeStorageFile.getMultipartFile());
+
+        String fileName = StringUtils.cleanPath(activeStorageFile.getMultipartFile().getOriginalFilename());
+
+
+
         System.out.println("Post: /project/{id}/file/new");
         User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
@@ -106,6 +113,10 @@ public class FilesController {
         activeStorageFile.setCreatedAt(Calendar.getInstance());
         activeStorageFile.setProjectId(project.getId());
         activeStorageFile.setUserId(user.getId());
+        activeStorageFile.setFileName(fileName);
+        activeStorageFile.setFileType(activeStorageFile.getMultipartFile().getContentType());
+        activeStorageFile.setFileData(activeStorageFile.getMultipartFile().getBytes());
+        activeStorageFile.setFileSize(activeStorageFile.getMultipartFile().getSize());
 
         activeStorageFileRepository.save(activeStorageFile);
 

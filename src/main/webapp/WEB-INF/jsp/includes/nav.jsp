@@ -54,7 +54,7 @@
 </c:if>
 
 <c:if test="${pageContext.request.userPrincipal.name != null}">
-    <nav class="" data-controller="nav">
+    <nav class="">
     <div class="max-w-4xl mx-auto px-2 sm:px-4 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex px-2 lg:px-0">
@@ -101,7 +101,7 @@
             <div class="flex items-center lg:hidden">
                 <!-- Mobile menu button -->
                 <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                        data-action="click -> nav#toggleMobileMenu" aria-label="Main menu" aria-expanded="false">
+                        aria-label="Main menu" aria-expanded="false">
                     <!-- Icon when menu is closed. -->
                     <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -121,10 +121,12 @@
 
                 <!-- Profile dropdown -->
                 <div class="ml-4 relative flex-shrink-0">
-                    <div>
-                        <button data-action="click -> nav#toggleProfileDropDown" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out" id="user-menu" aria-label="User menu" aria-haspopup="true">
+                    <div class="relative">
+                        <button v-on:click="isProfileMenuOpen = !isProfileMenuOpen" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out" id="user-menu" aria-label="User menu" aria-haspopup="true">
                             <img class="h-8 w-8 rounded-full" src="https://avatars.wip.chat/1.svg?text=ZB" alt="" />
                         </button>
+
+
                     </div>
                     <!--
                       Profile dropdown panel, show/hide based on dropdown state.
@@ -136,9 +138,9 @@
                         From: "transform opacity-100 scale-100"
                         To: "transform opacity-0 scale-95"
                     -->
-                    <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg hidden" data-target="nav.profileDropDown">
+                    <div v-cloak v-if="isProfileMenuOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
                         <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">My profile
+                            <a  href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">My profile
                             </a>
                             <a href="/sign_out" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Sign out</a>
                         </div>
@@ -153,7 +155,7 @@
 
       Menu open: "block", Menu closed: "hidden"
     -->
-    <div class="hidden lg:hidden" data-target="nav.mobileMenu">
+    <div class="hidden lg:hidden" >
         <div class="pt-2 pb-3">
             <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-500 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out">Home
             </a>

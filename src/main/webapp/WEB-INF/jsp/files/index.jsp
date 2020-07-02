@@ -8,7 +8,9 @@
     <head>
         <%@ include file="../includes/head.jsp"%>
     </head>
-    <body class="font-sans bg-gray-100" data-no-turbolink="true">
+    <body class="font-sans bg-gray-100">
+    <div id="app">
+
 
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -28,7 +30,6 @@
                             <a href="${contextUrl}/project/${project.id}" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
                                 ${project.name}
                             </a>
-
                         </nav>
                     </div>
                     <div class="mt-2">
@@ -68,11 +69,12 @@
                     </div>
 
                     <div>
-                        <c:forEach items="${files}" var="file">
+                        <c:forEach items="${activeStorageFiles}" var="activeStorageFile">
                             <div>
-                                <a href="${file}">${file}</a>
+                                ${activeStorageFile.fileName} - ${activeStorageFile.description}
                             </div>
                         </c:forEach>
+
                         <%-- <c:forEach items="files" var="file">
                             ${file}
                         </c:forEach> --%>
@@ -83,9 +85,9 @@
         </div>
     </div>
 
+    <%@ include file="../includes/notifications.jsp"%>
 
-    <jsp:include page="../includes/notifications.jsp"></jsp:include>
-
+    </div>
     </body>
 </html>
 
