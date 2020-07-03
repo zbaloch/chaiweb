@@ -3,14 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <%@ include file="../includes/head.jsp"%>
-    </head>
-    <body class="font-sans bg-gray-100" data-no-turbolink="true" id="vue-app">
+<%@ include file="../includes/head.jsp"%>
 
-    {{message}}
+<body class="font-sans bg-gray-100">
+<div id="app">
 
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -30,7 +26,6 @@
                             <a href="${contextUrl}/project/${project.id}" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
                                 ${project.name}
                             </a>
-
                         </nav>
                     </div>
                     <div class="mt-2">
@@ -45,21 +40,6 @@
                                    </a>
                                </span>
                             </div>
-                            <c:if test="${project.createdBy == sessionScope.current_user.id}">
-                                <div data-controller="nav" class="relative">
-                                    <button class="text-gray-800 font-bold z-10 relative" data-action="click -> nav#toggleProjectActions">
-                                        <svg class="fill-current w-4 h-4 mr-2" fill="none" stroke-
-                                                ="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 20 20" stroke="currentColor">
-                                            <path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                                        </svg>
-                                    </button>
-                                    <button data-target="nav.toggleProjectActionsButton" tab-index="-1" data-action="click -> nav#toggleProjectActions" class="fixed inset-0 h-full w-full hidden cursor-default"></button>
-                                    <div data-target="nav.projectActions" class="absolute right-0 hidden mt-2 py-2 w-24 bg-white rounded-lg shadow-xl">
-                                        <a class="block px-4 py-1 text-gray-800 hover:bg-indigo-500 hover:text-white " href="/projects/2/edit">Edit</a>
-                                        <a class="block px-4 py-1 text-red-600 hover:bg-red-500 hover:text-white" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/projects/2">Delete</a>
-                                    </div>
-                                </div>
-                            </c:if>
                         </div>
                         <div class="mt-2 flex items-center text-sm leading-5 text-gray-500">
                             ${project.description}
@@ -85,10 +65,11 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    <jsp:include page="../includes/notifications.jsp"></jsp:include>
+    <%@ include file="../includes/notifications.jsp"%>
 
-    </body>
-</html>
+    <%@ include file="../includes/footer.jsp"%>
+
 

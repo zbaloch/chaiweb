@@ -5,18 +5,14 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <%@ include file="includes/head.jsp"%>
-    </head>
+<%@ include file="includes/head.jsp"%>
 
-    <body class="font-sans bg-gray-100">
-    <div id="app">
+<body class="font-sans bg-gray-100">
+<div id="app">
 
-        <jsp:include page="includes/nav.jsp"></jsp:include>
+<jsp:include page="includes/nav.jsp"></jsp:include>
 
-        <div class=" min-h-screen">
+<div class=" min-h-screen">
 
             <div class="py-10">
 
@@ -124,8 +120,4 @@
 
             </div>
         </div>
-
-    </div>
-    </body>
-</html>
-
+<%@ include file="includes/footer.jsp"%>

@@ -6,6 +6,7 @@ import com.chaihq.webapp.services.SecurityService;
 import com.chaihq.webapp.services.UserService;
 import com.chaihq.webapp.utilities.Constants;
 import com.chaihq.webapp.validator.UserValidator;
+import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class UsersController {
@@ -61,6 +65,53 @@ public class UsersController {
 
         return "login";
     }
+
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profile(Model model, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        User userForm = new User();
+        userForm.setFirstName(user.getFirstName());
+        userForm.setLastName(user.getLastName());
+        userForm.setUsername(user.getUsername());
+        model.addAttribute("userForm", userForm);
+        return "user/profile";
+    }
+
+
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    public String update(@ModelAttribute("userForm") User userForm,
+                         BindingResult bindingResult, Model model,
+                         final RedirectAttributes redirectAttributes,
+                         HttpSession httpSession) {
+
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        userForm.setUsername(currentUser.getUsername());
+
+        System.out.println("userForm.getUsername: " + userForm.getUsername());
+        System.out.println("userForm.getFirstName: " + userForm.getFirstName());
+        System.out.println("userForm.getLastName: " + userForm.getLastName());
+        System.out.println("userForm.getPassword: " + userForm.getPassword());
+
+        userValidator.validateUpdate(userForm, bindingResult);
+
+        System.out.println("bindingResult: " + bindingResult.hasErrors());
+
+
+        if (bindingResult.hasErrors()) {
+            return "user/profile";
+        }
+
+
+        userService.update(userForm);
+
+        // securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
+
+        redirectAttributes.addFlashAttribute("notice", "Your profile saved!");
+
+        return "redirect:/projects";
+    }
+
 
 
 }

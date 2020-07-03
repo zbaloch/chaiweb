@@ -3,7 +3,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<spring:message code="context" var="contextUrl"></spring:message>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+ <c:if test="${pageContext.request.userPrincipal.name != null}">
+    <form id="logoutForm" method="POST" action="${contextPath}/logout">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+
+    <%--
+    <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()" class="text-blue-500 underline cursor-pointer">Logout</a></h2>
+    --%>
+
+</c:if>
 
 <c:if test="${pageContext.request.userPrincipal.name == null}">
     <nav class="">
@@ -100,7 +113,7 @@
             </div> -->
             <div class="flex items-center lg:hidden">
                 <!-- Mobile menu button -->
-                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                <button v-on:click="isMobileProfileMenuOpen = !isMobileProfileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                         aria-label="Main menu" aria-expanded="false">
                     <!-- Icon when menu is closed. -->
                     <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,6 +139,8 @@
                             <img class="h-8 w-8 rounded-full" src="https://avatars.wip.chat/1.svg?text=ZB" alt="" />
                         </button>
 
+                        <button v-if="isProfileMenuOpen" v-on:click="isProfileMenuOpen = false" tabindex="-1"
+                                class="fixed inset-0 h-full w-full cursor-default border-none outline-none"></button>
 
                     </div>
                     <!--
@@ -140,9 +155,9 @@
                     -->
                     <div v-cloak v-if="isProfileMenuOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
                         <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                            <a  href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">My profile
+                            <a  href="${contextUrl}/profile" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">My profile
                             </a>
-                            <a href="/sign_out" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Sign out</a>
+                            <a onclick="document.forms['logoutForm'].submit()" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out cursor-pointer">Sign out</a>
                         </div>
                     </div>
                 </div>
@@ -155,10 +170,10 @@
 
       Menu open: "block", Menu closed: "hidden"
     -->
-    <div class="hidden lg:hidden" >
-        <div class="pt-2 pb-3">
-            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-500 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out">Home
-            </a>
+    <div class="lg:hidden bg-white" v-cloak v-if="isMobileProfileMenuOpen">
+            <%--  <div class="pt-2 pb-3">
+                <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-500 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out">Home
+                </a>
             <!-- <a href="#" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Pings
             </a>
             <a href="#" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Hey!
@@ -169,26 +184,27 @@
             </a> -->
         </div>
         <div class="pt-4 pb-3 border-t border-gray-200">
-            <div class="flex items-center px-4">
-                <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                </div>
-                <div class="ml-3">
-                    <div class="text-base font-medium leading-6 text-gray-800">Tom Cook
-                    </div>
-                    <div class="text-sm font-medium leading-5 text-gray-500">tom@example.com
-                    </div>
-                </div>
-            </div>
+                <%--<div class="flex items-center px-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                        </div>
+                         <div class="ml-3">
+                            <div class="text-base font-medium leading-6 text-gray-800">
+                                    ${pageContext.request.userPrincipal.name}
+                            </div>
+                            <div class="text-sm font-medium leading-5 text-gray-500">tom@example.com
+                            </div>
+                        </div>
+            </div> TODO: Show email/username and photo later--%>
             <div class="mt-3">
-                <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:text-gray-800 focus:bg-gray-100 transition duration-150 ease-in-out">My profile
+                <a href="${contextUrl}/profile" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:text-gray-800 focus:bg-gray-100 transition duration-150 ease-in-out cursor-pointer">
+                    My profile
                 </a>
-                <a href="/sign_out" class="mt-1 block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:text-gray-800 focus:bg-gray-100 transition duration-150 ease-in-out">Sign out</a>
+                <a onclick="document.forms['logoutForm'].submit()" class="mt-1 block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:text-gray-800 focus:bg-gray-100 transition duration-150 ease-in-out cursor-pointer">Sign out</a>
 
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 </c:if>
 
 

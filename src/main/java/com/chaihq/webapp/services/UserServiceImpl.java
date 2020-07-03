@@ -27,7 +27,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void update(User user) {
+        User userToUpdate = userRepository.findByUsername(user.getUsername());
+        userToUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userToUpdate.setFirstName(user.getFirstName());
+        userToUpdate.setLastName(user.getLastName());
+        userRepository.save(userToUpdate);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
 }

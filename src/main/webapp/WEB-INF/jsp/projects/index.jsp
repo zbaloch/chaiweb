@@ -3,14 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<%@ include file="../includes/head.jsp"%>
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <%@ include file="../includes/head.jsp"%>
-    </head>
-    <body class="font-sans bg-gray-100">
-    <div id="app">
+<body class="font-sans bg-gray-100">
+<div id="app">
 
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -55,17 +51,4 @@
     </div>
     <jsp:include page="../includes/notifications.jsp"></jsp:include>
 
-
-    <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <form id="logoutForm" method="POST" action="${contextPath}/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
-
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()" class="text-blue-500 underline cursor-pointer">Logout</a></h2>
-
-    </c:if>
-
-
-    </div>
-    </body>
-</html>
+<%@ include file="../includes/footer.jsp"%>

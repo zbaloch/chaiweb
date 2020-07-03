@@ -3,13 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <%@ include file="../includes/head.jsp"%>
-</head>
+<body class="font-sans bg-gray-100">
+<div id="app">
 
-<body class="font-sans bg-gray-100" data-no-turbolink="true" id="vue-app">
+<%@ include file="../includes/head.jsp"%>
 
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 
@@ -101,5 +98,4 @@
 
 <jsp:include page="../includes/notifications.jsp"></jsp:include>
 
-</body>
-</html>
+<%@ include file="../includes/footer.jsp"%>
