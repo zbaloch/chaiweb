@@ -40,9 +40,15 @@ public class ProjectsController {
         user.setInitialFirstNameLastName(intialFirstNameLastName);
         httpSession.setAttribute(Constants.CURRENT_USER, user); // current_user is a term used within ruby on rails framework.
 
-        List<Project> projects = projectRepository.findByCreatedByOrProjectTypeIs(user.getId(), Constants.PROJECT_TYPE_HQ);
+        List<Project> hqs = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_HQ);
+        model.put("hqs", hqs);
 
+        List<Project> projects = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_PROJECT);
         model.put("projects", projects);
+
+        List<Project> teams = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_TEAM);
+        model.put("teams", teams);
+
         return "projects/index";
     }
 

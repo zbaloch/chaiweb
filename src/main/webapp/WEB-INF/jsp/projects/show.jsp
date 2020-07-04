@@ -56,6 +56,19 @@
                         </div>
 
                         <div class="mt-4">
+                            <div class="flex overflow-hidden">
+                                <img class="inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2.25&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                <a href="#" class="ml-4 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
+                                    Add/Remove people
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-4">
                             <div class="flex flex-wrap -mx-3">         
 
                                 <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
@@ -67,6 +80,8 @@
                                             <div class="text-gray-700 text-sm">
                                                 This is a place to store and organize assets and reference material.
                                             </div>
+
+
 
                                         </div>
                                     </a>

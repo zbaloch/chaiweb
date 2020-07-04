@@ -10,12 +10,11 @@ import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -32,6 +31,9 @@ public class UsersController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -113,5 +115,24 @@ public class UsersController {
     }
 
 
+    @GetMapping("/reset")
+    public String reset(Model model) {
+        model.addAttribute("userForm", new User());
+        return "reset";
+    }
+
+    @PostMapping("/reset")
+    public String resetPasword(@ModelAttribute("userForm") User userForm, Model model) {
+        System.out.println("userForm.getUsername(): " + userForm.getUsername());
+        model.addAttribute("message", "Check your inbox for a link to reset your password");
+        // TODO: Change this later - For now this just prints the password for the admin who has access to the logs.
+        // Admin picks up the password and sends to user. The user is then advised to change their password after
+        // the login.
+        User user = userService.findByUsername(userForm.getUsername());
+        System.out.println("user.getPassword(): " + user.getPassword());
+
+        // userToUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return "reset";
+    }
 
 }

@@ -75,7 +75,8 @@
                     <%-- <img class="block lg:hidden h-8 w-auto" src="/img/logos/workflow-mark-on-white.svg" alt="Workflow logo" />
                     <img class="hidden lg:block h-8 w-auto" src="/img/logos/workflow-logo-on-white.svg" alt="Workflow logo" /> --%>
                     <a href="${contextPath}/projects" class="font-bold cursor-pointer">
-                        <spring:message code="company.name"></spring:message>
+                        <%-- <spring:message code="company.name"></spring:message> --%>
+                        Chai
                     </a>
                 </div>
                 <div class="hidden lg:ml-6 lg:flex">

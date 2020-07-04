@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <body class="font-sans bg-gray-100">
 <div id="app">
@@ -56,7 +55,7 @@
                 <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 mt-4">
 
 
-                    <form action="${contextPath}/login" accept-charset="UTF-8" method="post">
+                    <form action="${contextUrl}/login" accept-charset="UTF-8" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                         <div>
@@ -86,7 +85,7 @@
                             </div> -->
 
                             <div class="text-sm leading-5">
-                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="/passwords/new">Forgot your password?</a>
+                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextUrl}/reset">Forgot your password?</a>
                             </div>
                         </div>
 

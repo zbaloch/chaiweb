@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     // .antMatchers(HttpMethod.GET, "/", "/index.html", "/favicon.ico", "/**/*.js", "/**/*.js.map", "/**/*.css", "/assets/images/*.png", "/assets/images/*.jpg", "/assets/images/*.jpeg", "/assets/images/*.gif", "/**/*.ttf", "/**/*.json", "/**/*.woff", "/**/*.woff2", "/**/*.eot", "/**/*.svg").permitAll()
-                    .antMatchers("/registration", "/js/*").permitAll()
+                    .antMatchers("/registration", "/reset", "/js/*").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

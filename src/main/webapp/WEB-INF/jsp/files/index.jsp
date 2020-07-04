@@ -59,7 +59,7 @@
                     <div class="mt-2">
 
                         <div class="py-12 bg-white">
-                            <div class="max-w-xl mx-auto px-4 sm:px-6 lg:max-w-screen-xl lg:px-8">
+                            <div class="max-w-xl mx-auto lg:max-w-screen-xl">
                                 <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                                     <c:forEach items="${activeStorageFiles}" var="activeStorageFile">
                                     <div class="">
@@ -81,6 +81,29 @@
                                                 <fmt:formatDate value="${activeStorageFile.createdAt.time}" type = "date" dateStyle = "long" timeStyle = "long"></fmt:formatDate>
                                                 <%-- · 73 KB --%>
                                             </div>
+                                            <%--
+                                            <div class="flex-1 min-w-0">
+
+                                                <div class="flex flex-row">
+                                                    <div class="mt-1 flex items-center text-sm leading-5 text-gray-500 sm:mr-6 text-sm">
+                                                        <svg class="flex-shrink-0 mr-1 h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                                                            <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"></path>
+                                                        </svg>
+                                                        Full-time
+                                                    </div>
+                                                    <div class="mt-1 flex items-center text-sm leading-5 text-gray-500 sm:mr-6 text-sm">
+                                                        <svg class="flex-shrink-0 mr-1 h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                        Remote
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            --%>
+
+                                            <%-- <a href="#" class="text-red-500 text-sm">Delete</a> --%>
                                             <%-- <div>
                                                 <a href="#" class="text-sm text-blue-500 underline">Download</a>
                                             </div> --%>
