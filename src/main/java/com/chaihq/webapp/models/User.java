@@ -28,6 +28,10 @@ public class User {
 
     @Transient
     private String passwordConfirm;
+
+    @Transient
+    private String initialFirstNameLastName;
+
     private String status;
 
     @Lob
@@ -136,5 +140,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getInitialFirstNameLastName() {
+        return initialFirstNameLastName;
+    }
+
+    public void setInitialFirstNameLastName(String initialFirstNameLastName) {
+        this.initialFirstNameLastName = initialFirstNameLastName;
     }
 }

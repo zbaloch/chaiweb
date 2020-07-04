@@ -10,8 +10,10 @@ import com.chaihq.webapp.storage.StorageFileNotFoundException;
 import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,7 +56,6 @@ public class FilesController {
 
         List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findByProjectId(id);
 
-        System.out.println(project.getName());
         model.addAttribute("project", project);
         model.addAttribute("activeStorageFiles", activeStorageFiles);
 
@@ -66,7 +67,7 @@ public class FilesController {
         return "files/index";
     }
 
-    @GetMapping("/project/{project_id}/files/{filename:.+}")
+    /* @GetMapping("/project/{project_id}/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable Long project_id) {
 
@@ -75,7 +76,36 @@ public class FilesController {
         Resource file = storageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    } */
+
+    @GetMapping("/project/{projectId}/file/{id}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable Long id, @PathVariable Long projectId) {
+
+        System.out.println("serveFile: ");
+
+        // TODO: Make sure the file belongs to this project and the user, filenames to be stored with some project references in the name
+
+        System.out.println("Downloading file... " + id + "in project id " + projectId);
+        ActiveStorageFile activeStorageFile = activeStorageFileRepository.getOne(id);
+
+        /* return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + activeStorageFile.getFileName() + "\"")
+                .body(new ByteArrayResource(activeStorageFile.getFileData())); */
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(activeStorageFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + activeStorageFile.getFileName() + "\"")
+                .body(new ByteArrayResource(activeStorageFile.getFileData()));
+
+        /* Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file); */
+
+        // return "file/"
+
     }
+
 
     @GetMapping("/project/{project_id}/file/new")
     public String neew(@ModelAttribute("activeStorageFile") ActiveStorageFile activeStorageFile,

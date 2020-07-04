@@ -14,10 +14,8 @@
 <div class=" min-h-screen">
     <div class="py-10">
 
-
         <div class="flex flex-col justify-center sm:px-6 lg:px-8">
             <div class="sm:mx-auto sm:w-full sm:max-w-md">
-
                 <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                     Sign in
                 </h2>

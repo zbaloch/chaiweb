@@ -41,13 +41,15 @@ public class ActiveStorageFile {
     @Column(name = "file_type")
     private String fileType; // content type of the file
 
-
     @Transient
     private MultipartFile multipartFile;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
+
     public ActiveStorageFile() {
     }
-
 
     public long getFileSize() {
         return fileSize;
@@ -137,5 +139,13 @@ public class ActiveStorageFile {
 
     public void setMultipartFile(MultipartFile multipartFile) {
         this.multipartFile = multipartFile;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

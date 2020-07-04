@@ -49,10 +49,21 @@
 
         <form:form modelAttribute="activeStorageFile" enctype="multipart/form-data">
 
-            <input type="file" name="multipartFile"/>
+
 
             
         <div class="mt-4 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+
+            <div class="sm:col-span-6">
+                <%-- <label class="block text-sm font-medium leading-5 text-gray-700">
+                    <spring:message code="activeStorageFile.file.label" />
+                </label> --%>
+                <div class="mt-1 rounded-md shadow-sm">
+                    <input type="file" name="multipartFile"/>
+                </div>
+            </div>
+
+            <%--
             <div class="sm:col-span-6">
                 <label class="block text-sm font-medium leading-5 text-gray-700">
                     <spring:message code="activeStorageFile.name.label" />
@@ -70,7 +81,7 @@
                     <form:textarea path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"></form:textarea>
                 </div>
             </div>
-
+            --%>
         </div>
 
 

@@ -33,16 +33,11 @@ public class ProjectsController {
     public String index(Map<String, Object> model, HttpSession httpSession) {
         // List<Project> projects = projectRepository.findAll();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println( authentication.getDetails() );
         String currentPrincipalName = authentication.getName();
-        System.out.println(currentPrincipalName);
-
         // TODO: Maybe put this user in the session so that its not required to inqure from database again and again.
         User user = userRepository.findByUsername(currentPrincipalName);
-
-        System.out.println(user.getId());
-        System.out.println(user.getFirstName());
-
+        String intialFirstNameLastName = "" + user.getFirstName().charAt(0) + "" + user.getLastName().charAt(0);
+        user.setInitialFirstNameLastName(intialFirstNameLastName);
         httpSession.setAttribute(Constants.CURRENT_USER, user); // current_user is a term used within ruby on rails framework.
 
         List<Project> projects = projectRepository.findByCreatedByOrProjectTypeIs(user.getId(), Constants.PROJECT_TYPE_HQ);
@@ -93,7 +88,13 @@ public class ProjectsController {
         return "projects/show";
     }
 
-
+    @GetMapping("/project/{id}/delete")
+    public String delete(@PathVariable Long id, final RedirectAttributes redirectAttributes ) {
+        // TODO: Make sure this belongs to the current loggedin user
+        projectRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("destruction_notice", "Project deleted!");
+        return "redirect:/projects";
+    }
 
 
     @GetMapping("/project/{id}/users")
@@ -108,5 +109,27 @@ public class ProjectsController {
         return "projects/index";
     }
 
+
+    @GetMapping("/project/{id}/edit")
+    public String edit(@PathVariable Long id, Map<String, Object> model) {
+        Project project = projectRepository.getOne(id);
+        System.out.println(project.getName());
+        model.put("project", project);
+        return "projects/edit";
+    }
+
+
+    @PostMapping("/project/{id}/edit")
+    public String update(@PathVariable Long id, @ModelAttribute("project")Project project,
+                         Map<String, Object> model, HttpSession httpSession) {
+        Project projectToUpdate = projectRepository.getOne(id);
+        System.out.println(project.getName());
+        projectToUpdate.setName(project.getName());
+        projectToUpdate.setDescription(project.getDescription());
+        projectRepository.save(projectToUpdate);
+        model.put("project", project);
+        model.put("notice", "Project updated!");
+        return "projects/show";
+    }
 
 }

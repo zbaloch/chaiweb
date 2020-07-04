@@ -13,7 +13,6 @@
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
 <div class=" min-h-screen">
-
             <div class="py-10">
 
                 <div class="flex flex-col justify-center sm:px-6 lg:px-8">
