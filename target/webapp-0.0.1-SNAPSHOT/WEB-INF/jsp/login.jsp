@@ -11,7 +11,7 @@
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
 <div class=" min-h-screen">
-    <div class="py-10">
+    <div class="py-4 md:py-10">
 
         <div class="flex flex-col justify-center sm:px-6 lg:px-8">
             <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -20,7 +20,7 @@
                 </h2>
                 <p class="mt-2 text-center text-sm leading-5 text-gray-600">
                     Or
-                    <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextPath}/registration">sign up</a>
+                    <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextUrl}/registration">sign up</a>
                 </p>
             </div>
 

@@ -46,6 +46,9 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @Transient
+    private boolean isAddedAlready;
+
     public long getId() {
         return id;
     }
@@ -148,5 +151,13 @@ public class User {
 
     public void setInitialFirstNameLastName(String initialFirstNameLastName) {
         this.initialFirstNameLastName = initialFirstNameLastName;
+    }
+
+    public boolean isAddedAlready() {
+        return isAddedAlready;
+    }
+
+    public void setAddedAlready(boolean addedAlready) {
+        isAddedAlready = addedAlready;
     }
 }

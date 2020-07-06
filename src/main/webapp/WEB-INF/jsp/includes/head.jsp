@@ -18,6 +18,13 @@
 
     <script src="${contextUrl}/js/application.js"></script>
 
+    <style>
+        .first\:ml-0:first-child {
+            margin-left: 0;
+        }
+    </style>
+
+
 </head>
 
 

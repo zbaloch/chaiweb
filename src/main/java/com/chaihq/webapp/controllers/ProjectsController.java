@@ -1,6 +1,7 @@
 package com.chaihq.webapp.controllers;
 
 import com.chaihq.webapp.models.Project;
+import com.chaihq.webapp.models.ProjectUserForm;
 import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.repositories.ProjectRepository;
 import com.chaihq.webapp.repositories.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -104,16 +106,82 @@ public class ProjectsController {
 
 
     @GetMapping("/project/{id}/users")
-    public String users(@PathVariable Long id, Map<String, Object> model, HttpSession httpSession) {
-        System.out.println("Project Id: " + id);
-        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        System.out.println("user: " + user);
-        // List<Project> projects = projectRepository.findAll();
-        List<Project> projects = projectRepository.findByCreatedBy(user.getId());
-        System.out.println("Projects size: " + projects.size());
-        model.put("projects", projects);
-        return "projects/index";
+    public String users(@PathVariable Long id, Model model, HttpSession httpSession
+                        ) {
+        Project project = projectRepository.getOne(id);
+        model.addAttribute("project", project);
+        // Get all the users
+        List<User> users = userRepository.findAll();
+
+        for(int i=0; i<users.size(); i++) {
+            User user = users.get(i);
+            for(int j=0; j<project.getUsers().size(); j++) {
+                User projectUser = project.getUsers().get(j);
+                if(user.getId() == projectUser.getId()) {
+                    user.setAddedAlready(true);
+                }
+            }
+        }
+
+        model.addAttribute("users", users);
+        model.addAttribute("puf", new ProjectUserForm());
+        return "projects/users";
     }
+
+    @PostMapping("/project/{id}/users")
+    public String addRemoveUser(Map<String, Object> model,
+                        @ModelAttribute ProjectUserForm puf,
+                        @PathVariable Long id,
+                        HttpSession httpSession) {
+        System.out.println("Adding users..." + puf.getProjectId() + ", " + puf.getUserId() + ", " + puf.getAction());
+        // TODO: Make sure the project belongs to this user
+        Project project = projectRepository.getOne(puf.getProjectId());
+        System.out.println(project.getUsers().size());
+        User userToAdd = (User) userRepository.getOne(puf.getUserId());
+        List<User> users = userRepository.findAll();
+
+        if("add".equals(puf.getAction())) {
+            project.getUsers().add(userToAdd);
+            model.put("notice", "User added!");
+            projectRepository.save(project);
+        } else if("remove".equals(puf.getAction())) {
+
+            for(int i=0; i<project.getUsers().size(); i++) {
+                User user = project.getUsers().get(i);
+                System.out.println(user.getId() + " == " + puf.getUserId());
+                System.out.println(user.getId() == puf.getUserId());
+                if(user.getId() == puf.getUserId()) {
+                    project.getUsers().remove(i);
+                    projectRepository.save(project);
+                    break;
+                }
+            }
+
+            model.put("notice", "User removed!");
+        } else {
+            // model.put("notice", "User added!");
+        }
+
+        for(int i=0; i<users.size(); i++) {
+            User user = users.get(i);
+            for(int j=0; j<project.getUsers().size(); j++) {
+                User projectUser = project.getUsers().get(j);
+                if(user.getId() == projectUser.getId()) {
+                    user.setAddedAlready(true);
+                }
+            }
+        }
+        model.put("project", project);
+        model.put("users", users);
+        model.put("puf", puf);
+
+
+
+        return "projects/users";
+    }
+
+
+
 
 
     @GetMapping("/project/{id}/edit")
