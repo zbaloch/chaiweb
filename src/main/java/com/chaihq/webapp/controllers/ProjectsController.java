@@ -16,6 +16,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +43,25 @@ public class ProjectsController {
         user.setInitialFirstNameLastName(intialFirstNameLastName);
         httpSession.setAttribute(Constants.CURRENT_USER, user); // current_user is a term used within ruby on rails framework.
 
-        List<Project> hqs = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_HQ);
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        List<User> users = new ArrayList<User>();
+        users.add(currentUser);
+
+        List<Project> hqs = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_HQ);
+        List<Project> hqsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_HQ);
+        hqs.addAll(hqsPartOf);
         model.put("hqs", hqs);
 
-        List<Project> projects = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_PROJECT);
+
+
+        List<Project> projects = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_PROJECT);
+        List<Project> projectsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_PROJECT);
+        projects.addAll(projectsPartOf);
         model.put("projects", projects);
 
-        List<Project> teams = projectRepository.findByProjectTypeIs(Constants.PROJECT_TYPE_TEAM);
+        List<Project> teams = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_TEAM);
+        List<Project> teamsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_TEAM);
+        teams.addAll(teamsPartOf);
         model.put("teams", teams);
 
         return "projects/index";
@@ -142,7 +155,8 @@ public class ProjectsController {
 
         if("add".equals(puf.getAction())) {
             project.getUsers().add(userToAdd);
-            model.put("notice", "User added!");
+            model.put("notice", userToAdd.getFirstName() + " added to " + project.getName());
+            // model.put("notice", "User added!");
             projectRepository.save(project);
         } else if("remove".equals(puf.getAction())) {
 

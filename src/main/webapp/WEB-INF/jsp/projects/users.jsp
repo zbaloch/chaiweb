@@ -134,8 +134,8 @@
                                     </thead>
                                     <tbody class="bg-white">
                                     <c:forEach items="${users}" var="user">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-10 w-10">
                                                     <img class="h-10 w-10 rounded-full" src="https://avatars.wip.chat/${user.id}.svg?text=${user.firstName.charAt(0)}${user.lastName.charAt(0)}" alt="" />
@@ -147,37 +147,36 @@
                                             </div>
                                         </td>
 
-                                        <%-- <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                            <div class="text-sm leading-5 text-gray-900">Director</div>
-                                            <div class="text-sm leading-5 text-gray-500">Human Resources</div>
+                                                <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                                                    <c:if test="${user.id == sessionScope.current_user.id}"> <%-- TODO: Need to validate this on the server side too to avoid having users add themselves --%>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Owner
+                                                        </span>
+                                                    </c:if>
+
+                                                    <c:if test="${user.id != sessionScope.current_user.id}"> <%-- TODO: Need to validate this on the server side too to avoid having users add themselves --%>
+                                                        <c:if test="${user.addedAlready == true}">
+                                                            <form:form modelAttribute="puf">
+                                                                <form:input type="hidden" path="action" value="remove"/>
+                                                                <form:input type="hidden" path="projectId" value="${project.id}"/>
+                                                                <form:input type="hidden" path="userId" value="${user.id}"/>
+                                                                <button type="submit" class="text-red-500 hover:text-red-800">Remove</button>
+                                                            </form:form>
+                                                        </c:if>
+                                                        <c:if test="${user.addedAlready == false}">
+                                                            <form:form modelAttribute="puf">
+                                                                <form:input type="hidden" path="action" value="add"/>
+                                                                <form:input type="hidden" path="projectId" value="${project.id}"/>
+                                                                <form:input type="hidden" path="userId" value="${user.id}"/>
+                                                                <button type="submit" class="text-indigo-600 hover:text-indigo-900">Add</button>
+                                                            </form:form>
+                                                        </c:if>
+                                                    </c:if>
+
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                Active
-              </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                            Owner
-                                        </td> --%>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                            <c:if test="${user.addedAlready == true}">
-                                                <form:form modelAttribute="puf">
-                                                    <form:input type="hidden" path="action" value="remove"/>
-                                                    <form:input type="hidden" path="projectId" value="${project.id}"/>
-                                                    <form:input type="hidden" path="userId" value="${user.id}"/>
-                                                    <button type="submit" class="text-red-500 hover:text-red-800">Remove</button>
-                                                </form:form>
-                                            </c:if>
-                                            <c:if test="${user.addedAlready == false}">
-                                                <form:form modelAttribute="puf">
-                                                    <form:input type="hidden" path="action" value="add"/>
-                                                    <form:input type="hidden" path="projectId" value="${project.id}"/>
-                                                    <form:input type="hidden" path="userId" value="${user.id}"/>
-                                                    <button type="submit" class="text-indigo-600 hover:text-indigo-900">Add</button>
-                                                </form:form>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                            </tr>
+
+
                                     </c:forEach>
                                     </tbody>
                                 </table>

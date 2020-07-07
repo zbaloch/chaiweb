@@ -57,22 +57,18 @@
 
                         <div class="mt-4">
                             <div class="flex overflow-hidden">
+                                <c:if test="${project.createdBy == sessionScope.current_user.id}">
+                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://avatars.wip.chat/${sessionScope.current_user.id}.svg?text=${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}" alt="">
+                                </c:if>
                                 <c:forEach items="${project.users}" var="user">
                                     <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://avatars.wip.chat/${user.id}.svg?text=${user.firstName.charAt(0)}${user.lastName.charAt(0)}" alt="">
-                                    <%-- <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="">
-                                    <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2.25&amp;w=256&amp;h=256&amp;q=80" alt="">
-                                    <img class="-ml-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt=""> --%>
                                 </c:forEach>
-                                <c:if test="${project.users.size() == 0}">
-                                    <a href="${contextUrl}/project/${project.id}/users" class="text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
+                                <c:if test="${project.createdBy == sessionScope.current_user.id}">
+                                    <a href="${contextUrl}/project/${project.id}/users" class="ml-2 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
                                         Add/Remove people
                                     </a>
                                 </c:if>
-                                <c:if test="${project.users.size() > 0}">
-                                    <a href="${contextUrl}/project/${project.id}/users" class="ml-4 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
-                                        Add/Remove people
-                                    </a>
-                                </c:if>
+
                             </div>
                         </div>
 
