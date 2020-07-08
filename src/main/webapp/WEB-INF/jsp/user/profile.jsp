@@ -11,7 +11,7 @@
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
     <div class=" min-h-screen">
-        <div class="py-4 md:py-10">
+        <div class="py-4">
             <div class="max-w-4xl mx-auto px-4 sm:px-4 lg:px-4">
                 <div class="bg-white rounded-lg shadow p-6">
                     <div>

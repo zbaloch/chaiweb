@@ -134,7 +134,6 @@
                                     </thead>
                                     <tbody class="bg-white">
                                     <c:forEach items="${users}" var="user">
-                                        <c:if test="${user.id != sessionScope.current_user.id}"> <%-- TODO: Need to validate this on the server side too to avoid having users add themselves --%>
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                             <div class="flex items-center">
@@ -147,26 +146,37 @@
                                                 </div>
                                             </div>
                                         </td>
+
                                                 <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                            <c:if test="${user.addedAlready == true}">
-                                                <form:form modelAttribute="puf">
-                                                    <form:input type="hidden" path="action" value="remove"/>
-                                                    <form:input type="hidden" path="projectId" value="${project.id}"/>
-                                                    <form:input type="hidden" path="userId" value="${user.id}"/>
-                                                    <button type="submit" class="text-red-500 hover:text-red-800">Remove</button>
-                                                </form:form>
-                                            </c:if>
-                                            <c:if test="${user.addedAlready == false}">
-                                                <form:form modelAttribute="puf">
-                                                    <form:input type="hidden" path="action" value="add"/>
-                                                    <form:input type="hidden" path="projectId" value="${project.id}"/>
-                                                    <form:input type="hidden" path="userId" value="${user.id}"/>
-                                                    <button type="submit" class="text-indigo-600 hover:text-indigo-900">Add</button>
-                                                </form:form>
-                                            </c:if>
+                                                    <c:if test="${user.id == sessionScope.current_user.id}"> <%-- TODO: Need to validate this on the server side too to avoid having users add themselves --%>
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Owner
+                                                        </span>
+                                                    </c:if>
+
+                                                    <c:if test="${user.id != sessionScope.current_user.id}"> <%-- TODO: Need to validate this on the server side too to avoid having users add themselves --%>
+                                                        <c:if test="${user.addedAlready == true}">
+                                                            <form:form modelAttribute="puf">
+                                                                <form:input type="hidden" path="action" value="remove"/>
+                                                                <form:input type="hidden" path="projectId" value="${project.id}"/>
+                                                                <form:input type="hidden" path="userId" value="${user.id}"/>
+                                                                <button type="submit" class="text-red-500 hover:text-red-800">Remove</button>
+                                                            </form:form>
+                                                        </c:if>
+                                                        <c:if test="${user.addedAlready == false}">
+                                                            <form:form modelAttribute="puf">
+                                                                <form:input type="hidden" path="action" value="add"/>
+                                                                <form:input type="hidden" path="projectId" value="${project.id}"/>
+                                                                <form:input type="hidden" path="userId" value="${user.id}"/>
+                                                                <button type="submit" class="text-indigo-600 hover:text-indigo-900">Add</button>
+                                                            </form:form>
+                                                        </c:if>
+                                                    </c:if>
+
                                         </td>
                                             </tr>
-                                        </c:if>
+
+
                                     </c:forEach>
                                     </tbody>
                                 </table>

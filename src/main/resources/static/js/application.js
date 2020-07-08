@@ -40,7 +40,16 @@
         console.log('turbolinks:load...')
         initVue();
         console.log("loaded vue");
+
+        let objDiv = document.getElementById("chat-window");
+        if(objDiv != null) {
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
     })
+
+
+
 
 
 

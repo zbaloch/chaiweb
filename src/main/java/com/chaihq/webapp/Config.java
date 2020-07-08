@@ -49,6 +49,4 @@ public class Config implements WebMvcConfigurer {
         return bean;
     }
 
-
-
 }

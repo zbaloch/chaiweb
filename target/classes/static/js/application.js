@@ -42,6 +42,9 @@
         console.log("loaded vue");
     })
 
+    var objDiv = document.getElementById("chat-window");
+    objDiv.scrollTop = objDiv.scrollHeight;
+
 
 
 
