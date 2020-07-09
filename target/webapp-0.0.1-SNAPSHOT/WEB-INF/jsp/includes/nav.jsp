@@ -138,7 +138,7 @@
                 <div class="ml-4 relative flex-shrink-0">
                     <div class="relative">
                         <button v-on:click="isProfileMenuOpen = !isProfileMenuOpen" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out" id="user-menu" aria-label="User menu" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="https://avatars.wip.chat/${sessionScope.current_user.firstName.length()}.svg?text=${sessionScope.current_user.initialFirstNameLastName}" alt="" />
+                                 <img class="h-8 w-8 rounded-full" src="https://avatars.wip.chat/${sessionScope.current_user.id}.svg?text=${sessionScope.current_user.initialFirstNameLastName}" alt="" />
                         </button>
 
                         <button v-if="isProfileMenuOpen" v-on:click="isProfileMenuOpen = false" tabindex="-1"

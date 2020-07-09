@@ -12,11 +12,12 @@
                 isProjectActionsOpen: false,
                 isMobileProfileMenuOpen: false,
                 stompClient: null,
-                username: document.getElementById("user.username"),
-                id: document.getElementById("user.id"),
-                firstName: document.getElementById("user.firstName"),
-                lastName: document.getElementById("user.lastName"),
-                initials: document.getElementById("user.initials")
+                senderUsername: document.getElementById("user.username").value,
+                senderId: document.getElementById("user.id").value,
+                senderFirstName: document.getElementById("user.firstName").value,
+                senderLastName: document.getElementById("user.lastName").value,
+                senderInitials: document.getElementById("user.initials").value,
+                projectId: document.getElementById("project.id").value,
             },
             created() {
                 const handleEscape = (e) => {
@@ -36,7 +37,7 @@
             methods: {
                 connect: function(event) {
 
-                    if(this.username) {
+                    if(this.senderUsername) {
                         // usernamePage.classList.add('hidden');
                         // chatPage.classList.remove('hidden');
 
@@ -48,11 +49,11 @@
                 },
                 onConnected: function() {
                     // Subscribe to the Public Topic
-                    this.stompClient.subscribe('/topic/public', this.onMessageReceived);
+                    this.stompClient.subscribe('/topic/' + this.projectId, this.onMessageReceived);
 
                     // Tell your username to the server
-                    this.stompClient.send("/app/chat.addUser", {},
-                        JSON.stringify({sender: username, type: 'JOIN'})
+                    this.stompClient.send("/app/chat.addUser/" + this.projectId, {},
+                        JSON.stringify({sender: this.senderUsername, type: 'JOIN'})
                     )
 
                 },
@@ -67,14 +68,14 @@
                     if (messageContent && this.stompClient) {
                         var chatMessage = {
                             senderId: this.senderId,
-                            senderUsername: username,
+                            senderUsername: this.senderUsername,
                             content: messageContent,
                             type: 'CHAT',
                             senderFirstName: this.senderFirstName,
                             senderLastName: this.senderLastName,
                             senderInitials: this.senderInitials
                         };
-                        this.stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+                        this.stompClient.send("/app/chat.sendMessage/" + this.projectId, {}, JSON.stringify(chatMessage));
                         document.getElementById("chatMessageInput").value = '';
                     }
                 },
@@ -83,9 +84,9 @@
                     var message = JSON.parse(payload.body);
                     if(message.type === 'CHAT') {
                         var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
-                            + '<img src=\"https://avatars.wip.chat/${sessionScope.current_user.id}.svg?text=${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}" class=\"w-10 h-10 rounded-full mr-3\"> '
-                            + ' <div class=\"flex-1 overflow-hidden\" wfd-id=\"15\">'
-                            + '<div><span class=\"font-bold\">' + message.sender + '</span> '
+                            + '<img src=\"https://avatars.wip.chat/'+ message.senderFirstName.length + '.svg?text=' +  message.senderInitials + '" class=\"w-10 h-10 rounded-full mr-3\"> '
+                            + ' <div class=\"flex-1 overflow-hidden\">'
+                            + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
                             + '<span class=\"text-grey text-xs\" wfd-id=\"17\">12:45</span></div> <p class=\"text-black leading-normal\">'
                             + message.content +  '</p></div></div>'
                         // document.getElementById("chat-window").insertAdjacentHTML("beforeend", "<div>Hello World</div>");

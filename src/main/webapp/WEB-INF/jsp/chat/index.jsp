@@ -102,6 +102,15 @@
 </div>
 
 
-    <%@ include file="../includes/notifications.jsp"%>
+<%@ include file="../includes/notifications.jsp"%>
 
-    <%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/footer.jsp"%>
+
+
+<input type="hidden" id="user.username" value="${sessionScope.current_user.username}"/>
+<input type="hidden" id="user.id" value="${sessionScope.current_user.id}"/>
+<input type="hidden" id="user.firstName" value="${sessionScope.current_user.firstName}"/>
+<input type="hidden" id="user.lastName" value="${sessionScope.current_user.lastName}"/>
+<input type="hidden" id="user.initials" value="${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}"/>
+<input type="hidden" id="project.id" value="${project.id}"/>
+<input type="hidden" id="isChatPage" value="true"/>

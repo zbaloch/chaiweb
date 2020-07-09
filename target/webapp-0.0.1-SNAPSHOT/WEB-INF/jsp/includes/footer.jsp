@@ -6,5 +6,8 @@
 <input type="hidden" id="user.firstName" value="${sessionScope.current_user.firstName}"/>
 <input type="hidden" id="user.lastName" value="${sessionScope.current_user.lastName}"/>
 <input type="hidden" id="user.initials" value="${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}"/>
+<input type="hidden" id="project.id" value="${project.id}"/>
+
+
 </body>
 </html>

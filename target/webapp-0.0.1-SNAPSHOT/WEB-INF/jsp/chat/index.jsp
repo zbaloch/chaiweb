@@ -10,7 +10,7 @@
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-    <jsp:include page="../includes/nav.jsp"></jsp:include>  
+    <jsp:include page="../includes/nav.jsp"></jsp:include>
 
     <div class="">
         <div class="py-4">
@@ -100,7 +100,6 @@
         </div>
     </div>
 </div>
-
 
     <%@ include file="../includes/notifications.jsp"%>
 
