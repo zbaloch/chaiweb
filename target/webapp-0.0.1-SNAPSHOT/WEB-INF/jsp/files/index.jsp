@@ -13,7 +13,7 @@
     <jsp:include page="../includes/nav.jsp"></jsp:include>
 
     <div class=" min-h-screen">
-        <div class="py-4 md:py-10">
+        <div class="py-4">
             <div class="max-w-4xl mx-auto px-4 sm:px-4 lg:px-4">
 
                 <div class="bg-white rounded-lg shadow p-6">
@@ -58,7 +58,7 @@
 
                     <div class="mt-2">
 
-                        <div class="py-12 bg-white">
+                        <div class="py-6 bg-white">
                             <div class="max-w-xl mx-auto lg:max-w-screen-xl">
                                 <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                                     <c:forEach items="${activeStorageFiles}" var="activeStorageFile">

@@ -11,7 +11,7 @@
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
 <div class=" min-h-screen">
-    <div class="py-4 md:py-10">
+    <div class="py-4">
 
         <div class="flex flex-col justify-center sm:px-6 lg:px-8">
             <div class="sm:mx-auto sm:w-full sm:max-w-md">
