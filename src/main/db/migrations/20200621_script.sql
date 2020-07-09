@@ -1,3 +1,0 @@
-CREATE SCHEMA `chai` DEFAULT CHARACTER SET utf8mb4 ;
-
-
