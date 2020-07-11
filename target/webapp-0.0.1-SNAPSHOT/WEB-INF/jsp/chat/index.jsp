@@ -78,7 +78,25 @@
                                                 <!-- Chat messages -->
                                                 <div class="flex flex-col min-h-full">
                                                     <div class="flex-1 py-4 flex-1 overflow-y-scroll" id="chat-window">
-
+                                                        <c:forEach items="${chatMessages}" var="chatMessage">
+                                                            <div class="flex items-start mb-4 text-sm">
+                                                                <img src="https://avatars.wip.chat/${chatMessage.user.id}.svg?text=${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}"
+                                                                     class="w-10 h-10 rounded-full mr-3">
+                                                                <div class="flex-1 overflow-hidden">
+                                                                    <div>
+                                                                        <span class="font-bold">
+                                                                        ${chatMessage.user.firstName} ${chatMessage.user.lastName}
+                                                                    </span>
+                                                                        <span class="text-grey text-xs">
+                                                                        12:45
+                                                                    </span>
+                                                                    </div>
+                                                                    <p class="text-black leading-normal">
+                                                                        ${chatMessage.message}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
                                                     </div>
                                                     <div class="flex-none">
                                                         <div>
@@ -101,6 +119,16 @@
     </div>
 </div>
 
-    <%@ include file="../includes/notifications.jsp"%>
 
-    <%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/notifications.jsp"%>
+
+<%@ include file="../includes/footer.jsp"%>
+
+
+<input type="hidden" id="user.username" value="${sessionScope.current_user.username}"/>
+<input type="hidden" id="user.id" value="${sessionScope.current_user.id}"/>
+<input type="hidden" id="user.firstName" value="${sessionScope.current_user.firstName}"/>
+<input type="hidden" id="user.lastName" value="${sessionScope.current_user.lastName}"/>
+<input type="hidden" id="user.initials" value="${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}"/>
+<input type="hidden" id="project.id" value="${project.id}"/>
+<input type="hidden" id="isChatPage" value="true"/>

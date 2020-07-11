@@ -27,8 +27,6 @@
                         this.isProfileMenuOpen = false
                         this.isProjectActionsOpen = false
                         isMobileProfileMenuOpen: false
-
-                        console.log(this.isProfileMenuOpen + ", " + this.isProjectActionsOpen + ", " + this.isMobileProfileMenuOpen)
                     }
                 }
                 document.addEventListener('keydown', handleEscape)
@@ -57,19 +55,18 @@
                         // usernamePage.classList.add('hidden');
                         // chatPage.classList.remove('hidden');
                         // && !this.stompClient.connected
-                        if(this.socket == null && this.stompClient == null) {
-                            this.socket = new SockJS('/chaiweb/ws')
-                            this.stompClient = Stomp.over(this.socket);
-                            this.stompClient.connect({}, this.onConnected, this.onError);
-                        }
+                        // this.socket = new SockJS('/chaiweb/ws')
+                        this.socket = new SockJS('/chaiweb/ws/')
+                        this.stompClient = Stomp.over(this.socket);
+                        this.stompClient.connect({}, this.onConnected, this.onError);
                     }
                 },
                 onConnected: function() {
                     // Subscribe to the Public Topic
-                    this.stompClient.subscribe('/topic/' + this.projectId, this.onMessageReceived);
+                    this.stompClient.subscribe('/topic', this.onMessageReceived);
 
                     // Tell your username to the server
-                    this.stompClient.send("/app/chat.addUser/" + this.projectId, {},
+                    this.stompClient.send("/app/chat.addUser", {},
                         JSON.stringify({sender: this.senderUsername, type: 'JOIN'})
                     )
 
@@ -90,18 +87,20 @@
                             type: 'CHAT',
                             senderFirstName: this.senderFirstName,
                             senderLastName: this.senderLastName,
-                            senderInitials: this.senderInitials
+                            senderInitials: this.senderInitials,
+                            projectId: this.projectId
                         };
-                        this.stompClient.send("/app/chat.sendMessage/" + this.projectId, {}, JSON.stringify(chatMessage));
+                        this.stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
                         document.getElementById("chatMessageInput").value = '';
                     }
                 },
 
                 onMessageReceived: function(payload) {
+
                     var message = JSON.parse(payload.body);
-                    if(message.type === 'CHAT') {
+                    if(message.type === 'CHAT' && message.projectId === this.projectId) {
                         var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
-                            + '<img src=\"https://avatars.wip.chat/'+ message.senderFirstName.length + '.svg?text=' +  message.senderInitials + '" class=\"w-10 h-10 rounded-full mr-3\"> '
+                            + '<img src=\"https://avatars.wip.chat/'+ message.senderId + '.svg?text=' +  message.senderInitials + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'
                             + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
                             + '<span class=\"text-grey text-xs\" wfd-id=\"17\">12:45</span></div> <p class=\"text-black leading-normal\">'

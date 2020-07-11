@@ -1,10 +1,8 @@
 package com.chaihq.webapp.controllers;
 
-import com.chaihq.webapp.models.ActiveStorageFile;
-import com.chaihq.webapp.models.ChatMessage;
-import com.chaihq.webapp.models.Project;
-import com.chaihq.webapp.models.User;
+import com.chaihq.webapp.models.*;
 import com.chaihq.webapp.repositories.ActiveStorageFileRepository;
+import com.chaihq.webapp.repositories.ChatRepository;
 import com.chaihq.webapp.repositories.ProjectRepository;
 import com.chaihq.webapp.repositories.UserRepository;
 import com.chaihq.webapp.storage.StorageFileNotFoundException;
@@ -57,14 +55,16 @@ public class ChatController {
     @Autowired
     private ActiveStorageFileRepository activeStorageFileRepository;
 
+    @Autowired
+    private ChatRepository chatRepository;
+
     @GetMapping("/project/{id}/chat")
     public String show(@PathVariable Long id, Model model) {
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
-
-        List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findByProjectId(id);
+        List<Chat> chatMessages = chatRepository.findByProjectId(project.getId());
 
         model.addAttribute("project", project);
-        model.addAttribute("activeStorageFiles", activeStorageFiles);
+        model.addAttribute("chatMessages", chatMessages);
 
         return "chat/index";
     }
@@ -88,28 +88,34 @@ public class ChatController {
     }
     */
 
-    @MessageMapping("/chat.sendMessage/{projectId}")
+    @MessageMapping("/chat.sendMessage")
     // @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable String projectId) {
-        System.out.println("projectId: " + projectId);
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+
+        System.out.println(chatMessage);
         System.out.println("message: " + chatMessage.getContent() + " from " + chatMessage.getSenderUsername());
-        this.template.convertAndSend("/topic/" + projectId, chatMessage);
+        System.out.println("Save in the database.... "); // TODO: Need to load the messages too.
+        Chat chat = new Chat();
+        chat.setMessage(chatMessage.getContent());
+        chat.setProjectId(Long.parseLong(chatMessage.getProjectId()));
+        User user = userRepository.getOne(Long.parseLong(chatMessage.getSenderId()));
+        chat.setCreatedAt(Calendar.getInstance());
+        chat.setUser(user);
+
+        chatRepository.save(chat);
+
+        this.template.convertAndSend("/topic", chatMessage);
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser/{projectId}")
+    @MessageMapping("/chat.addUser")
     // @SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage,
-                               @DestinationVariable String projectId,
                                SimpMessageHeaderAccessor headerAccessor) {
         // Add username in web socket session
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderUsername());
-        this.template.convertAndSend("/topic/" + projectId, chatMessage);
+        //headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderUsername());
+        this.template.convertAndSend("/topic", chatMessage);
         return chatMessage;
     }
-
-
-
-
 
 }

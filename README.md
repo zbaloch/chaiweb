@@ -16,3 +16,10 @@ maxAllowedPacket=99999999 in the URL of the database
 
 max_allowed_packet=500M in the my.ini for your mysql server
 
+Some great examples of Communicatoin tools if you want to use online:
+- basecamp
+- twist.com
+- asana
+- trello
+- microsoft teams
+- jira

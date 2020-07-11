@@ -78,7 +78,25 @@
                                                 <!-- Chat messages -->
                                                 <div class="flex flex-col min-h-full">
                                                     <div class="flex-1 py-4 flex-1 overflow-y-scroll" id="chat-window">
-
+                                                        <c:forEach items="${chatMessages}" var="chatMessage">
+                                                            <div class="flex items-start mb-4 text-sm">
+                                                                <img src="https://avatars.wip.chat/${chatMessage.user.id}.svg?text=${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}"
+                                                                     class="w-10 h-10 rounded-full mr-3">
+                                                                <div class="flex-1 overflow-hidden">
+                                                                    <div>
+                                                                        <span class="font-bold">
+                                                                        ${chatMessage.user.firstName} ${chatMessage.user.lastName}
+                                                                    </span>
+                                                                        <span class="text-grey text-xs">
+                                                                        12:45
+                                                                    </span>
+                                                                    </div>
+                                                                    <p class="text-black leading-normal">
+                                                                        ${chatMessage.message}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
                                                     </div>
                                                     <div class="flex-none">
                                                         <div>

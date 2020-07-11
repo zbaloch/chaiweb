@@ -146,6 +146,9 @@
 
         </div>
     </div>
+
+</div>
+
     <jsp:include page="../includes/notifications.jsp"></jsp:include>
 
 <%@ include file="../includes/footer.jsp"%>

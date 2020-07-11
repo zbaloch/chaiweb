@@ -10,6 +10,8 @@ public class ChatMessage {
     private String senderFirstName;
     private String senderLastName;
     private String senderInitials;
+    private String projectId;
+
     private Calendar createdAt;
 
     public enum MessageType {
@@ -80,5 +82,28 @@ public class ChatMessage {
 
     public void setCreatedAt(Calendar createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "type=" + type +
+                ", content='" + content + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", senderUsername='" + senderUsername + '\'' +
+                ", senderFirstName='" + senderFirstName + '\'' +
+                ", senderLastName='" + senderLastName + '\'' +
+                ", senderInitials='" + senderInitials + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

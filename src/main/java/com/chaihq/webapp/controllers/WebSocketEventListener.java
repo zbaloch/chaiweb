@@ -21,11 +21,17 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
+
         System.out.println("Received a new web socket connection");
+        System.out.println( event.getUser().getName() );
+        System.out.println( event.getSource() );
+        System.out.println( event.getMessage() );
+        System.out.println( event.getTimestamp() );
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
@@ -36,7 +42,7 @@ public class WebSocketEventListener {
             chatMessage.setType(ChatMessage.MessageType.LEAVE);
             chatMessage.setSenderUsername(username);
 
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            messagingTemplate.convertAndSend("/topic", chatMessage);
         }
     }
 }

@@ -14,7 +14,8 @@
     <!-- <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
     <%-- Use this with when using turbolinks <script defer src=""></script> --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <%-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> --%>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script src="${contextUrl}/js/application.js"></script>
 
