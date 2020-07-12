@@ -56,7 +56,7 @@
                         // chatPage.classList.remove('hidden');
                         // && !this.stompClient.connected
                         // this.socket = new SockJS('/chaiweb/ws')
-                        this.socket = new SockJS('/chaiweb/ws/' + this.projectId)
+                        this.socket = new SockJS('/chaiweb/ws/')
                         this.stompClient = Stomp.over(this.socket);
                         this.stompClient.connect({}, this.onConnected, this.onError);
                     }
@@ -98,7 +98,7 @@
                 onMessageReceived: function(payload) {
 
                     var message = JSON.parse(payload.body);
-                    if(message.type === 'CHAT') {
+                    if(message.type === 'CHAT' && message.projectId === this.projectId) {
                         var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
                             + '<img src=\"https://avatars.wip.chat/'+ message.senderId + '.svg?text=' +  message.senderInitials + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'

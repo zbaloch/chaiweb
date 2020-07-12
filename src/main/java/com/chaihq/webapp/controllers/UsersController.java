@@ -1,15 +1,25 @@
 package com.chaihq.webapp.controllers;
 
 
+import com.chaihq.webapp.models.ActiveStorageFile;
 import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.services.SecurityService;
 import com.chaihq.webapp.services.UserService;
 import com.chaihq.webapp.utilities.Constants;
+import com.chaihq.webapp.utilities.Util;
 import com.chaihq.webapp.validator.UserValidator;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +27,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 
 @Controller
 public class UsersController {
     private static final Logger logger = LoggerFactory.getLogger(com.chaihq.webapp.controllers.UsersController.class);
+
+    @Autowired
+    ServletContext servletContext;
 
     @Autowired
     private UserService userService;
@@ -134,5 +153,64 @@ public class UsersController {
         // userToUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return "reset";
     }
+
+    /*
+    @GetMapping("/avatar/{id}.svg?text={initials}")
+    @ResponseBody
+    public ResponseEntity<InputStreamResource> avatar(@PathVariable Long id, @PathVariable String initials) {
+
+        String svg = "";
+
+        return ResponseEntity.ok()
+                .contentLength(gridFsFile.getLength())
+                .contentType(MediaType.parseMediaType(gridFsFile.getContentType()))
+                .body(new InputStreamResource(gridFsFile.getInputStream()));
+    } */
+
+    /* @GetMapping("/avatar/{userId}/{userInitials}.svg")
+    public String getAvatar(@PathVariable Long userId, @PathVariable String userInitials, Model model) {
+        model.addAttribute("userId", userId);
+        model.addAttribute("userInitials", userInitials);
+        return "user/avatars/06D004";
+    } */
+
+
+
+    @GetMapping("/avatar/{userId}/{userInitials}.svg")
+    @ResponseBody
+    public ResponseEntity<Resource> serveAvatar(@PathVariable Long userId, @PathVariable String userInitials)
+    throws Exception {
+
+        System.out.println("serveAvatar: ");
+        Util util = new Util();
+
+        File avatarDir = new File( servletContext.getRealPath("/WEB-INF/jsp/user/avatars/") );
+        System.out.println("avatarDir: " + avatarDir);
+        File avatar = new File(avatarDir.getAbsolutePath() + "\\" + util.reduceNumber(userId) + ".svg");
+        String avatarString = IOUtils.toString(new FileReader(avatar));
+        avatarString = avatarString.replace("_USER_INITIAL_", userInitials);
+        System.out.println("avatarString: " + avatarString);
+
+
+        InputStream is = IOUtils.toInputStream(avatarString);
+
+        // InputStream is = new FileInputStream(avatarString);
+
+        /* InputStream in = getClass()
+                // .getResourceAsStream("/com/chaihq/webapp/avatars/1.svg");
+                .getResourceAsStream("/WEB-INF/jsp/user/avatars/1.svg");
+        System.out.println("Inputstream: " + in); */
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/svg+xml; charset=utf-8"))
+                // .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + activeStorageFile.getFileName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+ userInitials + ".svg\"")
+                .body(new ByteArrayResource( IOUtils.toByteArray(is) ));
+
+    }
+
+
+
+
 
 }
