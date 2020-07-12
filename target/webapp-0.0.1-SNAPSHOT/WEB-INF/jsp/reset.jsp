@@ -4,10 +4,12 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
+<%@ include file="includes/head.jsp"%>
+
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-    <%@ include file="includes/head.jsp"%>
+
 
 <jsp:include page="includes/nav.jsp"></jsp:include>
 

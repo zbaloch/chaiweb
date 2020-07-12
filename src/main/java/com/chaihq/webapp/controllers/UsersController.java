@@ -185,12 +185,9 @@ public class UsersController {
         Util util = new Util();
 
         File avatarDir = new File( servletContext.getRealPath("/WEB-INF/jsp/user/avatars/") );
-        System.out.println("avatarDir: " + avatarDir);
         File avatar = new File(avatarDir.getAbsolutePath() + "\\" + util.reduceNumber(userId) + ".svg");
         String avatarString = IOUtils.toString(new FileReader(avatar));
         avatarString = avatarString.replace("_USER_INITIAL_", userInitials);
-        System.out.println("avatarString: " + avatarString);
-
 
         InputStream is = IOUtils.toInputStream(avatarString);
 
@@ -208,9 +205,5 @@ public class UsersController {
                 .body(new ByteArrayResource( IOUtils.toByteArray(is) ));
 
     }
-
-
-
-
 
 }

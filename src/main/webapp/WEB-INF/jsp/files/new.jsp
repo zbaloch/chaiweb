@@ -3,10 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
 
-<body class="font-sans bg-gray-100">
-<div id="app">
+
 
 <%@ include file="../includes/head.jsp"%>
+
+<body class="font-sans bg-gray-100">
+<div id="app">
 
 <jsp:include page="../includes/nav.jsp"></jsp:include>
 

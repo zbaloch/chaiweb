@@ -2,11 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%@ include file="includes/head.jsp"%>
 
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-    <%@ include file="includes/head.jsp"%>
 
 <jsp:include page="includes/nav.jsp"></jsp:include>
 
@@ -57,7 +57,6 @@
 
                     <form action="${contextUrl}/login" accept-charset="UTF-8" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
                         <div>
                             <label for="username" class="block text-sm font-medium leading-5 text-gray-700">
                                 Email address
@@ -110,5 +109,6 @@
 
 </div>
 
+</div>
 
 <%@ include file="includes/footer.jsp"%>

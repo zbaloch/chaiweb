@@ -99,12 +99,20 @@
 
                     var message = JSON.parse(payload.body);
                     if(message.type === 'CHAT' && message.projectId === this.projectId) {
-                        var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
+                        /* var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
                             + '<img src=\"https://avatars.wip.chat/'+ message.senderId + '.svg?text=' +  message.senderInitials + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'
                             + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
                             + '<span class=\"text-grey text-xs\" wfd-id=\"17\">12:45</span></div> <p class=\"text-black leading-normal\">'
+                            + message.content +  '</p></div></div>' */
+
+                        var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
+                            + '<img src=\"/chaiweb/avatar/'+ message.senderId + '/' + message.senderInitials + '.svg' + '" class=\"w-10 h-10 rounded-full mr-3\"> '
+                            + ' <div class=\"flex-1 overflow-hidden\">'
+                            + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
+                            + '<span class=\"text-grey text-xs\" wfd-id=\"17\">12:45</span></div> <p class=\"text-black leading-normal\">'
                             + message.content +  '</p></div></div>'
+
                         // document.getElementById("chat-window").insertAdjacentHTML("beforeend", "<div>Hello World</div>");
                         document.getElementById("chat-window").insertAdjacentHTML("beforeend", chatMessageHTML);
                         document.getElementById("chat-window").scrollTop = document.getElementById("chat-window").scrollHeight

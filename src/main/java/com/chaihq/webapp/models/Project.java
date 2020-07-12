@@ -23,6 +23,10 @@ public class Project {
     @Column(name = "created_by")
     private Long createdBy;
 
+    @OneToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
+
     @ManyToMany
     @JoinTable(
             name = "project_users",
@@ -89,5 +93,13 @@ public class Project {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -57,11 +57,12 @@
 
                         <div class="mt-4">
                             <div class="flex overflow-hidden">
-                                <c:if test="${project.createdBy == sessionScope.current_user.id}">
-                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://avatars.wip.chat/${sessionScope.current_user.id}.svg?text=${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}" alt="">
-                                </c:if>
+
+                                <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
+                                     src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg" alt="">
+
                                 <c:forEach items="${project.users}" var="user">
-                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="https://avatars.wip.chat/${user.id}.svg?text=${user.firstName.charAt(0)}${user.lastName.charAt(0)}" alt="">
+                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="">
                                 </c:forEach>
                                 <c:if test="${project.createdBy == sessionScope.current_user.id}">
                                     <a href="${contextUrl}/project/${project.id}/users" class="ml-2 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
