@@ -6,7 +6,7 @@ This is in no-way meant to replace Basecamp or hurt/steal their business.
 Chai's intention to provide a free alternative to people who love Basecamp but can't use it due to security and privacy reasons.  
 If you are a company that has no such requirements then you should use always use Basecamp as its affordable and amazing.
 
-##Features:
+## Features:
 Chai has following features as of today (12 July 2020):
 - Company HQ, Teams and Projects
 - Docs & Files
@@ -25,11 +25,11 @@ The below is the backlog of features planned:
 - APIs
 - Mobile apps (Native or Hybrid)
 
-##Getting Help & Contributing Back
+## Getting Help & Contributing Back
 If interested n in getting any help or contributing back, please write to me on zaheer at hey.com.
 
  
-##Tech stack
+## Tech stack
 * Java, JSP, JSTL etc
 * Spring framework
 * Gulp for moving JSP files for hot reloading
@@ -40,7 +40,7 @@ If interested n in getting any help or contributing back, please write to me on 
 * TailwindCSS and TailwindUI
 
 
-###Database configuration to support large file uploads
+### Database configuration to support large file uploads
 maxAllowedPacket=99999999 in the URL of the database
 max_allowed_packet=500M in the my.ini for your mysql server
 
