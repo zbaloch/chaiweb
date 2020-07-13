@@ -59,11 +59,6 @@ public class FilesController {
         model.addAttribute("project", project);
         model.addAttribute("activeStorageFiles", activeStorageFiles);
 
-        model.addAttribute("files", storageService.loadAll().map(
-                path -> MvcUriComponentsBuilder.fromMethodName(FilesController.class,
-                        "serveFile", path.getFileName().toString(), project.getId()).build().toUri().toString())
-                .collect(Collectors.toList()));
-
         return "files/index";
     }
 
