@@ -2,6 +2,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ include file="../includes/head.jsp"%>
 
@@ -57,10 +58,20 @@
                     <div class="mt-8">
                         <div class="flex items-center">
 
-                            <a href="${contextUrl}/project/new"
-                               class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
-                                New
-                            </a>
+                            <sec:authorize access="hasRole('adminstrator')">
+                                <a href="${contextUrl}/project/new"
+                                   class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
+                                    New
+                                </a>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('user')">
+                                <a href="${contextUrl}/project/new"
+                                   class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
+                                    New
+                                </a>
+                            </sec:authorize>
+
+
                             <div class="flex-1 border-t-2 border-gray-200"></div>
                             <h4 class="flex-shrink-0 pr-4 pl-4 text-lg leading-5 tracking-wider font-medium text-gray-500">
                                 Teams

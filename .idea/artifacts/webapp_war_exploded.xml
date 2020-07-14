@@ -31,10 +31,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.11.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.7.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.3.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.3.1.RELEASE" />
@@ -66,11 +63,18 @@
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.3.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.3.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.2.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-websocket:5.2.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:5.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.7.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.20" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.10" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.7" />
@@ -80,8 +84,6 @@
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.3.1.RELEASE" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" />
           <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.7.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">

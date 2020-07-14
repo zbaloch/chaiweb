@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class UsersController {
@@ -197,8 +199,12 @@ public class UsersController {
                 // .getResourceAsStream("/com/chaihq/webapp/avatars/1.svg");
                 .getResourceAsStream("/WEB-INF/jsp/user/avatars/1.svg");
         System.out.println("Inputstream: " + in); */
+        CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS)
+                .noTransform()
+                .mustRevalidate();
 
         return ResponseEntity.ok()
+                .cacheControl(cacheControl)
                 .contentType(MediaType.parseMediaType("image/svg+xml; charset=utf-8"))
                 // .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + activeStorageFile.getFileName() + "\"")
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+ userInitials + ".svg\"")
