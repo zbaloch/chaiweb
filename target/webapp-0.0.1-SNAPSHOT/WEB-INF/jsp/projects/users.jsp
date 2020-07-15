@@ -20,9 +20,9 @@
 
 
 
-                    <div class="bg-white rounded-lg shadow p-6" wfd-id="247">
-                        <div wfd-id="259">
-                            <div class="flex justify-between" wfd-id="260">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div>
+                            <div class="flex justify-between">
                                 <nav class="flex items-center text-sm leading-5 font-medium">
                                     <a href="${contextUrl}/projects" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
                                         Home
@@ -77,38 +77,7 @@
                         </c:if>
                         </div>
 
-                    <%-- <div class="mt-4 mb-8" wfd-id="137">
-                        <div class="flex flex-wrap -mx-3" wfd-id="138">
-                            <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8" wfd-id="142">
-                                <a href="/chaiweb/project/29" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col">
-                                    <div class="p-6 flex flex-col" wfd-id="143">
-                                        <h3 class="font-display text-black no-underline mb-2 font-bold">
-                                            Design Team
-                                        </h3>
-                                        <div class="text-gray-700 text-sm" wfd-id="144">
-                                            Design team
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
 
-                            <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8" wfd-id="142">
-                                <a href="/chaiweb/project/29" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col">
-                                    <div class="p-6 flex flex-col" wfd-id="143">
-                                        <h3 class="font-display text-black no-underline mb-2 font-bold">
-                                            Design Team
-                                        </h3>
-                                        <div class="text-gray-700 text-sm" wfd-id="144">
-                                            Design team
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    --%>
 
 
                     <div class="flex flex-col mt-4">

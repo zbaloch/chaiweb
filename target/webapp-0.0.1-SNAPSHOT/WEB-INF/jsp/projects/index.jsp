@@ -40,9 +40,12 @@
                                                 <div class="mt-4">
                                                     <div class="flex overflow-hidden">
                                                         <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                             src="${contextUrl}/avatar/${hq.user.id}/${hq.user.firstName.charAt(0)}${hq.user.lastName.charAt(0)}.svg" alt="">
+                                                             src="${contextUrl}/avatar/${hq.user.id}/${hq.user.firstName.charAt(0)}${hq.user.lastName.charAt(0)}.svg"
+                                                             alt="${hq.user.firstName} ${hq.user.lastName}">
                                                         <c:forEach items="${hq.users}" var="user">
-                                                            <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="">
+                                                            <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
+                                                                 src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                                                 alt="${user.firstName} ${user.lastName}">
                                                         </c:forEach>
                                                     </div>
                                                 </div>
@@ -58,18 +61,12 @@
                     <div class="mt-8">
                         <div class="flex items-center">
 
-                            <sec:authorize access="hasRole('adminstrator')">
-                                <a href="${contextUrl}/project/new"
+
+                            <a href="${contextUrl}/project/new"
                                    class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
                                     New
-                                </a>
-                            </sec:authorize>
-                            <sec:authorize access="hasRole('user')">
-                                <a href="${contextUrl}/project/new"
-                                   class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
-                                    New
-                                </a>
-                            </sec:authorize>
+                            </a>
+
 
 
                             <div class="flex-1 border-t-2 border-gray-200"></div>
@@ -95,10 +92,12 @@
                                                 <div class="mt-4">
                                                     <div class="flex overflow-hidden">
                                                         <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                             src="${contextUrl}/avatar/${team.user.id}/${team.user.firstName.charAt(0)}${team.user.lastName.charAt(0)}.svg" alt="">
+                                                             src="${contextUrl}/avatar/${team.user.id}/${team.user.firstName.charAt(0)}${team.user.lastName.charAt(0)}.svg"
+                                                             alt="${team.user.firstName} ${team.user.lastName}">
 
                                                         <c:forEach items="${team.users}" var="user">
-                                                            <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="">
+                                                            <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                                                 alt="${user.firstName} ${user.lastName}">
                                                         </c:forEach>
                                                     </div>
                                                 </div>
@@ -139,9 +138,11 @@
                                             <div class="mt-4">
                                                 <div class="flex overflow-hidden">
                                                     <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                         src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg" alt="">
+                                                         src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg"
+                                                         alt="${project.user.firstName} ${project.user.lastName}">
                                                     <c:forEach items="${project.users}" var="user">
-                                                        <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="">
+                                                        <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                                             alt="${user.firstName} ${user.lastName}">
                                                     </c:forEach>
                                                 </div>
                                             </div>

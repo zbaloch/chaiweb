@@ -80,7 +80,8 @@
                                                     <div class="flex-1 py-4 flex-1 overflow-y-scroll" id="chat-window">
                                                         <c:forEach items="${chatMessages}" var="chatMessage">
                                                             <div class="flex items-start mb-4 text-sm">
-                                                                <img src="${contextUrl}/avatar/${chatMessage.user.id}/${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}.svg"
+                                                                <img alt="${chatMessage.user.firstName} ${chatMessage.user.lastName}"
+                                                                        src="${contextUrl}/avatar/${chatMessage.user.id}/${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}.svg"
                                                                      class="w-10 h-10 rounded-full mr-3">
                                                                 <div class="flex-1 overflow-hidden">
                                                                     <div>
@@ -132,3 +133,4 @@
 <input type="hidden" id="user.initials" value="${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}"/>
 <input type="hidden" id="project.id" value="${project.id}"/>
 <input type="hidden" id="isChatPage" value="true"/>
+<input type="hidden" id="chat.contextUrl" value="${contextUrl}"/>

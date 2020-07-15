@@ -59,10 +59,12 @@
                             <div class="flex overflow-hidden">
 
                                 <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                     src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg" alt="">
+                                     src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg"
+                                     title="${project.user.firstName} ${project.user.lastName}">
 
                                 <c:forEach items="${project.users}" var="user">
-                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="">
+                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                         title="${user.firstName} ${user.lastName}">
                                 </c:forEach>
                                 <c:if test="${project.createdBy == sessionScope.current_user.id}">
                                     <a href="${contextUrl}/project/${project.id}/users" class="ml-2 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">

@@ -28,8 +28,6 @@
 
                 </div>
                 <div class="flex-shrink-0 flex items-center">
-                    <%-- <img class="block lg:hidden h-8 w-auto" src="/img/logos/workflow-mark-on-white.svg" alt="Workflow logo" />
-                    <img class="hidden lg:block h-8 w-auto" src="/img/logos/workflow-logo-on-white.svg" alt="Workflow logo" /> --%>
                     <a href="${contextPath}/projects" class="font-bold cursor-pointer">
                         <spring:message code="company.name"></spring:message>
                     </a>
@@ -72,8 +70,6 @@
         <div class="flex justify-between h-16">
             <div class="flex px-2 lg:px-0">
                 <div class="flex-shrink-0 flex items-center">
-                    <%-- <img class="block lg:hidden h-8 w-auto" src="/img/logos/workflow-mark-on-white.svg" alt="Workflow logo" />
-                    <img class="hidden lg:block h-8 w-auto" src="/img/logos/workflow-logo-on-white.svg" alt="Workflow logo" /> --%>
                     <a href="${contextPath}/projects" class="font-bold cursor-pointer">
                         <spring:message code="company.name"></spring:message>
                     </a>
@@ -138,7 +134,9 @@
                 <div class="ml-4 relative flex-shrink-0">
                     <div class="relative">
                         <button v-on:click="isProfileMenuOpen = !isProfileMenuOpen" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out" id="user-menu" aria-label="User menu" aria-haspopup="true">
-                            <img class="h-8 w-8 rounded-full" src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.initialFirstNameLastName}.svg" alt="" />
+                            <img class="h-8 w-8 rounded-full"
+                                 src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.initialFirstNameLastName}.svg"
+                                 title="${sessionScope.current_user.firstName} ${sessionScope.current_user.lastName}" />
                         </button>
 
                         <button v-if="isProfileMenuOpen" v-on:click="isProfileMenuOpen = false" tabindex="-1"
