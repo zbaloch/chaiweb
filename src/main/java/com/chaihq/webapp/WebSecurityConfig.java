@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     // .antMatchers(HttpMethod.GET, "/", "/index.html", "/favicon.ico", "/**/*.js", "/**/*.js.map", "/**/*.css", "/assets/images/*.png", "/assets/images/*.jpg", "/assets/images/*.jpeg", "/assets/images/*.gif", "/**/*.ttf", "/**/*.json", "/**/*.woff", "/**/*.woff2", "/**/*.eot", "/**/*.svg").permitAll()
-                    .antMatchers("/registration", "/reset", "/js/*").permitAll()
+                    .antMatchers("/registration", "/reset", "/js/*", "/css/*", "/trix/*").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -44,7 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                     .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400); // TODO:Configure this secret
-
 
     }
 

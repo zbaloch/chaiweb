@@ -9,4 +9,5 @@ import java.util.List;
 // Find update delete save etc
 public interface ActiveStorageFileRepository extends JpaRepository<ActiveStorageFile, Long> {
     public List<ActiveStorageFile> findByProjectId(long projectId);
+    public List<ActiveStorageFile> findAllByProjectIdOrderByCreatedAtDesc(long projectId);
 }

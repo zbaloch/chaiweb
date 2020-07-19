@@ -107,7 +107,7 @@
                                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" alt="" />
+                                                    <img class="h-10 w-10 rounded-full" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg" title="${user.firstName} ${user.lastName}" />
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm leading-5 font-medium text-gray-900">${user.firstName} ${user.lastName}</div>

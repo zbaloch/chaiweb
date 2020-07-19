@@ -58,12 +58,13 @@
                         <div class="mt-4">
                             <div class="flex overflow-hidden">
 
-                                <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid"
+                                <img class="inline-block h-8 w-8 rounded-full text-white shadow-solid mr-1"
                                      src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg"
                                      title="${project.user.firstName} ${project.user.lastName}">
 
                                 <c:forEach items="${project.users}" var="user">
-                                    <img class="-ml-1 first:ml-0 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                    <img class="inline-block h-8 w-8 rounded-full text-white shadow-solid mr-1"
+                                         src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
                                          title="${user.firstName} ${user.lastName}">
                                 </c:forEach>
                                 <c:if test="${project.createdBy == sessionScope.current_user.id}">
@@ -77,7 +78,27 @@
 
 
                         <div class="mt-4">
-                            <div class="flex flex-wrap -mx-3">         
+                            <div class="flex flex-wrap -mx-3">
+
+
+                                <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
+                                    <a href="${contextUrl}/project/${project.id}/messages" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
+                                        <div class="p-6 flex flex-col">
+                                            <h3 class="font-display text-black no-underline mb-2 font-bold">
+                                                Messages
+                                            </h3> <!-- TODO: Seed the HQ by default-->
+                                            <div class="text-gray-700 text-sm">
+                                                <%--
+                                                Hash things out quickly, throw links and images back and forth, think out loud, share news, riff, and chat in real-time with your team
+                                                --%>
+                                                Communicate, decide, post updates in one place (instead of emails all-over the place)
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+
 
                                 <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
                                     <a href="${contextUrl}/project/${project.id}/chat" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
@@ -116,6 +137,9 @@
             </div>
         </div>
     </div>
+
+    <%@ include file="../includes/avatarModal.jsp"%>
+
 </div>
 <%@ include file="../includes/footer.jsp"%>
 

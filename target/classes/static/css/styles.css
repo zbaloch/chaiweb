@@ -9,3 +9,9 @@ html {
 [v-cloak] {
     display: none;
 }
+trix-editor {
+    min-height: 22em;
+}
+
+.trix-button--icon-increase-nesting-level,
+.trix-button--icon-decrease-nesting-level { display: none; }

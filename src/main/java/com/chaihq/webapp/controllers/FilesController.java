@@ -54,7 +54,7 @@ public class FilesController {
     public String show(@PathVariable Long id, Model model) {
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
 
-        List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findByProjectId(id);
+        List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findAllByProjectIdOrderByCreatedAtDesc(id);
 
         model.addAttribute("project", project);
         model.addAttribute("activeStorageFiles", activeStorageFiles);

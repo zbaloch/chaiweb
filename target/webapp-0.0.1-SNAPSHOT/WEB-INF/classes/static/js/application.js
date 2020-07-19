@@ -4,6 +4,7 @@
     Turbolinks.start()
 
 
+
     var initVue = function initVue() {
         var vueapp = new Vue({
             el: '#app',
@@ -19,7 +20,8 @@
                 senderInitials: null,
                 projectId: null,
                 socket: null,
-                contextUrl: null
+                contextUrl: null,
+                showAvatarModal: false,
             },
             created() {
                 const handleEscape = (e) => {
@@ -103,8 +105,8 @@
                     if(message.type === 'CHAT' && message.projectId === this.projectId) {
 
                         var chatMessageHTML = '<div class=\"flex items-start mb-4 text-sm\" >'
-                            + '<img alt=\"' + message.senderFirstName + ' ' + message.senderLastName
-                            + '\" src=\"/' + this.contextUrl + '/avatar/'+ message.senderId + '/' + message.senderInitials + '.svg'
+                            + '<img title=\"' + message.senderFirstName + ' ' + message.senderLastName
+                            + '\" src=\"' + this.contextUrl + '/avatar/'+ message.senderId + '/' + message.senderInitials + '.svg'
                             + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'
                             + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
@@ -163,6 +165,12 @@
                     var index = Math.abs(hash % colors.length);
                     return colors[index];
                 },
+                showAvatar: function() {
+                    this.showAvatarModal = !this.showAvatarModal;
+                },
+                messageTitleFocus: function () {
+                    console.log('messageTitleFocus')
+                }
             }
         })
     }
