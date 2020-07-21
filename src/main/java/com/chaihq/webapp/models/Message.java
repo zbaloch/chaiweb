@@ -3,6 +3,7 @@ package com.chaihq.webapp.models;
 import javax.persistence.*;
 import javax.servlet.annotation.HttpConstraint;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity(name = "messages")
 public class Message {
@@ -24,6 +25,9 @@ public class Message {
 
     @Column(name = "created_at")
     private Calendar createdAt;
+
+    @OneToMany(mappedBy = "message")
+    private List<Comment> comments;
 
     @Transient
     private String titleToDisplay;
@@ -92,5 +96,13 @@ public class Message {
 
     public void setContentToDisplay(String contentToDisplay) {
         this.contentToDisplay = contentToDisplay;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

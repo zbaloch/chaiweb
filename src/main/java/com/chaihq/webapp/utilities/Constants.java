@@ -8,4 +8,7 @@ public class Constants {
     public static final String PROJECT_TYPE_TEAM = "team";
     public static final String PROJECT_TYPE_PROJECT = "project";
 
+    public static final String MESSAGE = "message";
+    public static final String COMMENTS = "comments";
+    public static final String PROJECT = "project";
 }

@@ -9,9 +9,15 @@ html {
 [v-cloak] {
     display: none;
 }
-trix-editor {
+.trix-editor-message {
     min-height: 22em;
 }
+
+.trix-editor-comment {
+    min-height: 10rem;
+}
+
+
 
 .trix-button--icon-increase-nesting-level,
 .trix-button--icon-decrease-nesting-level { display: none; }

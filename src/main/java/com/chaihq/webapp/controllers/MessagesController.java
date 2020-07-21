@@ -1,13 +1,7 @@
 package com.chaihq.webapp.controllers;
 
-import com.chaihq.webapp.models.ActiveStorageFile;
-import com.chaihq.webapp.models.Message;
-import com.chaihq.webapp.models.Project;
-import com.chaihq.webapp.models.User;
-import com.chaihq.webapp.repositories.ActiveStorageFileRepository;
-import com.chaihq.webapp.repositories.MessageRepository;
-import com.chaihq.webapp.repositories.ProjectRepository;
-import com.chaihq.webapp.repositories.UserRepository;
+import com.chaihq.webapp.models.*;
+import com.chaihq.webapp.repositories.*;
 import com.chaihq.webapp.storage.StorageFileNotFoundException;
 import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
@@ -53,8 +47,11 @@ public class MessagesController {
     @Autowired
     private MessageRepository messageRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @GetMapping("/project/{id}/messages")
-    public String show(@PathVariable Long id, Model model) {
+    public String index(@PathVariable Long id, Model model) {
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
 
         List<Message> messages = messageRepository.findAllByProjectIdOrderByCreatedAtDesc(id);
@@ -113,9 +110,19 @@ public class MessagesController {
                        Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         Project project = projectRepository.getOne(project_id);
+        model.put("project", project);
+
         Message message = messageRepository.getOne(message_id);
         model.put("message", message);
-        model.put("project", project);
+
+        // List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);
+        List<Comment> comments = message.getComments();
+        for(int i=0; i<comments.size(); i++) {
+            Comment comment = comments.get(i);
+            comment.setTextToDisplay(escapeHtml(comment.getText()));
+        }
+        // model.put(Constants.COMMENTS, comments);
+
         System.out.println("project: " + project_id);
         System.out.println("message.getContent(): " + message.getContent());
         return "messages/show";
@@ -175,6 +182,74 @@ public class MessagesController {
         redirectAttributes.addFlashAttribute("notice", "Your message was deleted!");
         return "redirect:/project/" + project_id + "/messages";
     }
+
+    @PostMapping("/project/{project_id}/message/{message_id}")
+    public String addComment(@ModelAttribute("comment") Comment comment, HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
+                             Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+
+        Project project = projectRepository.getOne(project_id);
+
+
+        Message message = messageRepository.getOne(message_id);
+
+
+        System.out.println("comment.getText(): " + comment.getText());
+        // TODO: Make sure the user has the rights to add a comment here.
+        comment.setProjectId(project_id);
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        comment.setUser(currentUser);
+        comment.setCreatedAt(Calendar.getInstance());
+        comment.setCommentType(Constants.MESSAGE);
+        comment.setMessage(message);
+        commentRepository.save(comment);
+
+        // Get all the update comments
+        List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);
+        for(int i=0; i<comments.size(); i++) {
+            Comment commentTemp = comments.get(i);
+            commentTemp.setTextToDisplay(escapeHtml(commentTemp.getText()));
+        }
+
+        redirectAttributes.addFlashAttribute("notice", "Your comment has been added!");
+        // model.put("notice", "Your comment has been added!");
+        model.put("project", project);
+        model.put("message", message);
+        // model.put(Constants.COMMENTS, comments);
+        return "redirect:/project/" + project_id + "/message/" + message.getId() + "#comment_" + comment.getId();
+        // return "messages/show";
+    }
+
+    // http://localhost:8080/chaiweb/project/1/message/16/comment/41/delete
+
+    @PostMapping("/project/{project_id}/message/{message_id}/comment/{comment_id}/delete")
+    public String deleteComment(HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
+                                @PathVariable Long comment_id,
+                             Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+
+        // TOOD: Make sure the user the right to delete this.
+        commentRepository.deleteById(comment_id);
+
+        Project project = projectRepository.getOne(project_id);
+        Message message = messageRepository.getOne(message_id);
+
+        // Get all the update comments
+        List<Comment> comments = message.getComments();
+        for(int i=0; i<comments.size(); i++) {
+            Comment commentTemp = comments.get(i);
+            commentTemp.setTextToDisplay(escapeHtml(commentTemp.getText()));
+        }
+
+        redirectAttributes.addFlashAttribute("notice", "Your comment has been deleted!");
+        // model.put("notice", "Your comment has been added!");
+        model.put(Constants.PROJECT, project);
+        model.put(Constants.MESSAGE, message);
+        // model.put(Constants.COMMENTS, comments);
+        return "redirect:/project/" + project_id + "/message/" + message.getId() + "#comment_form";
+        // return "messages/show";
+    }
+
+
+
 
 
 

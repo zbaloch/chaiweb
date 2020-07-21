@@ -100,7 +100,7 @@
 
                                         <input type="hidden" id="x" name="content"/>
                                         <%-- <form:hidden path="content"/> --%>
-                                        <trix-editor input="x"></trix-editor>
+                                        <trix-editor input="x" class="trix-editor-message"></trix-editor>
                                     </div>
                                 </script>
 

@@ -170,6 +170,10 @@
                 },
                 messageTitleFocus: function () {
                     console.log('messageTitleFocus')
+                },
+                deleteComment: function() {
+                    // document.getElementById('delete-comment-form').submit()
+                    this.$refs.delete_comment_form.submit()
                 }
             }
         })

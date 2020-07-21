@@ -95,7 +95,7 @@
                                         </div>
 
 
-                                        <script type="x-template" id="editor-template">
+                                        <script type="x-template" id="editor-template-${message.id}">
                                             <div>
                                                     <%-- <input id="messageContent" type="hidden" name="content"> --%>
                                                             <%-- <input id="messageContent" type="hidden" name="content"> --%>
@@ -159,7 +159,7 @@
 <script>
     // Vue.config.ignoredElements = ['trix-editor'];
     Vue.component("editor", {
-        template: "#editor-template"
+        template: "#editor-template-${message.id}"
     });
 
 </script>

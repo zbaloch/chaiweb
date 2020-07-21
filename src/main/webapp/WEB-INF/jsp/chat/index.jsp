@@ -82,18 +82,29 @@
                                                 <div class="flex flex-col min-h-full">
                                                     <div class="flex-1 py-4 flex-1 overflow-y-scroll" id="chat-window">
                                                         <c:forEach items="${chatMessages}" var="chatMessage">
-                                                            <div class="flex items-start mb-4 text-sm">
+                                                            <div class="flex items-start mb-4 text-sm" id="chat_message_${chatMessage.id}">
                                                                 <img title="${chatMessage.user.firstName} ${chatMessage.user.lastName}"
                                                                         src="${contextUrl}/avatar/${chatMessage.user.id}/${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}.svg"
                                                                      class="w-10 h-10 rounded-full mr-3">
                                                                 <div class="flex-1 overflow-hidden">
-                                                                    <div>
-                                                                        <span class="font-bold">
-                                                                        ${chatMessage.user.firstName} ${chatMessage.user.lastName}
-                                                                    </span>
-                                                                        <span class="text-grey text-xs">
-                                                                        12:45
-                                                                    </span>
+                                                                    <div class="flex justify-between">
+                                                                        <div>
+                                                                            <div>
+                                                                                <span class="font-bold">
+                                                                                    ${chatMessage.user.firstName} ${chatMessage.user.lastName}
+                                                                                </span>
+                                                                                <span class="text-grey text-xs">
+                                                                                    <fmt:formatDate value="${chatMessage.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${chatMessage.createdAt.time}" pattern="h:m a"/>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <a v-on:click.stop="deleteChatMessage(${chatMessage.id})" class="underline text-red-500 cursor-pointer ">
+                                                                                <svg fill="none" class="h-5 w-5 mr-4" viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                                                </svg>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                     <p class="text-black leading-normal">
                                                                         ${chatMessage.message}

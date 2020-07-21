@@ -82,7 +82,7 @@
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
-                                                1
+                                                ${message.comments.size()}
                                             </div>
                                         </div>
                                     </div>

@@ -64,7 +64,7 @@
                                     <div class="flex items-center justify-between py-4">
                                         <div class="min-w-0 flex-1 flex items-center">
                                             <div class="flex-shrink-0">
-                                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" title="Ricardo Cooper">
+                                                <img class="h-12 w-12 rounded-full" src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}">
                                             </div>
                                             <div class="min-w-0 flex-1 px-4 mr-4">
                                                 <div>
@@ -82,7 +82,7 @@
                                         </div>
                                         <div>
                                             <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
-                                                1
+                                                ${message.comments.size()}
                                             </div>
                                         </div>
                                     </div>

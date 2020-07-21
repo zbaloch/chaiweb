@@ -59,7 +59,8 @@
                         <div class="flex items-center justify-between border-t  mt-4 py-2">
                             <div class="min-w-0 flex-1 flex items-center mt-2">
                                 <div class="flex-shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="" title="Ricardo Cooper" class="h-12 w-12 rounded-full"></div>
+
+                                    <img src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full"></div>
                                 <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                                     <div>
                                         <div class="leading-5 text-gray-900 truncate">
@@ -73,15 +74,113 @@
                             </div>
                             <div>
                                 <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
-                                    1
+                                    ${message.comments.size()}
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-2 ">
-                            <div class="border-t py-4 border-gray-300">
+                            <div class="border-t py-4 border-gray-300 break-words">
                             ${message.content}
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+
+                            <div class="mt-4 py-8">
+
+                                <div class="flex items-center">
+                                    <h4 class="flex-shrink-0 pr-4 font-bold text-lg leading-5 tracking-wider text-gray-900">
+                                        Discussion
+                                    </h4>
+                                    <div class="flex-1 border-t-2 border-gray-900"></div>
+                                </div>
+
+                            </div>
+                            <c:forEach items="${comments}" var="comment">
+                                <a name="comment_${comment.id}">
+                                    <div class="sm:col-span-6 mt-6">
+                                    <div class="relative">
+
+                                        <div class="absolute left-0 top-0">
+                                            <img src="${contextUrl}/avatar/${comment.user.id}/${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}.svg" alt="" title="${comment.user.firstName} ${comment.user.lastName}" class="h-12 w-12 rounded-full ">
+                                        </div>
+
+                                        <div class="ml-16">
+                                            <div class="flex justify-between ">
+                                                <div>
+                                                    <span class="font-semibold">${comment.user.firstName} ${comment.user.lastName}, </span>
+                                                    <span class="text-sm mt-1 text-gray-600">
+                                                        <fmt:formatDate value="${comment.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${comment.createdAt.time}" pattern="h:m a"/>
+                                                    </span>
+                                                </div>
+                                                <div class="text-sm">
+                                                    <%-- <a href="#" class="underline text-indigo-700 mr-1">Edit</a> --%>
+                                                    <a href="${contextUrl}/project/${project.id}/message/${message.id}/comment/${comment.id}/delete" class="underline text-red-700 mr-1">Delete</a>
+                                                </div>
+                                            </div>
+                                            <div class="mt-1">
+                                                ${comment.text}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </a>
+                                <%-- <div class="sm:col-span-6 hidden">
+                                    <div class="relative">
+
+                                        <div class="absolute left-0 top-0">
+                                            <img src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full ">
+                                        </div>
+
+                                        <form:form modelAttribute="comment">
+                                            <script type="x-template" id="comment-template">
+                                                <div>
+                                                    <input type="hidden" id="x" name="text"/>
+                                                    <trix-editor input="x" class="trix-editor-comment"></trix-editor>
+                                                </div>
+                                            </script>
+                                            <div class="ml-16">
+                                                <comment-editor></comment-editor>
+                                                <div class="mt-4">
+                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                        Add this comment
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form:form>
+
+                                    </div>
+                                </div> --%>
+
+                            </c:forEach>
+
+                            <div class="sm:col-span-6 mt-12">
+                                <div class="relative">
+
+                                    <div class="absolute left-0 top-0">
+                                        <img src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full ">
+                                    </div>
+
+                                    <form:form modelAttribute="comment">
+                                        <script type="x-template" id="comment-template">
+                                            <div>
+                                                <input type="hidden" id="newComment" name="text"/>
+                                                <trix-editor input="newComment" class="trix-editor-comment"></trix-editor>
+                                            </div>
+                                        </script>
+                                        <div class="ml-16">
+                                            <comment-editor></comment-editor>
+                                            <div class="mt-4">
+                                                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                    Add this comment
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form:form>
+                                </div>
+                            </div>
+
                         </div>
 
 
@@ -95,5 +194,14 @@
 
 
     <%@ include file="../includes/notifications.jsp"%>
+
+        <script>
+
+            Vue.component("comment-editor", {
+                template: "#comment-template"
+            });
+
+        </script>
+
 
     <%@ include file="../includes/footer.jsp"%>
