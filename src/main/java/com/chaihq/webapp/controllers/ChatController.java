@@ -118,4 +118,15 @@ public class ChatController {
         return chatMessage;
     }
 
+
+    @RequestMapping(method = RequestMethod.DELETE, value="/project/{project_id}/chat/{id}",  produces = "application/json")
+    @ResponseBody
+    public Chat deleteChatMessage(@PathVariable("project_id") long projectId, @PathVariable("id") long chatMessageId) {
+        System.out.println("deleteChatMessage... ");
+        Chat chat = chatRepository.getOne(chatMessageId);
+        chatRepository.delete(chat);
+        return chat;
+    }
+
+
 }

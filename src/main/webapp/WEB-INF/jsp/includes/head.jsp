@@ -19,6 +19,9 @@
     <%-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> --%>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+
+
     <script src="${contextUrl}/js/trix.js"></script>
     <script src="${contextUrl}/js/application.js"></script>
     <script src="${contextUrl}/js/attachments.js"></script>

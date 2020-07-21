@@ -1,6 +1,9 @@
 //require(['https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js',
 //    'https://cdn.jsdelivr.net/npm/vue'], function (Turbolinks, Vue) {
 
+// import axios from "axios";
+
+
     Turbolinks.start()
 
 
@@ -101,6 +104,8 @@
 
                 onMessageReceived: function(payload) {
 
+                    var currentdate = new Date();
+
                     var message = JSON.parse(payload.body);
                     if(message.type === 'CHAT' && message.projectId === this.projectId) {
 
@@ -110,7 +115,8 @@
                             + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'
                             + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
-                            + '<span class=\"text-grey text-xs\">12:45</span></div> <p class=\"text-black leading-normal\">'
+                            + '<span class=\"text-grey text-xs\">' + currentdate.getHours() + ':' + currentdate.getMinutes()
+                            + '</span></div> <p class=\"text-black leading-normal\">'
                             + message.content +  '</p></div></div>'
 
                         // document.getElementById("chat-window").insertAdjacentHTML("beforeend", "<div>Hello World</div>");
@@ -175,9 +181,14 @@
                     // document.getElementById('delete-comment-form').submit()
                     this.$refs.delete_comment_form.submit()
                 },
-                deleteChatMessage: function(chatMessageId) {
-                    // document.getElementById('delete-comment-form').submit()
-                    console.log("deleting message: " + chatMessageId)
+                deleteChatMessage: function(projectId, chatMessageId) {
+
+                    axios.delete("/chaiweb/project/" + projectId + "/chat/" + chatMessageId) // TODO: need to make chaiweb dynamic
+                        .then(response => {
+                            document.getElementById("chat_message_" + chatMessageId).classList.add('hidden')
+                            console.log("deleting message: " + chatMessageId)
+                            console.log(response)
+                        })
                 }
             }
         })

@@ -26,6 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -44,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                     .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400); // TODO:Configure this secret
+
+        http.cors().and().csrf().disable();
 
     }
 

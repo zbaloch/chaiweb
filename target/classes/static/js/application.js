@@ -1,6 +1,9 @@
 //require(['https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js',
 //    'https://cdn.jsdelivr.net/npm/vue'], function (Turbolinks, Vue) {
 
+// import axios from "axios";
+
+
     Turbolinks.start()
 
 
@@ -174,6 +177,15 @@
                 deleteComment: function() {
                     // document.getElementById('delete-comment-form').submit()
                     this.$refs.delete_comment_form.submit()
+                },
+                deleteChatMessage: function(projectId, chatMessageId) {
+
+                    axios.delete("/chaiweb/project/" + projectId + "/chat/" + chatMessageId) // TODO: need to make chaiweb dynamic
+                        .then(response => {
+                            document.getElementById("chat_message_" + chatMessageId).classList.add('hidden')
+                            console.log("deleting message: " + chatMessageId)
+                            console.log(response)
+                        })
                 }
             }
         })

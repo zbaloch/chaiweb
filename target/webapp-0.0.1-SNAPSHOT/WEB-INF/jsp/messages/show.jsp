@@ -97,7 +97,7 @@
                                 </div>
 
                             </div>
-                            <c:forEach items="${comments}" var="comment">
+                            <c:forEach items="${message.comments}" var="comment">
                                 <a name="comment_${comment.id}">
                                     <div class="sm:col-span-6 mt-6">
                                     <div class="relative">
@@ -115,8 +115,17 @@
                                                     </span>
                                                 </div>
                                                 <div class="text-sm">
-                                                    <%-- <a href="#" class="underline text-indigo-700 mr-1">Edit</a> --%>
-                                                    <a href="${contextUrl}/project/${project.id}/message/${message.id}/comment/${comment.id}/delete" class="underline text-red-700 mr-1">Delete</a>
+                                                    <c:if test="${sessionScope.current_user.id == comment.user.id}">
+                                                        <%-- <a href="#" class="underline text-indigo-700 mr-1">Edit</a> --%>
+                                                        <form ref="delete_comment_form" action="${contextUrl}/project/${project.id}/message/${message.id}/comment/${comment.id}/delete">
+                                                            <a v-on:click.stop="deleteComment" class="underline text-red-500 cursor-pointer ">
+                                                                <svg fill="none" class="h-6 w-6 mr-4" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                                </svg>
+                                                            </a>
+                                                        </form>
+
+                                                    </c:if>
                                                 </div>
                                             </div>
                                             <div class="mt-1">
@@ -155,31 +164,33 @@
 
                             </c:forEach>
 
-                            <div class="sm:col-span-6 mt-12">
-                                <div class="relative">
+                            <a name="comment_form">
+                                <div class="sm:col-span-6 mt-12">
+                                    <div class="relative">
 
-                                    <div class="absolute left-0 top-0">
-                                        <img src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full ">
-                                    </div>
-
-                                    <form:form modelAttribute="comment">
-                                        <script type="x-template" id="comment-template">
-                                            <div>
-                                                <input type="hidden" id="newComment" name="text"/>
-                                                <trix-editor input="newComment" class="trix-editor-comment"></trix-editor>
-                                            </div>
-                                        </script>
-                                        <div class="ml-16">
-                                            <comment-editor></comment-editor>
-                                            <div class="mt-4">
-                                                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                                                    Add this comment
-                                                </button>
-                                            </div>
+                                        <div class="absolute left-0 top-0">
+                                            <img src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full ">
                                         </div>
-                                    </form:form>
+
+                                        <form:form modelAttribute="comment">
+                                            <script type="x-template" id="comment-template">
+                                                <div>
+                                                    <input type="hidden" id="newComment" name="text"/>
+                                                    <trix-editor input="newComment" class="trix-editor-comment"></trix-editor>
+                                                </div>
+                                            </script>
+                                            <div class="ml-16">
+                                                <comment-editor></comment-editor>
+                                                <div class="mt-4">
+                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                        Add this comment
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form:form>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
 
                         </div>
 
