@@ -68,13 +68,16 @@
                                             </div>
                                             <div class="min-w-0 flex-1 px-4 mr-4">
                                                 <div>
-                                                    <div class="leading-5 font-medium font-gray-900 truncate">
+                                                    <%-- <div class="leading-5 font-medium font-gray-900 truncate">
                                                         ${message.title}
+                                                    </div> --%>
+                                                    <div class="leading-5 font-medium font-gray-900 truncate">
+                                                        <span class="font-sans truncate">${message.contentToDisplay}</span>
                                                     </div>
                                                     <div class="mt-1 flex items-center text-sm leading-5 text-gray-500">
                                                         <span class="truncate">
-                                                            <span class="font-sans truncate">${message.contentToDisplay}</span>
-                                                            <div class="text-xs text-gray-400"> ${message.user.firstName} ${message.user.lastName} • <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>  </div>
+                                                            <%-- <span class="font-sans truncate">${message.contentToDisplay}</span> --%>
+                                                            <div class="text-gray-600"> ${message.user.firstName} ${message.user.lastName} • <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>  </div>
                                                         </span>
                                                     </div>
                                                 </div>

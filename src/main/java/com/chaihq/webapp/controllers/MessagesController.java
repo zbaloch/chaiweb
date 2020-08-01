@@ -221,18 +221,16 @@ public class MessagesController {
 
     // http://localhost:8080/chaiweb/project/1/message/16/comment/41/delete
 
-    @PostMapping("/project/{project_id}/message/{message_id}/comment/{comment_id}/delete")
+    /* @PostMapping("/project/{project_id}/message/{message_id}/comment/{comment_id}/delete")
     public String deleteComment(HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
                                 @PathVariable Long comment_id,
                              Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
-        // TOOD: Make sure the user the right to delete this.
         commentRepository.deleteById(comment_id);
 
         Project project = projectRepository.getOne(project_id);
         Message message = messageRepository.getOne(message_id);
 
-        // Get all the update comments
         List<Comment> comments = message.getComments();
         for(int i=0; i<comments.size(); i++) {
             Comment commentTemp = comments.get(i);
@@ -240,14 +238,22 @@ public class MessagesController {
         }
 
         redirectAttributes.addFlashAttribute("notice", "Your comment has been deleted!");
-        // model.put("notice", "Your comment has been added!");
         model.put(Constants.PROJECT, project);
         model.put(Constants.MESSAGE, message);
-        // model.put(Constants.COMMENTS, comments);
         return "redirect:/project/" + project_id + "/message/" + message.getId() + "#comment_form";
-        // return "messages/show";
-    }
+    } */
 
+
+    @RequestMapping(method = RequestMethod.DELETE, value="/project/{project_id}/message/{message_id}/comment/{comment_id}/delete",
+            produces = "application/json")
+    @ResponseBody
+    public Comment deleteComment(@PathVariable("project_id") long projectId, @PathVariable("message_id") long messageId,
+                                  @PathVariable("comment_id") long commentId) {
+        // TODO: Make sure the user has the access
+        Comment commentToDelete = commentRepository.getOne(commentId);
+        commentRepository.delete(commentToDelete);
+        return commentToDelete;
+    }
 
 
 

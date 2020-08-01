@@ -80,6 +80,22 @@
                         <div class="mt-4">
                             <div class="flex flex-wrap -mx-3">
 
+                                <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
+                                    <a href="${contextUrl}/project/${project.id}/todos" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
+                                        <div class="p-6 flex flex-col">
+                                            <h3 class="font-display text-black no-underline mb-2 font-bold">
+                                                To-dos
+                                            </h3> <!-- TODO: Seed the HQ by default-->
+                                            <div class="text-gray-700 text-sm">
+                                                <%--
+                                                Hash things out quickly, throw links and images back and forth, think out loud, share news, riff, and chat in real-time with your team
+                                                --%>
+                                                Make list of work that needs to get done, assign items, set due dates, and discuss.
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
 
                                 <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
                                     <a href="${contextUrl}/project/${project.id}/messages" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
@@ -91,7 +107,7 @@
                                                 <%--
                                                 Hash things out quickly, throw links and images back and forth, think out loud, share news, riff, and chat in real-time with your team
                                                 --%>
-                                                Communicate, decide, post updates in one place (instead of emails all-over the place)
+                                                Chat, communicate, decide, post updates in one place
 
                                             </div>
                                         </div>
@@ -99,7 +115,7 @@
                                 </div>
 
 
-
+                                <%--
                                 <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
                                     <a href="${contextUrl}/project/${project.id}/chat" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
                                         <div class="p-6 flex flex-col">
@@ -107,15 +123,14 @@
                                                 Chat
                                             </h3> <!-- TODO: Seed the HQ by default-->
                                             <div class="text-gray-700 text-sm">
-                                                <%--
                                                 Hash things out quickly, throw links and images back and forth, think out loud, share news, riff, and chat in real-time with your team
-                                                --%>
+
                                                 Chat casually with the group, ask random questions, and share stuff without ceremony.
 
                                             </div>
                                         </div>
                                     </a>
-                                </div>
+                                </div> --%>
 
                                 <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
                                     <a href="${contextUrl}/project/${project.id}/files" class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col border border-gray-200">
@@ -124,7 +139,7 @@
                                                 Docs & Files
                                             </h3> <!-- TODO: Seed the HQ by default-->
                                             <div class="text-gray-700 text-sm">
-                                                This is a place to store and organize assets and reference material.
+                                                This is a place to store and organize assets and files
                                             </div>
                                         </div>
                                     </a>

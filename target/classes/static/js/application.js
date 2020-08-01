@@ -25,6 +25,12 @@
                 socket: null,
                 contextUrl: null,
                 showAvatarModal: false,
+
+                errors: [],
+                name: null,
+                age: null,
+                movie: null
+
             },
             created() {
                 const handleEscape = (e) => {
@@ -36,9 +42,9 @@
                     }
                 }
                 document.addEventListener('keydown', handleEscape)
-                var isChatPageField = document.getElementById("isChatPage");
+                var isChatPageField = document.getElementById('isChatPage').value
                 if(isChatPageField != null) {
-                    if(document.getElementById("isChatPage").value = true) {
+                    if(document.getElementById("isChatPage").value) {
                         this.chatConnect();
                     }
                 }
@@ -84,8 +90,9 @@
                 },
 
                 sendMessage: function(event) {
-                    // alert(event);
-                    var messageContent = document.getElementById("chatMessageInput").value;
+
+                    var messageContent = document.getElementById("chatMessageInput").value
+
                     if (messageContent && this.stompClient) {
                         var chatMessage = {
                             senderId: this.senderId,
@@ -104,6 +111,8 @@
 
                 onMessageReceived: function(payload) {
 
+                    var currentdate = new Date();
+
                     var message = JSON.parse(payload.body);
                     if(message.type === 'CHAT' && message.projectId === this.projectId) {
 
@@ -113,12 +122,13 @@
                             + '" class=\"w-10 h-10 rounded-full mr-3\"> '
                             + ' <div class=\"flex-1 overflow-hidden\">'
                             + '<div><span class=\"font-bold\">' + message.senderFirstName + ' ' + message.senderLastName + '</span> '
-                            + '<span class=\"text-grey text-xs\">12:45</span></div> <p class=\"text-black leading-normal\">'
+                            + '<span class=\"text-grey text-xs\">' + currentdate.getHours() + ':' + currentdate.getMinutes()
+                            + '</span></div> <p class=\"text-black leading-normal\">'
                             + message.content +  '</p></div></div>'
 
-                        // document.getElementById("chat-window").insertAdjacentHTML("beforeend", "<div>Hello World</div>");
-                        document.getElementById("chat-window").insertAdjacentHTML("beforeend", chatMessageHTML);
-                        document.getElementById("chat-window").scrollTop = document.getElementById("chat-window").scrollHeight
+
+                        $("#chat-window").append(chatMessageHTML);
+                        $("#chat-window").scrollTop = $("#chat-window").scrollHeight
                     }
 
                     /*
@@ -174,19 +184,29 @@
                 messageTitleFocus: function () {
                     console.log('messageTitleFocus')
                 },
-                deleteComment: function() {
+                /* deleteComment: function() {
                     // document.getElementById('delete-comment-form').submit()
                     this.$refs.delete_comment_form.submit()
+                }, */
+                deleteComment: function(projectId, messageId, commentId) {
+
+                    axios.delete("/chaiweb/project/"+ projectId + "/message/" + messageId + "/comment/" + commentId + "/delete") // TODO: need to make chaiweb dynamic
+                        .then(response => {
+                            $("#comment_" + commentId).addClass('hidden')
+                            console.log(response)
+                        })
                 },
                 deleteChatMessage: function(projectId, chatMessageId) {
 
                     axios.delete("/chaiweb/project/" + projectId + "/chat/" + chatMessageId) // TODO: need to make chaiweb dynamic
                         .then(response => {
-                            document.getElementById("chat_message_" + chatMessageId).classList.add('hidden')
+                            $("#chat_message_" + chatMessageId).addClass('hidden')
                             console.log("deleting message: " + chatMessageId)
                             console.log(response)
                         })
-                }
+                },
+
+
             }
         })
     }
@@ -197,7 +217,7 @@
 
         initVue();
 
-        let objDiv = document.getElementById("chat-window");
+        let objDiv = $("#chat-window");
         if(objDiv != null) {
             objDiv.scrollTop = objDiv.scrollHeight;
         }

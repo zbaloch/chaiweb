@@ -88,11 +88,14 @@
                     <div>
 
                         <div class="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+
+                            <%--
                             <div class="sm:col-span-6">
                                 <div class="mt-1 rounded-md shadow-sm">
                                     <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input>
                                 </div>
                             </div>
+                            --%>
 
 
                                 <script type="x-template" id="editor-template">

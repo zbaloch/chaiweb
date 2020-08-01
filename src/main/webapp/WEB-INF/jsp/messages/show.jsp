@@ -48,65 +48,50 @@
 
                     </div>
                     <div class="mt-2">
-                        <div class="flex justify-between">
-                            <div class="text-xl font-bold text-gray-900 sm:text-md  sm:truncate">
-                                ${message.title}
-                            </div>
-                        </div>
-                        <%-- <div class="mt-1 flex items-center text-sm leading-5 text-gray-500">
-                            ${project.description}
-                        </div> --%>
-                        <div class="flex items-center justify-between border-t  mt-4 py-2">
-                            <div class="min-w-0 flex-1 flex items-center mt-2">
-                                <div class="flex-shrink-0">
-
-                                    <img src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full"></div>
-                                <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div>
-                                        <div class="leading-5 text-gray-900 truncate">
-                                            ${message.user.firstName} ${message.user.lastName}
+                        <div id="comment_44" class="sm:col-span-6 mt-6">
+                            <div class="relative">
+                                <div class="absolute left-0 top-0">
+                                    <img src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full">
+                                </div>
+                                <div class="ml-16">
+                                    <div class="flex justify-between ">
+                                        <div>
+                                            <span class="font-semibold">${message.user.firstName} ${message.user.lastName}, </span>
+                                            <span class="text-sm mt-1 text-gray-600">
+                                                <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>
+                                            </span>
                                         </div>
-                                        <div class="leading-5 text-gray-900 truncate">
-                                            <%-- ${message.user.firstName} ${message.user.lastName} • --%> <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>
+                                        <div class="text-sm">
+                                            <a class="cursor-pointer ">
+                                                <div>
+                                                    <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
+                                                        ${message.comments.size()}
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
-                                    ${message.comments.size()}
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="mt-2 ">
-                            <div class="border-t py-4 border-gray-300 break-words">
-                            ${message.content}
+                                    <div class="trix-editor-content">
+                                            ${message.content}
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="mt-8">
 
                         <div class="mt-4">
-
-                            <div class="mt-4 py-8">
-
-                                <div class="flex items-center">
-                                    <h4 class="flex-shrink-0 pr-4 font-bold text-lg leading-5 tracking-wider text-gray-900">
-                                        Discussion
-                                    </h4>
-                                    <div class="flex-1 border-t-2 border-gray-900"></div>
-                                </div>
-
-                            </div>
                             <c:forEach items="${message.comments}" var="comment">
-                                <a name="comment_${comment.id}">
-                                    <div class="sm:col-span-6 mt-6">
-                                    <div class="relative">
+                                <div class="sm:col-span-6 mt-6" id="comment_${comment.id}">
+                                        <div class="relative">
 
-                                        <div class="absolute left-0 top-0">
-                                            <img src="${contextUrl}/avatar/${comment.user.id}/${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}.svg" alt="" title="${comment.user.firstName} ${comment.user.lastName}" class="h-12 w-12 rounded-full ">
-                                        </div>
+                                            <div class="absolute left-0 top-0">
+                                                <img src="${contextUrl}/avatar/${comment.user.id}/${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}.svg" alt="" title="${comment.user.firstName} ${comment.user.lastName}" class="h-12 w-12 rounded-full ">
+                                            </div>
 
-                                        <div class="ml-16">
+                                            <div class="ml-16">
                                             <div class="flex justify-between ">
                                                 <div>
                                                     <span class="font-semibold">${comment.user.firstName} ${comment.user.lastName}, </span>
@@ -116,25 +101,23 @@
                                                 </div>
                                                 <div class="text-sm">
                                                     <c:if test="${sessionScope.current_user.id == comment.user.id}">
-                                                        <%-- <a href="#" class="underline text-indigo-700 mr-1">Edit</a> --%>
-                                                        <form ref="delete_comment_form" action="${contextUrl}/project/${project.id}/message/${message.id}/comment/${comment.id}/delete">
-                                                            <a v-on:click.stop="deleteComment" class="underline text-red-500 cursor-pointer ">
+
+                                                            <a v-on:click.stop="deleteComment(${project.id}, ${message.id}, ${comment.id})" class="underline text-red-500 cursor-pointer ">
                                                                 <svg fill="none" class="h-6 w-6 mr-4" viewBox="0 0 24 24" stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                                 </svg>
                                                             </a>
-                                                        </form>
 
                                                     </c:if>
                                                 </div>
                                             </div>
-                                            <div class="mt-1">
+                                            <div class="formatted_content">
                                                 ${comment.text}
                                             </div>
                                         </div>
+                                        </div>
                                     </div>
-                                </div>
-                                </a>
+
                                 <%-- <div class="sm:col-span-6 hidden">
                                     <div class="relative">
 
@@ -167,7 +150,6 @@
                             <a name="comment_form">
                                 <div class="sm:col-span-6 mt-12">
                                     <div class="relative">
-
                                         <div class="absolute left-0 top-0">
                                             <img src="${contextUrl}/avatar/${sessionScope.current_user.id}/${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full ">
                                         </div>

@@ -10,14 +10,60 @@ html {
     display: none;
 }
 .trix-editor-message {
-    min-height: 22em;
+    min-height: 10em;
 }
 
 .trix-editor-comment {
     min-height: 10rem;
 }
 
-
-
 .trix-button--icon-increase-nesting-level,
 .trix-button--icon-decrease-nesting-level { display: none; }
+
+/* Start: Trix editor formatting */
+.formatted_content a {
+    color: #5850ec;
+    text-decoration: underline;
+}
+
+.formatted_content h1 {
+    font-size: 1.2em;
+    margin: 0 0 0.5em;
+    font-weight: bold;
+}
+
+blockquote {
+    border-left: 3px solid #000;
+    margin: 0;
+    padding: 0 0 0 1em;
+}
+
+.formatted_content pre {
+    padding: 1rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 0.4rem;
+    white-space: pre;
+    word-wrap: normal;
+    word-break: normal;
+    overflow-x: auto;
+    margin: 0.5em 0;
+}
+
+.formatted_content ul {
+    margin: 0.65em 0 0.9em;
+    padding-left: 2em;
+    list-style: disc;
+}
+
+.formatted_content ol {
+    margin: 0.65em 0 0.9em;
+    padding-left: 2em;
+    list-style: decimal;
+}
+
+trix-toolbar .trix-button-group--file-tools {
+    display: none;
+}
+
+
+/* End: Trix editor formatting */
