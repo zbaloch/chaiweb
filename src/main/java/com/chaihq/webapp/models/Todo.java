@@ -1,7 +1,11 @@
 package com.chaihq.webapp.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity(name = "todos")
 public class Todo {
@@ -16,8 +20,15 @@ public class Todo {
     @JoinColumn(name = "assigned_to", referencedColumnName = "id")
     private User assignedTo;
 
+    @Transient
+    private Long assignedToVariable;
+
     @Column(name = "due_date")
     private Calendar dueDate;
+
+    @Transient
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dueDateVariable;
 
     private boolean done;
 
@@ -31,6 +42,11 @@ public class Todo {
     @OneToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
+
+    @OneToMany(mappedBy = "todo")
+    private List<Comment> comments;
+
+    private String notes;
 
     public long getId() {
         return id;
@@ -94,5 +110,56 @@ public class Todo {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+
+    public Long getAssignedToVariable() {
+        return assignedToVariable;
+    }
+
+    public void setAssignedToVariable(Long assignedToVariable) {
+        this.assignedToVariable = assignedToVariable;
+    }
+
+    public Date getDueDateVariable() {
+        return dueDateVariable;
+    }
+
+    public void setDueDateVariable(Date dueDateVariable) {
+        this.dueDateVariable = dueDateVariable;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", assignedTo=" + assignedTo +
+                ", assignedToVariable=" + assignedToVariable +
+                ", dueDate=" + dueDate +
+                ", dueDateVariable=" + dueDateVariable +
+                ", done=" + done +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                ", project=" + project +
+                ", comments=" + comments +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }

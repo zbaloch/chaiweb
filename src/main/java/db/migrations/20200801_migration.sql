@@ -24,3 +24,29 @@ alter table todos
 		foreign key (project_id) references projects (id);
 
 
+alter table comments
+	add comment_id bigint null;
+
+alter table comments
+	add constraint comments_comments_id_fk
+		foreign key (comment_id) references comments (id);
+
+
+alter table comments change comment_id todo_id bigint null;
+
+alter table comments drop foreign key comments_comments_id_fk;
+
+alter table comments
+	add constraint comments_todos_id_fk
+		foreign key (todo_id) references todos (id);
+
+
+alter table todos
+	add notes text null;
+
+
+
+
+
+
+

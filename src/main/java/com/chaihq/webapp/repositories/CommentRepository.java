@@ -8,4 +8,5 @@ import java.util.List;
 // Find update delete save etc
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     public List<Comment> findAllByMessageIdOrderByCreatedAtAsc(long messageId);
+    public List<Comment> findAllByTodoIdOrderByCreatedAtAsc(long todoId);
 }

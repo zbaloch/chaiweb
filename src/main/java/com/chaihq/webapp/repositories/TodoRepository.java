@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     public List<Todo> findAllByProjectOrderByDueDateAsc(Project project);
+    public List<Todo> findAllByProjectAndAndDoneOrderByDueDateAsc(Project project, boolean done);
 }

@@ -39,7 +39,7 @@
                         <div>
                                 <span class="inline-flex rounded-full shadow-sm">
                                     <c:if test="${message.user.id == sessionScope.current_user.id}">
-                                   <a href="${contextUrl}/project/${project.id}/message/${message.id}/edit" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                                   <a href="${contextUrl}/project/${project.id}/message/${message.id}/edit" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                        Edit
                                    </a>
                                     </c:if>
@@ -135,7 +135,7 @@
                                             <div class="ml-16">
                                                 <comment-editor></comment-editor>
                                                 <div class="mt-4">
-                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                                                         Add this comment
                                                     </button>
                                                 </div>
@@ -164,7 +164,7 @@
                                             <div class="ml-16">
                                                 <comment-editor></comment-editor>
                                                 <div class="mt-4">
-                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                                                         Add this comment
                                                     </button>
                                                 </div>

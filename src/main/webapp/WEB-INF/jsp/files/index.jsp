@@ -32,7 +32,7 @@
 
                         <div>
                                 <span class="inline-flex rounded-full shadow-sm">
-                                   <a href="${contextUrl}/project/${project.id}/file/new" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                                   <a href="${contextUrl}/project/${project.id}/file/new" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                        New
                                    </a>
                                </span>

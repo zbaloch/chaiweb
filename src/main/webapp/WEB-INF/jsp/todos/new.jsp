@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <%@ include file="../includes/head.jsp"%>
@@ -54,69 +54,57 @@
                     <div>
                         <div class="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
 
-                                <script type="x-template" id="editor-template">
-                                    <div>
-
-                                        <input type="hidden" id="x" name="content"/>
-                                        <%-- <form:hidden path="content"/> --%>
-                                        <trix-editor input="x" class="trix-editor-message"></trix-editor>
-                                    </div>
-                                </script>
-
                             <div class="sm:col-span-6">
-                                <editor></editor>
-                            </div>
-
-                            <div class="sm:col-span-6">
-                                <label for="about" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
-                                    To-do description
+                                <label for="description" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
+                                    Description
                                 </label>
                                 <div class="mt-1 rounded-md shadow-sm">
-                                    <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
-                                        <%-- <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input> --%>
+                                    <%-- <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/> --%>
+                                    <form:input path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input>
                                 </div>
                             </div>
 
                             <div class="sm:col-span-3">
-                                <label for="about" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
+                                <label for="assignedToVariable" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
                                     Assigned to
                                 </label>
                                 <div class="mt-1 rounded-md shadow-sm">
-                                    <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
-                                        <%-- <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input> --%>
+                                    <form:select path="assignedToVariable" id="location" class="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                        <c:forEach items="${project.users}" var="user">
+                                            <option value="${user.id}">${user.firstName} ${user.lastName}</option>
+                                        </c:forEach>
+                                        <option value="${sessionScope.current_user.id}">${sessionScope.current_user.firstName} ${sessionScope.current_user.lastName}</option>
+                                    </form:select>
                                 </div>
                             </div>
 
                             <div class="sm:col-span-3">
-                                <label for="about" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
+                                <label for="dueDateVariable" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
                                     Due on
                                 </label>
-                                <div class="mt-1 rounded-md shadow-sm">
-                                    <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
-                                        <%-- <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input> --%>
-                                </div>
-                            </div>
+                                <div class="mt-1 rounded-md">
 
-                            <div class="sm:col-span-6">
-                                <label for="about" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
-                                    Notes
-                                </label>
-                                <div class="mt-1 rounded-md shadow-sm">
-                                    <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
-                                        <%-- <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input> --%>
+                                    <fmt:formatDate value="${todo.dueDate.time}" var="dueDateVar" pattern="yyyy-MM-dd"></fmt:formatDate>
+                                    <input type="date" data-date="" id="dueDateVariable" name="dueDateVariable" data-date-format="dd/mm/yyyy"
+                                           value="${dueDateVar}" class=" form-input block w-full pl-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+
                                 </div>
+
                             </div>
 
                             <script type="x-template" id="editor-template">
                                 <div>
 
-                                    <input type="hidden" id="x" name="content"/>
+                                    <input type="hidden" id="x" name="notes"/>
                                         <%-- <form:hidden path="content"/> --%>
                                     <trix-editor input="x" class="trix-editor-message"></trix-editor>
                                 </div>
                             </script>
 
                             <div class="sm:col-span-6">
+                                <label for="notes" class="block text-sm font-medium leading-5 text-gray-700" wfd-id="81">
+                                    Notes
+                                </label>
                                 <editor></editor>
                             </div>
 
@@ -127,7 +115,7 @@
                 <div class="mt-8 border-t border-gray-200 pt-5">
                     <div class="flex justify-end">
       <span class="inline-flex rounded-md shadow-sm">
-        <a href="${contextUrl}/project/${project.id}/messages" type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
+        <a href="${contextUrl}/project/${project.id}/todos" type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
           Cancel
         </a>
       </span>

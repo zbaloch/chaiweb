@@ -51,140 +51,177 @@ public class TodosController {
     public String index(@PathVariable Long project_id, Model model) {
         Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
 
-        List<Todo> todos = todoRepository.findAllByProjectOrderByDueDateAsc(project);
+        List<Todo> completedTodos = todoRepository.findAllByProjectAndAndDoneOrderByDueDateAsc(project, true);
+        List<Todo> pendingTodos = todoRepository.findAllByProjectAndAndDoneOrderByDueDateAsc(project, false);
 
         model.addAttribute("project", project);
-        model.addAttribute("todos", todos);
+        model.addAttribute("completedTodos", completedTodos);
+        model.addAttribute("pendingTodos", pendingTodos);
 
         return "todos/index";
     }
 
 
     @GetMapping("/project/{project_id}/todo/new")
-    public String neew(@ModelAttribute("message") Message message,
+    public String neew(@ModelAttribute("todo") Todo todo,
                        @ModelAttribute("project") Project project,
                        HttpSession httpSession,
                        @PathVariable Long project_id, Map<String, Object> model) {
 
         System.out.println("project_id: " + + project_id);
 
-        message = new Message();
+        todo = new Todo();
+
+        todo.setDueDate(Calendar.getInstance());
 
         User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
         System.out.println(project.getName());
         model.put("project", project);
+        model.put("todo", todo);
         System.out.println("neew");
         return "todos/new";
 
     }
 
     @PostMapping("/project/{project_id}/todo/new")
-    public String save(@ModelAttribute("message") Message message,
+    public String save(@ModelAttribute("todo") Todo todo,
                        @ModelAttribute("project") Project project,
                        HttpSession httpSession, @PathVariable Long project_id,
                        Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
-        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        message.setUser(user);
-        message.setProjectId(project_id);
-        message.setCreatedAt(Calendar.getInstance());
-        messageRepository.save(message);
+        project = projectRepository.getOne(project_id);
+        User createdBy = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        todo.setCreatedBy(createdBy);
+        User assignedToUser = userRepository.getOne(todo.getAssignedToVariable());
+        todo.setAssignedTo(assignedToUser);
+        Calendar dueDate = Calendar.getInstance();
+        dueDate.setTime(todo.getDueDateVariable());
+        todo.setDueDate(dueDate);
+        todo.setProject(project);
+        todo.setCreatedAt(Calendar.getInstance());
+        // TODO: Due date
+        todoRepository.save(todo);
 
-        redirectAttributes.addFlashAttribute("notice", "Your message created!");
+        redirectAttributes.addFlashAttribute("notice", "Your todo was created!");
 
-        System.out.println("project: " + project_id);
-        System.out.println("message.getContent(): " + message.getContent());
-        return "redirect:/project/" + project_id + "/todo/" + message.getId();
+        return "redirect:/project/" + project_id + "/todos";
 
     }
 
-    @GetMapping("/project/{project_id}/todo/{message_id}")
-    public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
+    @GetMapping("/project/{project_id}/todo/{todo_id}")
+    public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
                         Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         Project project = projectRepository.getOne(project_id);
         model.put("project", project);
 
-        Message message = messageRepository.getOne(message_id);
-        model.put("message", message);
+        Todo todo = todoRepository.getOne(todo_id);
+        model.put("todo", todo);
 
         // List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);
-        List<Comment> comments = message.getComments();
+        List<Comment> comments = todo.getComments();
         for(int i=0; i<comments.size(); i++) {
             Comment comment = comments.get(i);
             comment.setTextToDisplay(escapeHtml(comment.getText()));
         }
-        // model.put(Constants.COMMENTS, comments);
 
-        System.out.println("project: " + project_id);
-        System.out.println("message.getContent(): " + message.getContent());
         return "todos/show";
     }
 
-    @GetMapping("/project/{project_id}/todo/{message_id}/edit")
+    @GetMapping("/project/{project_id}/todo/{todo_id}/edit")
     public String edit(
             HttpSession httpSession, @PathVariable Long project_id,
-            @PathVariable Long message_id, Map<String, Object> model,
+            @PathVariable Long todo_id, Map<String, Object> model,
             RedirectAttributes redirectAttributes) throws Exception {
 
         Project project = projectRepository.getOne(project_id);
-        Message message = messageRepository.getOne(message_id);
-        message.setContentToDisplay(escapeHtml(message.getContent()));
-        model.put("message", message);
+        Todo todo = todoRepository.getOne(todo_id);
+        model.put("todo", todo);
         model.put("project", project);
-        System.out.println("edit: " + message_id);
         return "todos/edit";
     }
 
-    @PostMapping("/project/{project_id}/todo/{message_id}/edit")
-    public String update(@ModelAttribute("message") Message message,
+    @PostMapping("/project/{project_id}/todo/{todo_id}/edit")
+    public String update(@ModelAttribute("todo") Todo todo,
                          @ModelAttribute("project") Project project,
-                         HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
+                         HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
                          Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         // TODO: Check if this belongs to this user.
 
-        System.out.println("update...");
+        Todo todoToUpdate = todoRepository.getOne(todo_id);
 
-        Message messageToUpdate = messageRepository.getOne(message_id);
-        messageToUpdate.setTitle(message.getTitle());
-        messageToUpdate.setContent(message.getContent()); // TODO:Probably need last updated?
+        User userToUpdate = userRepository.getOne(todo.getAssignedToVariable());
+        Calendar dueDateCalendar = Calendar.getInstance();
+        dueDateCalendar.setTime(todo.getDueDateVariable());
 
-        messageRepository.save(messageToUpdate);
+        todoToUpdate.setAssignedTo(userToUpdate);
+        todoToUpdate.setDueDate(dueDateCalendar);
 
-        redirectAttributes.addFlashAttribute("notice", "Your message was updated!");
+        todoToUpdate.setDescription(todo.getDescription());
+        todoToUpdate.setNotes(todo.getNotes());
+
+        System.out.println(todoToUpdate);
+
+        todoRepository.save(todoToUpdate);
+
+        /* description: Sample todo
+        assignedToVariable: 8
+        dueDateVariable: 2019-08-22
+        notes: <div>This is great!!!!</div> */
+
+        redirectAttributes.addFlashAttribute("notice", "Your todo was updated!");
         project = projectRepository.getOne(project_id);
         model.put("project", project);
-        model.put("message", message);
+        model.put("todo", todoToUpdate);
 
-        return "redirect:/project/" + project_id + "/todo/" + messageToUpdate.getId();
+        return "redirect:/project/" + project_id + "/todo/" + todoToUpdate.getId();
 
     }
 
-    @GetMapping("/project/{project_id}/todo/{message_id}/delete")
+    @GetMapping("/project/{project_id}/todo/{todo_id}/delete")
     public String delete(
-            @ModelAttribute("message") Message message, @ModelAttribute("project") Project project,
+            @ModelAttribute("todo") Todo todo,
+            @ModelAttribute("project") Project project,
             HttpSession httpSession, @PathVariable Long project_id,
-            @PathVariable Long message_id, Map<String, Object> model,
+            @PathVariable Long todo_id, Map<String, Object> model,
             RedirectAttributes redirectAttributes) throws Exception {
 
         project = projectRepository.getOne(project_id);
-        message = messageRepository.getOne(message_id);
-        messageRepository.delete(message);
+        todo = todoRepository.getOne(todo_id);
+        todoRepository.delete(todo);
         model.put("project", project);
-        redirectAttributes.addFlashAttribute("notice", "Your message was deleted!");
+        redirectAttributes.addFlashAttribute("notice", "Your todo was deleted!");
         return "redirect:/project/" + project_id + "/todos";
     }
 
-    @PostMapping("/project/{project_id}/todo/{message_id}")
-    public String addComment(@ModelAttribute("comment") Comment comment, HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
+
+    @GetMapping("/project/{project_id}/todo/{todo_id}/complete")
+    public String complete(
+            @ModelAttribute("todo") Todo todo,
+            @ModelAttribute("project") Project project,
+            HttpSession httpSession, @PathVariable Long project_id,
+            @PathVariable Long todo_id, Map<String, Object> model,
+            RedirectAttributes redirectAttributes) throws Exception {
+
+        project = projectRepository.getOne(project_id);
+        todo = todoRepository.getOne(todo_id);
+        todo.setDone(true);
+        todoRepository.save(todo);
+        model.put("project", project);
+        redirectAttributes.addFlashAttribute("notice", "Good job! You completed a to-do!");
+        return "redirect:/project/" + project_id + "/todos";
+    }
+
+    @PostMapping("/project/{project_id}/todo/{todo_id}")
+    public String addComment(@ModelAttribute("comment") Comment comment,
+                             HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
                              Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         Project project = projectRepository.getOne(project_id);
 
-
-        Message message = messageRepository.getOne(message_id);
+        Todo todo = todoRepository.getOne(todo_id);
 
 
         System.out.println("comment.getText(): " + comment.getText());
@@ -193,12 +230,12 @@ public class TodosController {
         User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         comment.setUser(currentUser);
         comment.setCreatedAt(Calendar.getInstance());
-        comment.setCommentType(Constants.MESSAGE);
-        comment.setMessage(message);
+        comment.setCommentType(Constants.TODO);
+        comment.setTodo(todo);
         commentRepository.save(comment);
 
         // Get all the update comments
-        List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);
+        List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(todo_id);
         for(int i=0; i<comments.size(); i++) {
             Comment commentTemp = comments.get(i);
             commentTemp.setTextToDisplay(escapeHtml(commentTemp.getText()));
@@ -207,36 +244,11 @@ public class TodosController {
         redirectAttributes.addFlashAttribute("notice", "Your comment has been added!");
         // model.put("notice", "Your comment has been added!");
         model.put("project", project);
-        model.put("message", message);
+        model.put("todo", todo);
         // model.put(Constants.COMMENTS, comments);
-        return "redirect:/project/" + project_id + "/todo/" + message.getId() + "#comment_" + comment.getId();
+        return "redirect:/project/" + project_id + "/todo/" + todo.getId() + "#comment_" + comment.getId();
         // return "messages/show";
     }
-
-    // http://localhost:8080/chaiweb/project/1/message/16/comment/41/delete
-
-    /* @PostMapping("/project/{project_id}/message/{message_id}/comment/{comment_id}/delete")
-    public String deleteComment(HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
-                                @PathVariable Long comment_id,
-                             Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
-
-        commentRepository.deleteById(comment_id);
-
-        Project project = projectRepository.getOne(project_id);
-        Message message = messageRepository.getOne(message_id);
-
-        List<Comment> comments = message.getComments();
-        for(int i=0; i<comments.size(); i++) {
-            Comment commentTemp = comments.get(i);
-            commentTemp.setTextToDisplay(escapeHtml(commentTemp.getText()));
-        }
-
-        redirectAttributes.addFlashAttribute("notice", "Your comment has been deleted!");
-        model.put(Constants.PROJECT, project);
-        model.put(Constants.MESSAGE, message);
-        return "redirect:/project/" + project_id + "/message/" + message.getId() + "#comment_form";
-    } */
-
 
     @RequestMapping(method = RequestMethod.DELETE, value="/project/{project_id}/todo/{message_id}/comment/{comment_id}/delete",
             produces = "application/json")

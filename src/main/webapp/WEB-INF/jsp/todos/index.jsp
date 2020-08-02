@@ -34,7 +34,8 @@
 
                         <div>
                                 <span class="inline-flex rounded-full shadow-sm">
-                                   <a href="${contextUrl}/project/${project.id}/todo/new" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+
+                                   <a href="${contextUrl}/project/${project.id}/todo/new" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                        New
                                    </a>
                                </span>
@@ -59,9 +60,9 @@
 
                     <div class="mt-2">
                         <ul>
-                            <c:forEach items="${todos}" var="todo">
+                            <c:forEach items="${pendingTodos}" var="todo">
                             <li>
-                                <a href="${contextUrl}/project/${project.id}/todo/${todo.id}" class="block py-1 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
+                                <a href="${contextUrl}/project/${project.id}/todo/${todo.id}" class="block py-2 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
                                     <div class="flex items-center justify-between">
                                         <div class="min-w-0 flex-1 flex items-center">
                                             <%--
@@ -77,9 +78,12 @@
                                                     </div> --%>
                                                     <div class=" leading-5 flex">
                                                         <span class="font-gray-900 mr-2">${todo.description}</span>
-                                                        <span class="h-5 w-5 text-center rounded-full bg-indigo-600 text-white text-xs mr-2">
-                                                            8
-                                                        </span>
+                                                        <c:if test="${todo.comments.size() != 0}">
+                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-600 text-white text-xs mr-2">
+                                                                    ${todo.comments.size()}
+                                                            </span>
+                                                        </c:if>
+
                                                         <span class="mr-1">
                                                             <img class="h-5 w-5 rounded-full" src="${contextUrl}/avatar/${todo.assignedTo.id}/${todo.assignedTo.firstName.charAt(0)}${todo.assignedTo.lastName.charAt(0)}.svg" alt="" title="${todo.assignedTo.firstName} ${todo.assignedTo.lastName}">
                                                         </span>
@@ -93,16 +97,14 @@
 
                                                         </span>
                                                         <span class="text-gray-600 text-sm">
-                                                            <fmt:formatDate value="${todo.createdAt.time}" pattern="MMM dd, yyyy"/>
+                                                            <c:if test="${todo.dueDate.time == null}">
+                                                                No due date
+                                                            </c:if>
+                                                            <c:if test="${todo.dueDate.time != null}">
+                                                                <fmt:formatDate value="${todo.dueDate.time}" pattern="MMM dd, yyyy"/>
+                                                            </c:if>
                                                         </span>
                                                     </div>
-                                                        <%--
-                                                    <div class="mt-1 flex items-center text-sm leading-5 text-gray-500">
-                                                        <span class="truncate">
-
-                                                            <div class="text-gray-600"> ${todo.createdBy.firstName} ${todo.createdBy.lastName} • <fmt:formatDate value="${todo.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${todo.createdAt.time}" pattern="h:m a"/>  </div>
-                                                        </span>
-                                                    </div> --%>
                                                 </div>
                                             </div>
                                         </div>
@@ -116,11 +118,73 @@
 
                     <div class="mt-4" id="add-a-todo-div">
 
-                    <a href="#" v-on:click.stop="showNewTodoForm" type="button" class="py-2 px-4 border border-gray-300 rounded-full text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
+                    <a href="${contextUrl}/project/${project.id}/todo/new" class="py-2 px-4 border border-gray-300 rounded-full text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
                         Add a to-do
                     </a>
 
                     </div>
+
+                    <div class="mt-8">
+
+                        <div class="flex">
+                            <span class="text-xl font-bold text-gray-900 sm:text-md  sm:truncate">Completed To-dos</span>
+                        </div>
+
+                        <ul>
+                            <c:forEach items="${completedTodos}" var="todo">
+                                <li>
+                                    <a href="${contextUrl}/project/${project.id}/todo/${todo.id}" class="block py-2 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
+                                        <div class="flex items-center justify-between">
+                                            <div class="min-w-0 flex-1 flex items-center">
+                                                    <%--
+                                                    <div class="flex-shrink-0">
+                                                        <img class="h-12 w-12 rounded-full" src="${contextUrl}/avatar/${todo.createdBy.id}/${todo.createdBy.firstName.charAt(0)}${todo.createdBy.lastName.charAt(0)}.svg" alt="" title="${todo.createdBy.firstName} ${todo.createdBy.lastName}">
+                                                    </div>
+                                                    --%>
+
+                                                <div class="min-w-0 flex-1 px-4 mr-4">
+                                                    <div>
+                                                            <%-- <div class="leading-5 font-medium font-gray-900 truncate">
+                                                                ${message.title}
+                                                            </div> --%>
+                                                        <div class=" leading-5 flex">
+                                                            <span class="font-gray-900 mr-2">${todo.description}</span>
+                                                            <c:if test="${todo.comments.size() != 0}">
+                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-600 text-white text-xs mr-2">
+                                                                    ${todo.comments.size()}
+                                                            </span>
+                                                            </c:if>
+
+                                                            <span class="mr-1">
+                                                            <img class="h-5 w-5 rounded-full" src="${contextUrl}/avatar/${todo.assignedTo.id}/${todo.assignedTo.firstName.charAt(0)}${todo.assignedTo.lastName.charAt(0)}.svg" alt="" title="${todo.assignedTo.firstName} ${todo.assignedTo.lastName}">
+                                                        </span>
+                                                            <span class="text-gray-600 text-sm mr-2">
+                                                                ${todo.assignedTo.firstName} ${todo.assignedTo.lastName.charAt(0)}.
+                                                        </span>
+                                                            <span class="mr-1">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 text-gray-600">
+                                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                            </svg>
+
+                                                        </span>
+                                                            <span class="text-gray-600 text-sm">
+                                                            <c:if test="${todo.dueDate.time == null}">
+                                                                No due date
+                                                            </c:if>
+                                                            <c:if test="${todo.dueDate.time != null}">
+                                                                <fmt:formatDate value="${todo.dueDate.time}" pattern="MMM dd, yyyy"/>
+                                                            </c:if>
+                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                </li>
+                            </c:forEach>
+                      </ul></div>
 
                 </div>
             </div>

@@ -28,8 +28,12 @@ public class Comment {
     private Calendar createdAt;
 
     @ManyToOne
-    @JoinColumn(name="message_id", nullable=false)
+    @JoinColumn(name="message_id")
     private Message message;
+
+    @ManyToOne
+    @JoinColumn(name="todo_id")
+    private Todo todo;
 
     public long getId() {
         return id;
@@ -93,5 +97,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Todo getTodo() {
+        return todo;
+    }
+
+    public void setTodo(Todo todo) {
+        this.todo = todo;
     }
 }
