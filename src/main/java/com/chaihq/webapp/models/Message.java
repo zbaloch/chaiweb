@@ -34,6 +34,9 @@ public class Message {
     @Transient
     private String contentToDisplay;
 
+    @Transient
+    private Project project;
+
     public Long getId() {
         return id;
     }
@@ -104,5 +107,13 @@ public class Message {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

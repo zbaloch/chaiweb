@@ -1,9 +1,11 @@
 package com.chaihq.webapp.controllers;
 
 import com.chaihq.webapp.models.ActiveStorageFile;
+import com.chaihq.webapp.models.Notification;
 import com.chaihq.webapp.models.Project;
 import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.repositories.ActiveStorageFileRepository;
+import com.chaihq.webapp.repositories.NotificationRepository;
 import com.chaihq.webapp.repositories.ProjectRepository;
 import com.chaihq.webapp.repositories.UserRepository;
 import com.chaihq.webapp.storage.StorageFileNotFoundException;
@@ -49,6 +51,9 @@ public class FilesController {
 
     @Autowired
     private ActiveStorageFileRepository activeStorageFileRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @GetMapping("/project/{id}/files")
     public String show(@PathVariable Long id, Model model) {
@@ -131,19 +136,45 @@ public class FilesController {
 
 
         System.out.println("Post: /project/{id}/file/new");
-        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
         redirectAttributes.addFlashAttribute("notice", "File uploaded!");
 
         activeStorageFile.setCreatedAt(Calendar.getInstance());
         activeStorageFile.setProjectId(project.getId());
-        activeStorageFile.setUserId(user.getId());
+        activeStorageFile.setUserId(currentUser.getId());
         activeStorageFile.setFileName(fileName);
         activeStorageFile.setFileType(activeStorageFile.getMultipartFile().getContentType());
         activeStorageFile.setFileData(activeStorageFile.getMultipartFile().getBytes());
         activeStorageFile.setFileSize(activeStorageFile.getMultipartFile().getSize());
 
         activeStorageFileRepository.save(activeStorageFile);
+
+        if(currentUser.getId() != project.getUser().getId()) {
+            Notification notification = new Notification();
+            notification.setType(Constants.NOTIFICATION_TYPE_FILE);
+            notification.setObjectId(activeStorageFile.getId());
+            notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_FILE);
+            notification.setCreatedAt(Calendar.getInstance());
+            notification.setFromUser(currentUser);
+            notification.setForUser(project.getUser());
+            notificationRepository.save(notification);
+        }
+
+
+        for(int i=0; i<project.getUsers().size(); i++) {
+            User forUser = project.getUsers().get(i);
+            if(forUser.getId() != currentUser.getId()) {
+                Notification notification = new Notification();
+                notification.setType(Constants.NOTIFICATION_TYPE_FILE);
+                notification.setObjectId(activeStorageFile.getId());
+                notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_FILE);
+                notification.setCreatedAt(Calendar.getInstance());
+                notification.setFromUser(currentUser);
+                notification.setForUser(forUser);
+                notificationRepository.save(notification);
+            }
+        }
 
 
         // return "redirect:/projects/" + id + "/files";

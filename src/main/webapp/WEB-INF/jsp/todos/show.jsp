@@ -71,6 +71,7 @@
                             <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
                                 Added by ${todo.createdBy.firstName} ${todo.createdBy.lastName.charAt(0)}. on
                                 <fmt:formatDate value="${todo.createdAt.time}" pattern="MMM d, yyyy"/>
+                                at <fmt:formatDate value="${todo.createdAt.time}" pattern="h:m a"/>
                             </p>
                         </div>
                     <div class=" py-5">

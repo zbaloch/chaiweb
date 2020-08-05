@@ -22,6 +22,9 @@ public class ActiveStorageFile {
     @Column(name = "project_id")
     private Long projectId;
 
+    @Transient
+    private Project project;
+
     @Column(name = "user_id")
     private Long userId;
 
@@ -147,5 +150,13 @@ public class ActiveStorageFile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

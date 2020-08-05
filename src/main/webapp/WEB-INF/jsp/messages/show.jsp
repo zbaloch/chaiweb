@@ -41,10 +41,7 @@
                                     <c:if test="${message.user.id == sessionScope.current_user.id}">
                                         <a href="${contextUrl}/project/${project.id}/message/${message.id}/edit" class="underline text-indigo-600">
                                             Edit
-                                        </a>
-                                   <a href="${contextUrl}/project/${project.id}/message/${message.id}/edit" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                                       Edit
-                                   </a>
+                                        </a> 
                                     </c:if>
                                </span>
                         </div>

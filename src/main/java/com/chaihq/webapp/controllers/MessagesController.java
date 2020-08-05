@@ -50,6 +50,9 @@ public class MessagesController {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     @GetMapping("/project/{id}/messages")
     public String index(@PathVariable Long id, Model model) {
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
@@ -91,11 +94,43 @@ public class MessagesController {
                        HttpSession httpSession, @PathVariable Long project_id,
                        Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
-        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        message.setUser(user);
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        message.setUser(currentUser);
         message.setProjectId(project_id);
         message.setCreatedAt(Calendar.getInstance());
         messageRepository.save(message);
+
+        project = projectRepository.getOne(project_id);
+
+        if(currentUser.getId() != project.getUser().getId()) {
+            Notification notification = new Notification();
+            notification.setType(Constants.NOTIFICATION_TYPE_MESSAGE);
+            notification.setObjectId(message.getId());
+            notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_MESSAGE);
+            notification.setCreatedAt(Calendar.getInstance());
+            notification.setFromUser(currentUser);
+            notification.setForUser(project.getUser());
+            notificationRepository.save(notification);
+        }
+
+
+
+        for(int i=0; i<project.getUsers().size(); i++) {
+            User forUser = project.getUsers().get(i);
+            if (forUser.getId() != currentUser.getId()) {
+                Notification notification = new Notification();
+                notification.setType(Constants.NOTIFICATION_TYPE_MESSAGE);
+                notification.setObjectId(message.getId());
+                notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_MESSAGE);
+                notification.setCreatedAt(Calendar.getInstance());
+                notification.setFromUser(currentUser);
+                notification.setForUser(forUser);
+                notificationRepository.save(notification);
+            }
+
+        }
+
+
 
         redirectAttributes.addFlashAttribute("notice", "Your message created!");
 
@@ -202,6 +237,34 @@ public class MessagesController {
         comment.setCommentType(Constants.MESSAGE);
         comment.setMessage(message);
         commentRepository.save(comment);
+
+        if(currentUser.getId() != project.getUser().getId()) {
+            Notification notification = new Notification();
+            notification.setType(Constants.NOTIFICATION_TYPE_MESSAGE_COMMENT);
+            notification.setObjectId(comment.getId());
+            notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_MESSAGE_COMMENT);
+            notification.setCreatedAt(Calendar.getInstance());
+            notification.setFromUser(currentUser);
+            notification.setForUser(project.getUser());
+            notificationRepository.save(notification);
+        }
+
+
+        for(int i=0; i<project.getUsers().size(); i++) {
+            User forUser = project.getUsers().get(i);
+            if(forUser.getId() != currentUser.getId()) {
+
+                Notification notification = new Notification();
+                notification.setType(Constants.NOTIFICATION_TYPE_MESSAGE_COMMENT);
+                notification.setObjectId(comment.getId());
+                notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_MESSAGE_COMMENT);
+                notification.setCreatedAt(Calendar.getInstance());
+                notification.setFromUser(currentUser);
+                notification.setForUser(forUser);
+                notificationRepository.save(notification);
+
+            }
+        }
 
         // Get all the update comments
         List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);

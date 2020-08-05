@@ -21,6 +21,7 @@ public class Comment {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+
     @Column(name = "project_id")
     private long projectId;
 
@@ -34,6 +35,9 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name="todo_id")
     private Todo todo;
+
+    @Transient
+    private Project project;
 
     public long getId() {
         return id;
@@ -105,5 +109,13 @@ public class Comment {
 
     public void setTodo(Todo todo) {
         this.todo = todo;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

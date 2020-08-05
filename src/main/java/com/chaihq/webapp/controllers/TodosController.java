@@ -47,6 +47,10 @@ public class TodosController {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+
     @GetMapping("/project/{project_id}/todos")
     public String index(@PathVariable Long project_id, Model model) {
         Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
@@ -91,8 +95,8 @@ public class TodosController {
                        Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         project = projectRepository.getOne(project_id);
-        User createdBy = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        todo.setCreatedBy(createdBy);
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        todo.setCreatedBy(currentUser);
         User assignedToUser = userRepository.getOne(todo.getAssignedToVariable());
         todo.setAssignedTo(assignedToUser);
         Calendar dueDate = Calendar.getInstance();
@@ -102,6 +106,33 @@ public class TodosController {
         todo.setCreatedAt(Calendar.getInstance());
         // TODO: Due date
         todoRepository.save(todo);
+
+        // Get the project owner so that it gets this notification
+        if(currentUser.getId() != project.getUser().getId()) {
+            Notification notification = new Notification();
+            notification.setType(Constants.NOTIFICATION_TYPE_TODO);
+            notification.setObjectId(todo.getId());
+            notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_TODO);
+            notification.setCreatedAt(Calendar.getInstance());
+            notification.setFromUser(currentUser);
+            notification.setForUser(project.getUser());
+            notificationRepository.save(notification);
+        }
+
+        for(int i=0; i<project.getUsers().size(); i++) {
+            User forUser = project.getUsers().get(i);
+            if(forUser.getId() != currentUser.getId()) {
+                Notification notification = new Notification();
+                notification.setType(Constants.NOTIFICATION_TYPE_TODO);
+                notification.setObjectId(todo.getId());
+                notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_TODO);
+                notification.setCreatedAt(Calendar.getInstance());
+                notification.setFromUser(currentUser);
+                notification.setForUser(forUser);
+                notificationRepository.save(notification);
+            }
+        }
+
 
         redirectAttributes.addFlashAttribute("notice", "Your todo was created!");
 
@@ -233,6 +264,34 @@ public class TodosController {
         comment.setCommentType(Constants.TODO);
         comment.setTodo(todo);
         commentRepository.save(comment);
+
+
+        // Get the project owner so that it gets this notification
+        if(currentUser.getId() != project.getUser().getId()) {
+            Notification notification = new Notification();
+            notification.setType(Constants.NOTIFICATION_TYPE_TODO_COMMENT);
+            notification.setObjectId(comment.getId());
+            notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_TODO_COMMENT);
+            notification.setCreatedAt(Calendar.getInstance());
+            notification.setFromUser(currentUser);
+            notification.setForUser(project.getUser());
+            notificationRepository.save(notification);
+        }
+
+        for(int i=0; i<project.getUsers().size(); i++) {
+            User forUser = project.getUsers().get(i);
+            if(forUser.getId() != currentUser.getId()) {
+                Notification notification = new Notification();
+                notification.setType(Constants.NOTIFICATION_TYPE_TODO_COMMENT);
+                notification.setObjectId(comment.getId());
+                notification.setMessage(Constants.NOTIFICATION_MESSAGE_NEW_TODO_COMMENT);
+                notification.setCreatedAt(Calendar.getInstance());
+                notification.setFromUser(currentUser);
+                notification.setForUser(forUser);
+                notificationRepository.save(notification);
+            }
+        }
+
 
         // Get all the update comments
         List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(todo_id);

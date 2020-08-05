@@ -1,0 +1,106 @@
+package com.chaihq.webapp.controllers;
+
+import com.chaihq.webapp.models.*;
+import com.chaihq.webapp.repositories.*;
+import com.chaihq.webapp.utilities.Constants;
+import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
+
+@Controller
+public class HeyController {
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private TodoRepository todoRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private ActiveStorageFileRepository activeStorageFileRepository;
+
+
+    @GetMapping("/hey")
+    public String index(Model model, HttpSession httpSession) {
+        Project project = projectRepository.getOne( (long) 1); // TODO make show this belongs to the user
+        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+
+        // List<Notification> notifications =  notificationRepository.findAll();
+        List<Notification> notifications = notificationRepository.findAllByForUserOrderByCreatedAtDesc(user);
+
+        for(int i=0; i<notifications.size(); i++) {
+            Notification notification = notifications.get(i);
+            String notificationType = notification.getType();
+            String notificationMessage = notification.getMessage();
+            long objectId = notification.getObjectId();
+            if(notificationType.equals(Constants.NOTIFICATION_TYPE_MESSAGE)) {
+                Message message = messageRepository.getOne(objectId); // TODO: Need to remove this
+                message.setContentToDisplay(html2text(message.getContent()));
+                message.setProject( projectRepository.getOne(message.getProjectId()) ); // TODO: Need to remove this
+                notification.setMessageObject(message);
+
+                // Its a message
+            }
+            if(notificationType.equals(Constants.NOTIFICATION_TYPE_TODO)) {
+                notification.setTodo(todoRepository.getOne(objectId));
+                // Its a todo
+            }
+            if(notificationType.equals(Constants.NOTIFICATION_TYPE_MESSAGE_COMMENT)) {
+                // Its a message comment
+                Comment comment = commentRepository.getOne(objectId);
+                comment.setProject(projectRepository.getOne(objectId));
+                comment.setTextToDisplay(html2text(comment.getText()));
+                notification.setComment( comment );
+            }
+            if(notificationType.equals(Constants.NOTIFICATION_TYPE_TODO_COMMENT)) {
+                Comment comment = commentRepository.getOne(objectId);
+                comment.setProject(projectRepository.getOne(objectId));
+                comment.setTextToDisplay(html2text(comment.getText()));
+                notification.setComment( comment );
+
+                // Its a todo comment
+            }
+            if(notificationType.equals(Constants.NOTIFICATION_TYPE_FILE)) {
+                // Its a file
+                ActiveStorageFile file  = activeStorageFileRepository.getOne(objectId); // TODO: Need to remove this
+                file.setProject(projectRepository.getOne(file.getProjectId())); // TODO: Need to remove this
+                notification.setActiveStorageFile(file);
+            }
+
+        }
+
+        List<Message> messages = messageRepository.findAllByProjectIdOrderByCreatedAtDesc(project.getId());
+
+        for (Message message: messages) {
+            message.setContentToDisplay(html2text(message.getContent()));
+        }
+        model.addAttribute("project", project);
+        model.addAttribute("messages", messages);
+        model.addAttribute("notifications", notifications);
+
+        return "hey/index";
+    }
+
+    public String html2text(String html) {
+        return Jsoup.parse(html).text();
+    }
+
+}

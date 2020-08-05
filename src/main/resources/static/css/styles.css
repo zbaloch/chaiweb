@@ -61,9 +61,17 @@ blockquote {
     list-style: decimal;
 }
 
-trix-toolbar .trix-button-group--file-tools {
+/* trix-toolbar .trix-button-group--file-tools {
     display: none;
-}
+} */
 
 
 /* End: Trix editor formatting */
+
+.right-10px {
+    right: 10px;
+}
+
+.top-5px {
+    top: 5px;
+}
