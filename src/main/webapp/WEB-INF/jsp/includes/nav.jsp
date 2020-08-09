@@ -128,12 +128,11 @@
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                     </svg>
-                    <span class="absolute right-10px top-5px block h-2.5 w-2.5 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500"></span>
+                    <span v-cloak v-if="hasUnreadNotifications" class="absolute right-10px top-5px block h-2.5 w-2.5 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500"></span>
                 </a>
 
                 <!-- Profile dropdown -->
                 <div class="ml-4 relative flex-shrink-0">
-
 
                     <div class="relative">
                         <button v-on:click="isProfileMenuOpen = !isProfileMenuOpen" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out" id="user-menu" aria-label="User menu" aria-haspopup="true">
@@ -144,7 +143,6 @@
 
                         <button v-if="isProfileMenuOpen" v-on:click="isProfileMenuOpen = false" tabindex="-1"
                                 class="fixed inset-0 h-full w-full cursor-default border-none outline-none"></button>
-
 
                         
                     </div>

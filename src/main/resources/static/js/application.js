@@ -29,7 +29,8 @@
                 errors: [],
                 name: null,
                 age: null,
-                movie: null
+                movie: null,
+                hasUnreadNotifications: false,
 
             },
             created() {
@@ -42,12 +43,18 @@
                     }
                 }
                 document.addEventListener('keydown', handleEscape)
-                var isChatPageField = document.getElementById('isChatPage').value
-                if(isChatPageField != null) {
-                    if(document.getElementById("isChatPage").value) {
-                        this.chatConnect();
+                if(document.getElementById('isChatPage') != null) {
+                    var isChatPageField = document.getElementById('isChatPage').value
+                    if(isChatPageField != null) {
+                        if(document.getElementById("isChatPage").value) {
+                            this.chatConnect();
+                        }
                     }
                 }
+
+
+                // alert("updated...")
+                this.getNotifications();
 
 
             },
@@ -205,6 +212,15 @@
                             console.log(response)
                         })
                 },
+
+                getNotifications: function() {
+                    axios.get("/chaiweb/hasUnreadNotifications").then(response => {
+                        console.log(response);
+                        if(response.data) {
+                            this.hasUnreadNotifications = true;
+                        }
+                    })
+                }
 
 
             }

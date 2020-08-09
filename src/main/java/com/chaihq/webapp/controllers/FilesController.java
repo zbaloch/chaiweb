@@ -56,13 +56,22 @@ public class FilesController {
     private NotificationRepository notificationRepository;
 
     @GetMapping("/project/{id}/files")
-    public String show(@PathVariable Long id, Model model) {
+    public String show(@PathVariable Long id, Model model, HttpSession httpSession) {
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         Project project = projectRepository.getOne(id); // TODO make show this belongs to the user
 
         List<ActiveStorageFile> activeStorageFiles = activeStorageFileRepository.findAllByProjectIdOrderByCreatedAtDesc(id);
 
         model.addAttribute("project", project);
         model.addAttribute("activeStorageFiles", activeStorageFiles);
+
+        List<Notification> notifications = notificationRepository.findAllByTypeAndForUser(Constants.NOTIFICATION_TYPE_FILE, currentUser);
+        for (Notification notification: notifications
+        ) {
+            notification.setRead(true);
+            notification.setReadAt(Calendar.getInstance());
+            notificationRepository.save(notification);
+        }
 
         return "files/index";
     }

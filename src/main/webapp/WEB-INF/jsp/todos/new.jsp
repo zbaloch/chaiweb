@@ -73,7 +73,12 @@
                                         <c:forEach items="${project.users}" var="user">
                                             <option value="${user.id}">${user.firstName} ${user.lastName}</option>
                                         </c:forEach>
-                                        <option value="${sessionScope.current_user.id}">${sessionScope.current_user.firstName} ${sessionScope.current_user.lastName}</option>
+                                        <c:if test="${project.user.id == sessionScope.current_user.id}">
+                                            <option value="${sessionScope.current_user.id}">${sessionScope.current_user.firstName} ${sessionScope.current_user.lastName}</option>
+                                        </c:if>
+                                        <c:if test="${project.user.id != sessionScope.current_user.id}">
+                                            <option value="${project.user.id}">${project.user.firstName} ${project.user.lastName}</option>
+                                        </c:if>
                                     </form:select>
                                 </div>
                             </div>

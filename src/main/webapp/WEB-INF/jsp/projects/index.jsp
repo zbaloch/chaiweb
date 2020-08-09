@@ -27,32 +27,37 @@
 
                             <div class="mt-4 mb-8">
                             <div class="flex flex-wrap -mx-3">
+
                                 <c:forEach items="${hqs}" var="hq">
-                                    <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
-                                        <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${hq.id}">
-                                            <div class="p-6 flex flex-col">
-                                                <h3 class="font-display text-black no-underline mb-2 font-bold">
-                                                        ${hq.name}
-                                                </h3> <!-- TODO: Seed the HQ by default-->
-                                                <div class="text-gray-700 text-sm">
-                                                        ${hq.description}
-                                                </div>
-                                                <div class="mt-4">
-                                                    <div class="flex overflow-hidden">
-                                                        <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                             src="${contextUrl}/avatar/${hq.user.id}/${hq.user.firstName.charAt(0)}${hq.user.lastName.charAt(0)}.svg"
-                                                             title="${hq.user.firstName} ${hq.user.lastName}">
-                                                        <c:forEach items="${hq.users}" var="user">
+                                    <c:if test="${hq.status != 'deleted'}">
+                                        <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
+                                            <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${hq.id}">
+                                                <div class="p-6 flex flex-col">
+                                                    <h3 class="font-display text-black no-underline mb-2 font-bold">
+                                                            ${hq.name}
+                                                    </h3> <!-- TODO: Seed the HQ by default-->
+                                                    <div class="text-gray-700 text-sm">
+                                                            ${hq.description}
+                                                    </div>
+                                                    <div class="mt-4">
+                                                        <div class="flex overflow-hidden">
                                                             <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                                 src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
-                                                                 title="${user.firstName} ${user.lastName}">
-                                                        </c:forEach>
+                                                                 src="${contextUrl}/avatar/${hq.user.id}/${hq.user.firstName.charAt(0)}${hq.user.lastName.charAt(0)}.svg"
+                                                                 title="${hq.user.firstName} ${hq.user.lastName}">
+                                                            <c:forEach items="${hq.users}" var="user">
+                                                                <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
+                                                                     src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                                                     title="${user.firstName} ${user.lastName}">
+                                                            </c:forEach>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </div>
+                                            </a>
+                                        </div>
+                                    </c:if>
+
                                 </c:forEach>
+
                             </div>
                         </div>
                         </div>
@@ -80,15 +85,16 @@
                     <div class="mt-4 mb-8">
                         <div class="flex flex-wrap -mx-3">
                             <c:forEach items="${teams}" var="team">
-                                <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
-                                    <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${team.id}">
-                                        <div class="p-6 flex flex-col">
-                                            <h3 class="font-display text-black no-underline mb-2 font-bold">
-                                                    ${team.name}
-                                            </h3> <!-- TODO: Seed the HQ by default-->
-                                            <div class="text-gray-700 text-sm">
-                                                    ${team.description}
-                                            </div>
+                                <c:if test="${team.status != 'deleted'}">
+                                    <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
+                                        <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${team.id}">
+                                            <div class="p-6 flex flex-col">
+                                                <h3 class="font-display text-black no-underline mb-2 font-bold">
+                                                        ${team.name}
+                                                </h3> <!-- TODO: Seed the HQ by default-->
+                                                <div class="text-gray-700 text-sm">
+                                                        ${team.description}
+                                                </div>
                                                 <div class="mt-4">
                                                     <div class="flex overflow-hidden">
                                                         <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
@@ -101,9 +107,10 @@
                                                         </c:forEach>
                                                     </div>
                                                 </div>
-                                        </div>
-                                    </a>
-                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </c:if>
                             </c:forEach>
                         </div>
                     </div>
@@ -126,29 +133,31 @@
                     <div class="mt-4 mb-8">
                         <div class="flex flex-wrap -mx-3">
                             <c:forEach items="${projects}" var="project">
-                                <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
-                                    <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${project.id}">
-                                        <div class="p-6 flex flex-col">
-                                            <h3 class="font-display text-black no-underline mb-2 font-bold">
-                                                ${project.name}
-                                            </h3> <!-- TODO: Seed the HQ by default-->
-                                            <div class="text-gray-700 text-sm">
-                                                ${project.description}
-                                            </div>
-                                            <div class="mt-4">
-                                                <div class="flex overflow-hidden">
-                                                    <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
-                                                         src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg"
-                                                         title="${project.user.firstName} ${project.user.lastName}">
-                                                    <c:forEach items="${project.users}" var="user">
-                                                        <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
-                                                             title="${user.firstName} ${user.lastName}">
-                                                    </c:forEach>
+                                <c:if test="${project.status != 'deleted'}">
+                                    <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-8">
+                                        <a class="no-underline bg-white rounded-lg shadow hover:shadow-raised hover:translateY-2px transition flex-1 flex flex-col" href="${contextUrl}/project/${project.id}">
+                                            <div class="p-6 flex flex-col">
+                                                <h3 class="font-display text-black no-underline mb-2 font-bold">
+                                                        ${project.name}
+                                                </h3> <!-- TODO: Seed the HQ by default-->
+                                                <div class="text-gray-700 text-sm">
+                                                        ${project.description}
+                                                </div>
+                                                <div class="mt-4">
+                                                    <div class="flex overflow-hidden">
+                                                        <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
+                                                             src="${contextUrl}/avatar/${project.user.id}/${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}.svg"
+                                                             title="${project.user.firstName} ${project.user.lastName}">
+                                                        <c:forEach items="${project.users}" var="user">
+                                                            <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid" src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
+                                                                 title="${user.firstName} ${user.lastName}">
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
+                                </c:if>
                             </c:forEach>
                         </div>
                     </div>

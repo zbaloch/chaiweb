@@ -27,3 +27,19 @@ alter table notifications
 
 alter table notifications change `read` is_read tinyint(1) null;
 
+
+alter table projects
+	add status VARCHAR(16) null;
+
+alter table todos
+	add status VARCHAR(16) null;
+
+alter table messages
+	add status varchar(16) null;
+
+alter table comments
+	add status varchar(16) null;
+
+
+
+

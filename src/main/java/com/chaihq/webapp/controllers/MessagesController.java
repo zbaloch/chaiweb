@@ -5,6 +5,7 @@ import com.chaihq.webapp.repositories.*;
 import com.chaihq.webapp.storage.StorageFileNotFoundException;
 import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
+import org.apache.tomcat.util.bcel.Const;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -144,6 +145,8 @@ public class MessagesController {
     public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
                        Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+
         Project project = projectRepository.getOne(project_id);
         model.put("project", project);
 
@@ -155,8 +158,24 @@ public class MessagesController {
         for(int i=0; i<comments.size(); i++) {
             Comment comment = comments.get(i);
             comment.setTextToDisplay(escapeHtml(comment.getText()));
+
+            List<Notification> notifications = notificationRepository.findAllByObjectIdAndForUser(comment.getId(), currentUser);
+            for (Notification notification: notifications
+            ) {
+                notification.setRead(true);
+                notification.setReadAt(Calendar.getInstance());
+                notificationRepository.save(notification);
+            }
         }
         // model.put(Constants.COMMENTS, comments);
+
+        List<Notification> notifications = notificationRepository.findAllByObjectIdAndForUser(message.getId(), currentUser);
+        for (Notification notification: notifications
+        ) {
+            notification.setRead(true);
+            notification.setReadAt(Calendar.getInstance());
+            notificationRepository.save(notification);
+        }
 
         System.out.println("project: " + project_id);
         System.out.println("message.getContent(): " + message.getContent());
@@ -213,6 +232,10 @@ public class MessagesController {
         project = projectRepository.getOne(project_id);
         message = messageRepository.getOne(message_id);
         messageRepository.delete(message);
+
+        List<Notification> notificationsToDelete = notificationRepository.findAllByObjectId(message.getId());
+        notificationRepository.deleteInBatch(notificationsToDelete);
+
         model.put("project", project);
         redirectAttributes.addFlashAttribute("notice", "Your message was deleted!");
         return "redirect:/project/" + project_id + "/messages";
@@ -315,6 +338,10 @@ public class MessagesController {
         // TODO: Make sure the user has the access
         Comment commentToDelete = commentRepository.getOne(commentId);
         commentRepository.delete(commentToDelete);
+
+        List<Notification> notificationsToDelete = notificationRepository.findAllByObjectId(commentToDelete.getId());
+        notificationRepository.deleteInBatch(notificationsToDelete);
+
         return commentToDelete;
     }
 

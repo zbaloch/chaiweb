@@ -35,6 +35,7 @@ public class Project {
     )
     private List<User> users;
 
+    private String status;
 
     public Project() {
 
@@ -101,5 +102,13 @@ public class Project {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

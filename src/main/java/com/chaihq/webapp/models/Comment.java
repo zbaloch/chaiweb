@@ -36,8 +36,11 @@ public class Comment {
     @JoinColumn(name="todo_id")
     private Todo todo;
 
+
     @Transient
     private Project project;
+
+    private String status;
 
     public long getId() {
         return id;
@@ -117,5 +120,13 @@ public class Comment {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

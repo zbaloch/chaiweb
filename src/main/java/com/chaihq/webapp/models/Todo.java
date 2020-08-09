@@ -46,6 +46,8 @@ public class Todo {
     @OneToMany(mappedBy = "todo")
     private List<Comment> comments;
 
+    private String status;
+
     private String notes;
 
     public long getId() {
@@ -145,21 +147,11 @@ public class Todo {
         this.notes = notes;
     }
 
-    @Override
-    public String toString() {
-        return "Todo{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", assignedTo=" + assignedTo +
-                ", assignedToVariable=" + assignedToVariable +
-                ", dueDate=" + dueDate +
-                ", dueDateVariable=" + dueDateVariable +
-                ", done=" + done +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
-                ", project=" + project +
-                ", comments=" + comments +
-                ", notes='" + notes + '\'' +
-                '}';
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

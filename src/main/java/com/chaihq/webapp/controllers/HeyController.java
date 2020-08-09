@@ -7,10 +7,7 @@ import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -97,6 +94,33 @@ public class HeyController {
         model.addAttribute("notifications", notifications);
 
         return "hey/index";
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value="/hasUnreadNotifications",
+            produces = "application/json")
+    @ResponseBody
+    public boolean hasUnreadNotifications (HttpSession httpSession) {
+        // TODO: Make sure the user has the access
+
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+
+        if(currentUser != null) {
+            List<Notification> notifications = notificationRepository.findAllByForUserAndReadIsFalse(currentUser);
+
+            System.out.println("Notifications size: " + notifications.size());
+
+            if(notifications.size() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+
     }
 
     public String html2text(String html) {

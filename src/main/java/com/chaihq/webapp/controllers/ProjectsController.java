@@ -112,7 +112,9 @@ public class ProjectsController {
     @GetMapping("/project/{id}/delete")
     public String delete(@PathVariable Long id, final RedirectAttributes redirectAttributes ) {
         // TODO: Make sure this belongs to the current loggedin user
-        projectRepository.deleteById(id);
+        Project projectToDelete = projectRepository.getOne(id);
+        projectToDelete.setStatus(Constants.DELETED);
+        projectRepository.save(projectToDelete);
         redirectAttributes.addFlashAttribute("destruction_notice", "Project deleted!");
         return "redirect:/projects";
     }

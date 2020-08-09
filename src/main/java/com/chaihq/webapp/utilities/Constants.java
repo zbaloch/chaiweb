@@ -25,5 +25,7 @@ public class Constants {
     public static final String NOTIFICATION_MESSAGE_NEW_TODO_COMMENT = "new_todo_comment";
     public static final String NOTIFICATION_MESSAGE_NEW_FILE = "new_file";
 
+    public static final String DELETED = "deleted";
+
 
 }

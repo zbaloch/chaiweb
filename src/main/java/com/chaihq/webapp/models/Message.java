@@ -37,6 +37,8 @@ public class Message {
     @Transient
     private Project project;
 
+    private String status;
+
     public Long getId() {
         return id;
     }
@@ -115,5 +117,13 @@ public class Message {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

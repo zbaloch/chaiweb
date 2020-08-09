@@ -81,6 +81,8 @@ public class TodosController {
         User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
         System.out.println(project.getName());
+
+
         model.put("project", project);
         model.put("todo", todo);
         System.out.println("neew");
@@ -144,6 +146,8 @@ public class TodosController {
     public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
                         Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
+        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+
         Project project = projectRepository.getOne(project_id);
         model.put("project", project);
 
@@ -155,7 +159,25 @@ public class TodosController {
         for(int i=0; i<comments.size(); i++) {
             Comment comment = comments.get(i);
             comment.setTextToDisplay(escapeHtml(comment.getText()));
+
+            List<Notification> notifications = notificationRepository.findAllByObjectIdAndForUser(comment.getId(), currentUser);
+            for (Notification notification: notifications
+            ) {
+                notification.setRead(true);
+                notification.setReadAt(Calendar.getInstance());
+                notificationRepository.save(notification);
+            }
         }
+
+        // Mark any notifications as read
+        List<Notification> notifications = notificationRepository.findAllByObjectIdAndForUser(todo.getId(), currentUser);
+        for (Notification notification: notifications
+             ) {
+            notification.setRead(true);
+            notification.setReadAt(Calendar.getInstance());
+            notificationRepository.save(notification);
+        }
+
 
         return "todos/show";
     }
@@ -222,6 +244,10 @@ public class TodosController {
         project = projectRepository.getOne(project_id);
         todo = todoRepository.getOne(todo_id);
         todoRepository.delete(todo);
+
+        List<Notification> notificationsToDelete = notificationRepository.findAllByObjectId(todo.getId());
+        notificationRepository.deleteInBatch(notificationsToDelete);
+
         model.put("project", project);
         redirectAttributes.addFlashAttribute("notice", "Your todo was deleted!");
         return "redirect:/project/" + project_id + "/todos";
@@ -317,6 +343,10 @@ public class TodosController {
         // TODO: Make sure the user has the access
         Comment commentToDelete = commentRepository.getOne(commentId);
         commentRepository.delete(commentToDelete);
+
+        List<Notification> notificationsToDelete = notificationRepository.findAllByObjectId(commentToDelete.getId());
+        notificationRepository.deleteInBatch(notificationsToDelete);
+
         return commentToDelete;
     }
 
