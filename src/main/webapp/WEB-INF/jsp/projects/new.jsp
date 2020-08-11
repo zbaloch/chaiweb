@@ -37,6 +37,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:input path="name" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="name"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">
@@ -46,6 +49,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:textarea path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 "></form:textarea>
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="description"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">
@@ -55,7 +61,7 @@
 
                 <div class="mt-4">
                     <div class="flex items-center">
-                        <form:radiobutton path="projectType" value="project" cssClass="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"></form:radiobutton>
+                        <form:radiobutton checked="true" path="projectType" value="project" cssClass="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"></form:radiobutton>
                         <span class="ml-3 block text-sm leading-5 font-medium text-gray-700">Project</span>
                     </div>
                 </div>
@@ -82,8 +88,6 @@
                 </span>
             </div>
         </div>
-
-
 
 
     </form:form>

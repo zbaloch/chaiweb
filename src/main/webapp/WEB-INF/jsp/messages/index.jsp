@@ -68,12 +68,12 @@
                                             </div>
                                             <div class="min-w-0 flex-1 px-4 mr-4">
                                                 <div>
-                                                    <%-- <div class="leading-5 font-medium font-gray-900 truncate">
-                                                        ${message.title}
-                                                    </div> --%>
                                                     <div class="leading-5 font-medium font-gray-900 truncate">
-                                                        <span class="font-sans truncate">${message.contentToDisplay}</span>
+                                                        ${message.title}
                                                     </div>
+                                                    <%-- <div class="leading-5 font-medium font-gray-900 truncate">
+                                                        <span class="font-sans truncate">${message.contentToDisplay}</span>
+                                                    </div> --%>
                                                     <div class="mt-1 flex items-center text-sm leading-5 text-gray-500">
                                                         <span class="truncate">
                                                             <%-- <span class="font-sans truncate">${message.contentToDisplay}</span> --%>
@@ -84,7 +84,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
+                                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800 font-bold">
                                                 ${message.comments.size()}
                                             </div>
                                         </div>

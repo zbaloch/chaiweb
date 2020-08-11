@@ -4,10 +4,13 @@ import com.chaihq.webapp.models.*;
 import com.chaihq.webapp.repositories.*;
 import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
+import com.chaihq.webapp.validator.CommentValidator;
+import com.chaihq.webapp.validator.TodoValidator;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -49,6 +52,12 @@ public class TodosController {
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Autowired
+    private TodoValidator todoValidator;
+
+    @Autowired
+    private CommentValidator commentValidator;
 
 
     @GetMapping("/project/{project_id}/todos")
@@ -92,11 +101,23 @@ public class TodosController {
 
     @PostMapping("/project/{project_id}/todo/new")
     public String save(@ModelAttribute("todo") Todo todo,
-                       @ModelAttribute("project") Project project,
                        HttpSession httpSession, @PathVariable Long project_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                       Map<String, Object> model, RedirectAttributes redirectAttributes,
+                       BindingResult bindingResult) throws Exception {
 
-        project = projectRepository.getOne(project_id);
+        System.out.println("Todo: " + todo);
+
+        Project project = projectRepository.getOne(project_id);
+
+        model.put(Constants.PROJECT, project);
+
+        todoValidator.validate(todo, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "todos/new";
+        }
+
+        // Todo: validate
+
         User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         todo.setCreatedBy(currentUser);
         User assignedToUser = userRepository.getOne(todo.getAssignedToVariable());
@@ -137,6 +158,7 @@ public class TodosController {
 
 
         redirectAttributes.addFlashAttribute("notice", "Your todo was created!");
+        model.put(Constants.PROJECT, project);
 
         return "redirect:/project/" + project_id + "/todos";
 
@@ -197,13 +219,27 @@ public class TodosController {
 
     @PostMapping("/project/{project_id}/todo/{todo_id}/edit")
     public String update(@ModelAttribute("todo") Todo todo,
-                         @ModelAttribute("project") Project project,
+                         BindingResult bindingResult,
                          HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
                          Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
         // TODO: Check if this belongs to this user.
 
         Todo todoToUpdate = todoRepository.getOne(todo_id);
+        Project project = projectRepository.getOne(project_id);
+
+        todo.setDueDate(todoToUpdate.getDueDate());
+        todo.setDueDateVariable(todoToUpdate.getDueDate().getTime());
+        todo.setId(todo_id);
+
+        model.put("project", project);
+        model.put("todo", todo);
+
+        todoValidator.validate(todo, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "todos/edit";
+        }
+
 
         User userToUpdate = userRepository.getOne(todo.getAssignedToVariable());
         Calendar dueDateCalendar = Calendar.getInstance();
@@ -217,6 +253,9 @@ public class TodosController {
 
         System.out.println(todoToUpdate);
 
+
+
+
         todoRepository.save(todoToUpdate);
 
         /* description: Sample todo
@@ -225,7 +264,7 @@ public class TodosController {
         notes: <div>This is great!!!!</div> */
 
         redirectAttributes.addFlashAttribute("notice", "Your todo was updated!");
-        project = projectRepository.getOne(project_id);
+
         model.put("project", project);
         model.put("todo", todoToUpdate);
 
@@ -274,11 +313,20 @@ public class TodosController {
     @PostMapping("/project/{project_id}/todo/{todo_id}")
     public String addComment(@ModelAttribute("comment") Comment comment,
                              HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
-                             Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                             Map<String, Object> model, RedirectAttributes redirectAttributes,
+                             BindingResult bindingResult) throws Exception {
 
         Project project = projectRepository.getOne(project_id);
 
         Todo todo = todoRepository.getOne(todo_id);
+
+        model.put("project", project);
+        model.put("todo", todo);
+
+        commentValidator.validate(comment, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "todos/show";
+        }
 
 
         System.out.println("comment.getText(): " + comment.getText());

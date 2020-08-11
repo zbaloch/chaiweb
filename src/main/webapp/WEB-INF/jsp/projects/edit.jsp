@@ -45,6 +45,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:input path="name" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="name"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">
@@ -54,6 +57,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:textarea path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 "></form:textarea>
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="description"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">

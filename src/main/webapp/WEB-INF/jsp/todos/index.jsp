@@ -33,12 +33,12 @@
                         </nav>
 
                         <div>
-                                <span class="inline-flex rounded-full shadow-sm">
+                                <%-- <span class="inline-flex rounded-full shadow-sm">
 
                                    <a href="${contextUrl}/project/${project.id}/todo/new" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                        New
                                    </a>
-                               </span>
+                               </span> --%>
                         </div>
 
                     </div>
@@ -79,7 +79,7 @@
                                                     <div class=" leading-5 flex">
                                                         <span class="font-gray-900 mr-2">${todo.description}</span>
                                                         <c:if test="${todo.comments.size() != 0}">
-                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-600 text-white text-xs mr-2">
+                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-100 text-indigo-800 text-xs mr-2 font-bold">
                                                                     ${todo.comments.size()}
                                                             </span>
                                                         </c:if>
@@ -150,7 +150,7 @@
                                                         <div class=" leading-5 flex">
                                                             <span class="font-gray-900 mr-2">${todo.description}</span>
                                                             <c:if test="${todo.comments.size() != 0}">
-                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-600 text-white text-xs mr-2">
+                                                            <span class="h-5 w-5 text-center rounded-full bg-indigo-100 text-indigo-800 text-xs mr-2 font-bold">
                                                                     ${todo.comments.size()}
                                                             </span>
                                                             </c:if>

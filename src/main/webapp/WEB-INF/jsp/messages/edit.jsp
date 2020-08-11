@@ -88,12 +88,15 @@
                                 <div>
 
                                     <div class="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+
                                         <div class="sm:col-span-6">
                                             <div class="mt-1 rounded-md shadow-sm">
                                                 <form:input path="title" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input>
+                                                <p class="mt-1 text-sm mb-4 text-red-500">
+                                                    <form:errors path="title"></form:errors>
+                                                </p>
                                             </div>
                                         </div>
-
 
                                         <script type="x-template" id="editor-template-${message.id}">
                                             <div>
@@ -101,12 +104,15 @@
                                                             <%-- <input id="messageContent" type="hidden" name="content"> --%>
                                                         <input type="hidden" id="x_${message.id}" name="content" value="${message.contentToDisplay}"/>
                                                             <%-- <form:hidden path="content"/> --%>
-                                                        <trix-editor input="x_${message.id}"></trix-editor>
+                                                        <trix-editor input="x_${message.id}" class="trix-editor-message"></trix-editor>
                                             </div>
                                         </script>
 
                                         <div class="sm:col-span-6">
                                             <editor></editor>
+                                            <p class="mt-1 text-sm mb-4 text-red-500">
+                                                <form:errors path="content"></form:errors>
+                                            </p>
                                         </div>
 
                                     </div>

@@ -47,8 +47,24 @@
                         </div>
 
                     </div>
+
+                    <div class="mt-4 flex justify-between">
+                        <h3 class="text-xl leading-6 font-medium text-gray-900">
+                            ${message.title}
+                        </h3>
+                        <div class="text-sm">
+                            <a class="cursor-pointer ">
+                                <div>
+                                    <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800 font-bold">
+                                        ${message.comments.size()}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="mt-2">
-                        <div id="comment_44" class="sm:col-span-6 mt-6">
+                        <div class="sm:col-span-6 mt-6">
                             <div class="relative">
                                 <div class="absolute left-0 top-0">
                                     <img src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full">
@@ -56,20 +72,12 @@
                                 <div class="ml-16">
                                     <div class="flex justify-between ">
                                         <div>
-                                            <span class="font-semibold">${message.user.firstName} ${message.user.lastName}, </span>
+                                            <span class="font-medium">${message.user.firstName} ${message.user.lastName}, </span>
                                             <span class="text-sm mt-1 text-gray-600">
                                                 <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>
                                             </span>
                                         </div>
-                                        <div class="text-sm">
-                                            <a class="cursor-pointer ">
-                                                <div>
-                                                    <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
-                                                        ${message.comments.size()}
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
+
                                     </div>
 
                                     <div class="trix-editor-content">
@@ -94,7 +102,7 @@
                                             <div class="ml-16">
                                             <div class="flex justify-between ">
                                                 <div>
-                                                    <span class="font-semibold">${comment.user.firstName} ${comment.user.lastName}, </span>
+                                                    <span class="font-medium">${comment.user.firstName} ${comment.user.lastName}, </span>
                                                     <span class="text-sm mt-1 text-gray-600">
                                                         <fmt:formatDate value="${comment.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${comment.createdAt.time}" pattern="h:m a"/>
                                                     </span>
@@ -163,6 +171,9 @@
                                             </script>
                                             <div class="ml-16">
                                                 <comment-editor></comment-editor>
+                                                <p class="mt-1 text-sm mb-4 text-red-500">
+                                                    <form:errors path="text"></form:errors>
+                                                </p>
                                                 <div class="mt-4">
                                                     <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                                                         Add this comment

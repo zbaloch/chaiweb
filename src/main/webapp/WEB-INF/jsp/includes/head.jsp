@@ -33,6 +33,7 @@
     <script src="${contextUrl}/js/trix.js"></script>
     <script src="${contextUrl}/js/application.js"></script>
     <script src="${contextUrl}/js/attachments.js"></script>
+    <script src="${contextUrl}/js/moment.min.js"></script>
 
     <style>
         .first\:ml-0:first-child {

@@ -6,11 +6,13 @@ import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.repositories.ProjectRepository;
 import com.chaihq.webapp.repositories.UserRepository;
 import com.chaihq.webapp.utilities.Constants;
+import com.chaihq.webapp.validator.ProjectValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,6 +32,9 @@ public class ProjectsController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectValidator projectValidator;
+
 
     // @GetMapping("/projects")
     @RequestMapping(value = {"/", "/projects"}, method = RequestMethod.GET)
@@ -47,19 +52,19 @@ public class ProjectsController {
         List<User> users = new ArrayList<User>();
         users.add(currentUser);
 
-        List<Project> hqs = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_HQ);
+        List<Project> hqs = projectRepository.findByUserAndProjectTypeEquals(currentUser, Constants.PROJECT_TYPE_HQ);
         List<Project> hqsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_HQ);
         hqs.addAll(hqsPartOf);
         model.put("hqs", hqs);
 
 
 
-        List<Project> projects = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_PROJECT);
+        List<Project> projects = projectRepository.findByUserAndProjectTypeEquals(currentUser, Constants.PROJECT_TYPE_PROJECT);
         List<Project> projectsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_PROJECT);
         projects.addAll(projectsPartOf);
         model.put("projects", projects);
 
-        List<Project> teams = projectRepository.findByCreatedByAndProjectTypeEquals(currentUser.getId(), Constants.PROJECT_TYPE_TEAM);
+        List<Project> teams = projectRepository.findByUserAndProjectTypeEquals(currentUser, Constants.PROJECT_TYPE_TEAM);
         List<Project> teamsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_TEAM);
         teams.addAll(teamsPartOf);
         model.put("teams", teams);
@@ -75,28 +80,16 @@ public class ProjectsController {
     }
 
     @PostMapping("/project/new")
-    public String save(@ModelAttribute("project")Project project, final RedirectAttributes redirectAttributes, HttpSession httpSession) {
-        System.out.println("@PostMapping(\"/project/new\") gulp file xxxxx");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println( authentication.getDetails() );
-        String currentPrincipalName = authentication.getName();
-        System.out.println(currentPrincipalName);
-
-        User user = userRepository.findByUsername(currentPrincipalName);
-        System.out.println(user.getId());
-        System.out.println(user.getFirstName());
-
-        // User current_user = (User) httpSession.getAttribute("current_user");
-        // System.out.println("save" + current_user.getFirstName());
-        // Add log4j
-        // return "redirect:projects/index"; // Could have done return "show" to follow RoR convention
-        // return "redirect:projects/new"
-        project.setCreatedBy(user.getId());
+    public String save(@ModelAttribute("project")Project project, final RedirectAttributes redirectAttributes, HttpSession httpSession,
+                       BindingResult bindingResult) {
+        projectValidator.validate(project, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "projects/new";
+        }
+        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        project.setUser(user);
         project.setCreatedAt(Calendar.getInstance());
-
         projectRepository.save(project);
-
-
         redirectAttributes.addFlashAttribute("notice", "Project saved!");
         return "redirect:/projects";
     }
@@ -211,13 +204,20 @@ public class ProjectsController {
 
     @PostMapping("/project/{id}/edit")
     public String update(@PathVariable Long id, @ModelAttribute("project")Project project,
-                         Map<String, Object> model, HttpSession httpSession) {
+                         Map<String, Object> model, HttpSession httpSession, BindingResult bindingResult) {
+
+        projectValidator.validate(project, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "projects/edit";
+        }
+
         Project projectToUpdate = projectRepository.getOne(id);
         System.out.println(project.getName());
         projectToUpdate.setName(project.getName());
         projectToUpdate.setDescription(project.getDescription());
         projectRepository.save(projectToUpdate);
-        model.put("project", project);
+        model.put("project", projectToUpdate);
         model.put("notice", "Project updated!");
         return "projects/show";
     }

@@ -53,7 +53,7 @@
                                    </a>
                                     </c:if>
                                     <c:if test="${todo.done == true}">
-                                        <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        <span class="px-2 inline-flex leading-5 font-medium rounded-full bg-green-100 text-green-800">
                                             Done
                                         </span>
                                     </c:if>
@@ -133,7 +133,7 @@
                         <div class="flex items-center">
 
                             <div class="flex items-center">
-                                <span class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-500 text-white">
+                                <span class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800 font-bold">
                                     ${todo.comments.size()}
                                 </span>
                             </div>
@@ -159,7 +159,7 @@
                                         <div class="ml-16">
                                             <div class="flex justify-between ">
                                                 <div>
-                                                    <span class="font-semibold">${comment.user.firstName} ${comment.user.lastName}, </span>
+                                                    <span class="font-medium">${comment.user.firstName} ${comment.user.lastName}, </span>
                                                     <span class="text-sm mt-1 text-gray-600">
                                                         <fmt:formatDate value="${comment.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${comment.createdAt.time}" pattern="h:m a"/>
                                                     </span>

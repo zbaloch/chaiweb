@@ -61,6 +61,9 @@
                                 <div class="mt-1 rounded-md shadow-sm">
                                     <%-- <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/> --%>
                                     <form:input path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input>
+                                        <p class="mt-1 text-sm mb-4 text-red-500">
+                                            <form:errors path="description"></form:errors>
+                                        </p>
                                 </div>
                             </div>
 
@@ -89,9 +92,12 @@
                                 </label>
                                 <div class="mt-1 rounded-md">
 
-                                    <fmt:formatDate value="${todo.dueDate.time}" var="dueDateVar" pattern="yyyy-MM-dd"></fmt:formatDate>
-                                    <input type="date" data-date="" id="dueDateVariable" name="dueDateVariable" data-date-format="dd/mm/yyyy"
-                                           value="${dueDateVar}" class=" form-input block w-full pl-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                    <input type="date" id="dueDateVariable" name="dueDateVariable" value="2020-08-11"
+                                            class=" form-input block w-full pl-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+
+                                    <p class="mt-1 text-sm mb-4 text-red-500">
+                                        <form:errors path="dueDateVariable"></form:errors>
+                                    </p>
 
                                 </div>
 
@@ -152,6 +158,7 @@
     Vue.component("editor", {
         template: "#editor-template"
     });
+
 
 </script>
 

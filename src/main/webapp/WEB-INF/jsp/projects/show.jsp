@@ -23,7 +23,7 @@
                                     Home
                                 </a>
                             </nav>
-                            <c:if test="${project.createdBy == sessionScope.current_user.id && project.projectType != 'hq'}">
+                            <c:if test="${project.user.id == sessionScope.current_user.id && project.projectType != 'hq'}">
                                 <div class="relative">
                                     <button v-on:click="isProjectActionsOpen = !isProjectActionsOpen" class="text-gray-800 font-bold z-10 relative">
                                         <svg class="fill-current w-4 h-4 mr-2" fill="none" stroke-linejoin="round" stroke-width="2" viewBox="0 0 20 20" stroke="currentColor">
@@ -67,7 +67,7 @@
                                          src="${contextUrl}/avatar/${user.id}/${user.firstName.charAt(0)}${user.lastName.charAt(0)}.svg"
                                          title="${user.firstName} ${user.lastName}">
                                 </c:forEach>
-                                <c:if test="${project.createdBy == sessionScope.current_user.id}">
+                                <c:if test="${project.user.id == sessionScope.current_user.id}">
                                     <a href="${contextUrl}/project/${project.id}/users" class="ml-2 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
                                         Add/Remove people
                                     </a>

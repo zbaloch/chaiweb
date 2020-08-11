@@ -61,6 +61,9 @@
                                         <div class="mt-1 rounded-md shadow-sm">
                                                 <%-- <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/> --%>
                                             <form:input path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."></form:input>
+                                                    <p class="mt-1 text-sm mb-4 text-red-500">
+                                                        <form:errors path="description"></form:errors>
+                                                    </p>
                                         </div>
                                     </div>
 

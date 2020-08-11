@@ -22,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -136,17 +138,24 @@ public class FilesController {
                        // @RequestParam("file") MultipartFile file,
                        // @ModelAttribute("project")Project project,
                        HttpSession httpSession, @PathVariable Long project_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                       Map<String, Object> model, RedirectAttributes redirectAttributes,
+                       BindingResult bindingResult) throws Exception {
 
         // storageService.store(activeStorageFile.getMultipartFile());
+        Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
+
+        model.put(Constants.PROJECT, project);
 
         String fileName = StringUtils.cleanPath(activeStorageFile.getMultipartFile().getOriginalFilename());
 
+        if(fileName == null || "".equals(fileName)) {
+            bindingResult.addError(new FieldError("activeStorageFile", "multipartFile", "Field not provided"));
+            return "files/new";
+        }
 
 
-        System.out.println("Post: /project/{id}/file/new");
         User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        Project project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
+
         redirectAttributes.addFlashAttribute("notice", "File uploaded!");
 
         activeStorageFile.setCreatedAt(Calendar.getInstance());

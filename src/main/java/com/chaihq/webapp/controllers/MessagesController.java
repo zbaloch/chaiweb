@@ -5,6 +5,8 @@ import com.chaihq.webapp.repositories.*;
 import com.chaihq.webapp.storage.StorageFileNotFoundException;
 import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
+import com.chaihq.webapp.validator.CommentValidator;
+import com.chaihq.webapp.validator.MessageValidator;
 import org.apache.tomcat.util.bcel.Const;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.List;
@@ -53,6 +57,12 @@ public class MessagesController {
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Autowired
+    private MessageValidator messageValidator;
+
+    @Autowired
+    private CommentValidator commentValidator;
 
     @GetMapping("/project/{id}/messages")
     public String index(@PathVariable Long id, Model model) {
@@ -91,9 +101,20 @@ public class MessagesController {
 
     @PostMapping("/project/{project_id}/message/new")
     public String save(@ModelAttribute("message") Message message,
-                       @ModelAttribute("project") Project project,
                        HttpSession httpSession, @PathVariable Long project_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                       Map<String, Object> model, RedirectAttributes redirectAttributes,
+                       BindingResult bindingResult) throws Exception {
+
+        messageValidator.validate(message, bindingResult);
+
+        System.out.println("Message content: " + message.getContent());
+
+        Project project = projectRepository.getOne(project_id);
+        model.put(Constants.PROJECT, project);
+
+        if(bindingResult.hasErrors()) {
+            return "messages/new";
+        }
 
         User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         message.setUser(currentUser);
@@ -101,7 +122,7 @@ public class MessagesController {
         message.setCreatedAt(Calendar.getInstance());
         messageRepository.save(message);
 
-        project = projectRepository.getOne(project_id);
+
 
         if(currentUser.getId() != project.getUser().getId()) {
             Notification notification = new Notification();
@@ -113,8 +134,6 @@ public class MessagesController {
             notification.setForUser(project.getUser());
             notificationRepository.save(notification);
         }
-
-
 
         for(int i=0; i<project.getUsers().size(); i++) {
             User forUser = project.getUsers().get(i);
@@ -130,8 +149,6 @@ public class MessagesController {
             }
 
         }
-
-
 
         redirectAttributes.addFlashAttribute("notice", "Your message created!");
 
@@ -199,24 +216,38 @@ public class MessagesController {
 
     @PostMapping("/project/{project_id}/message/{message_id}/edit")
     public String update(@ModelAttribute("message") Message message,
-                       @ModelAttribute("project") Project project,
                        HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                       Map<String, Object> model, RedirectAttributes redirectAttributes,
+                         BindingResult bindingResult) throws Exception {
 
         // TODO: Check if this belongs to this user.
 
-        System.out.println("update...");
 
+
+        Project project = projectRepository.getOne(project_id);
         Message messageToUpdate = messageRepository.getOne(message_id);
+
+        model.put("project", project);
+
+        message.setId(message_id);
+        message.setContentToDisplay(escapeHtml(message.getContent()));
+
+        model.put("message", message);
+
+        messageValidator.validate(message, bindingResult);
+
+        if(bindingResult.hasErrors()) {
+            return "messages/edit";
+        }
+
+
         messageToUpdate.setTitle(message.getTitle());
         messageToUpdate.setContent(message.getContent()); // TODO:Probably need last updated?
 
         messageRepository.save(messageToUpdate);
 
         redirectAttributes.addFlashAttribute("notice", "Your message was updated!");
-        project = projectRepository.getOne(project_id);
-        model.put("project", project);
-        model.put("message", message);
+        model.put("message", messageToUpdate);
 
         return "redirect:/project/" + project_id + "/message/" + messageToUpdate.getId();
 
@@ -231,7 +262,8 @@ public class MessagesController {
 
         project = projectRepository.getOne(project_id);
         message = messageRepository.getOne(message_id);
-        messageRepository.delete(message);
+        message.setStatus(Constants.DELETED);
+        messageRepository.save(message);
 
         List<Notification> notificationsToDelete = notificationRepository.findAllByObjectId(message.getId());
         notificationRepository.deleteInBatch(notificationsToDelete);
@@ -243,12 +275,23 @@ public class MessagesController {
 
     @PostMapping("/project/{project_id}/message/{message_id}")
     public String addComment(@ModelAttribute("comment") Comment comment, HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
-                             Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+                             Map<String, Object> model, RedirectAttributes redirectAttributes,
+                             BindingResult bindingResult) throws Exception {
+
+
+
 
         Project project = projectRepository.getOne(project_id);
 
-
         Message message = messageRepository.getOne(message_id);
+
+        model.put("project", project);
+        model.put("message", message);
+
+        commentValidator.validate(comment, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return   "messages/show";
+        }
 
 
         System.out.println("comment.getText(): " + comment.getText());

@@ -20,8 +20,6 @@ public class Project {
     @Column(name = "created_at")
     private Calendar createdAt;
 
-    @Column(name = "created_by")
-    private Long createdBy;
 
     @OneToOne
     @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
@@ -78,14 +76,6 @@ public class Project {
 
     public void setCreatedAt(Calendar createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
     }
 
     public List<User> getUsers() {

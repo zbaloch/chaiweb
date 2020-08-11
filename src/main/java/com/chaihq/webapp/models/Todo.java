@@ -154,4 +154,23 @@ public class Todo {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", assignedTo=" + assignedTo +
+                ", assignedToVariable=" + assignedToVariable +
+                ", dueDate=" + dueDate +
+                ", dueDateVariable=" + dueDateVariable +
+                ", done=" + done +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                ", project=" + project +
+                ", comments=" + comments +
+                ", status='" + status + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
 }
