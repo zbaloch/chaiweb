@@ -29,7 +29,8 @@
                 errors: [],
                 name: null,
                 age: null,
-                movie: null
+                movie: null,
+                hasUnreadNotifications: false,
 
             },
             created() {
@@ -42,12 +43,18 @@
                     }
                 }
                 document.addEventListener('keydown', handleEscape)
-                var isChatPageField = document.getElementById('isChatPage').value
-                if(isChatPageField != null) {
-                    if(document.getElementById("isChatPage").value) {
-                        this.chatConnect();
+                if(document.getElementById('isChatPage') != null) {
+                    var isChatPageField = document.getElementById('isChatPage').value
+                    if(isChatPageField != null) {
+                        if(document.getElementById("isChatPage").value) {
+                            this.chatConnect();
+                        }
                     }
                 }
+
+
+                // alert("updated...")
+                this.getNotifications();
 
 
             },
@@ -182,7 +189,7 @@
                     this.showAvatarModal = !this.showAvatarModal;
                 },
                 messageTitleFocus: function () {
-                    console.log('messageTitleFocus')
+
                 },
                 /* deleteComment: function() {
                     // document.getElementById('delete-comment-form').submit()
@@ -193,7 +200,7 @@
                     axios.delete("/chaiweb/project/"+ projectId + "/message/" + messageId + "/comment/" + commentId + "/delete") // TODO: need to make chaiweb dynamic
                         .then(response => {
                             $("#comment_" + commentId).addClass('hidden')
-                            console.log(response)
+
                         })
                 },
                 deleteChatMessage: function(projectId, chatMessageId) {
@@ -201,10 +208,18 @@
                     axios.delete("/chaiweb/project/" + projectId + "/chat/" + chatMessageId) // TODO: need to make chaiweb dynamic
                         .then(response => {
                             $("#chat_message_" + chatMessageId).addClass('hidden')
-                            console.log("deleting message: " + chatMessageId)
-                            console.log(response)
+
                         })
                 },
+
+                getNotifications: function() {
+                    axios.get("/chaiweb/hasUnreadNotifications").then(response => {
+
+                        if(response.data) {
+                            this.hasUnreadNotifications = true;
+                        }
+                    })
+                }
 
 
             }

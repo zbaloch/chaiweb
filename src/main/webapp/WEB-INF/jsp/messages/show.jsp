@@ -49,22 +49,22 @@
                     </div>
 
                     <div class="mt-4 flex justify-between">
-                        <h3 class="text-xl leading-6 font-medium text-gray-900">
+                        <h3 class="text-2xl leading-6 font-bold text-gray-900">
                             ${message.title}
                         </h3>
                         <div class="text-sm">
-                            <a class="cursor-pointer ">
+                            <%-- <a class="cursor-pointer ">
                                 <div>
                                     <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800 font-bold">
                                         ${message.comments.size()}
                                     </div>
                                 </div>
-                            </a>
+                            </a> --%>
                         </div>
                     </div>
 
-                    <div class="mt-2">
-                        <div class="sm:col-span-6 mt-6">
+                    <div class="mt-4">
+                        <div class="sm:col-span-6 border-t border-b py-4 border-gray-200">
                             <div class="relative">
                                 <div class="absolute left-0 top-0">
                                     <img src="${contextUrl}/avatar/${message.user.id}/${message.user.firstName.charAt(0)}${message.user.lastName.charAt(0)}.svg" alt="" title="${message.user.firstName} ${message.user.lastName}" class="h-12 w-12 rounded-full">
@@ -73,24 +73,51 @@
                                     <div class="flex justify-between ">
                                         <div>
                                             <span class="font-medium">${message.user.firstName} ${message.user.lastName}, </span>
-                                            <span class="text-sm mt-1 text-gray-600">
-                                                <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>
-                                            </span>
+
                                         </div>
 
                                     </div>
+                                    <div class="text-sm text-gray-600">
+                                                <fmt:formatDate value="${message.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${message.createdAt.time}" pattern="h:m a"/>
+                                            </div>
 
-                                    <div class="trix-editor-content">
-                                            ${message.content}
-                                    </div>
+
 
                                 </div>
+
+
+
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="trix-editor-content mt-4">
+                        ${message.content}
+                    </div>
+
+
+                    <div class="mt-12">
+                        <div class="flex items-center">
+
+                            <div class="flex items-center">
+                                <span class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800 font-bold">
+                                    ${message.comments.size()}
+                                </span>
+                            </div>
+
+
+                            <h4>
+                                <div class="flex-shrink-0 pr-4 pl-4 text-lg leading-5 tracking-wider font-medium text-gray-900 ">Comments</div>
+                            </h4>
+                            <div class="flex-1 border-t border-gray-200"></div>
+                        </div>
+                    </div>
+
+
                     <div class="mt-8">
 
-                        <div class="mt-4">
+                        <div class="">
                             <c:forEach items="${message.comments}" var="comment">
                                 <div class="sm:col-span-6 mt-6" id="comment_${comment.id}">
                                         <div class="relative">

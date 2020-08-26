@@ -87,6 +87,7 @@ public class ProjectsController {
             return "projects/new";
         }
         User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        System.out.println("user: " + user.getId());
         project.setUser(user);
         project.setCreatedAt(Calendar.getInstance());
         projectRepository.save(project);

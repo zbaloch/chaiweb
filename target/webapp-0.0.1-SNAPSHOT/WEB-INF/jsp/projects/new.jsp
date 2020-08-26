@@ -37,6 +37,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:input path="name" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="name"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">
@@ -46,6 +49,9 @@
                 <div class="mt-1 rounded-md shadow-sm">
                     <form:textarea path="description" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 "></form:textarea>
                 </div>
+                <p class="mt-1 text-sm mb-4 text-red-500">
+                    <form:errors path="description"></form:errors>
+                </p>
             </div>
 
             <div class="sm:col-span-6">
@@ -55,7 +61,7 @@
 
                 <div class="mt-4">
                     <div class="flex items-center">
-                        <form:radiobutton path="projectType" value="project" cssClass="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"></form:radiobutton>
+                        <form:radiobutton checked="true" path="projectType" value="project" cssClass="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"></form:radiobutton>
                         <span class="ml-3 block text-sm leading-5 font-medium text-gray-700">Project</span>
                     </div>
                 </div>
@@ -75,15 +81,13 @@
         <div class="mt-8 border-t border-gray-200 pt-5">
             <div class="flex justify-end">
         <span class="inline-flex rounded-md shadow-sm">
-            <a href="/${contextUrl}/projects" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">Cancel</a>
+            <a href="${contextUrl}/projects" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">Cancel</a>
         </span>
                 <span class="ml-3 inline-flex rounded-md shadow-sm">
                     <input type="submit" value="Save" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"/>
                 </span>
             </div>
         </div>
-
-
 
 
     </form:form>
@@ -99,4 +103,7 @@
     </div>
 </div>
 
+</div>
+
 <%@ include file="../includes/footer.jsp"%>
+

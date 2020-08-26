@@ -204,5 +204,14 @@ public class FilesController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/cloudfront")
+    public ResponseEntity<String> cloudfrontSave(HttpSession httpSession) throws Exception {
+
+
+        return ResponseEntity.ok()
+                .header("Custom-Header", "foo")
+                .body("Custom header set");
+    }
+
 
 }

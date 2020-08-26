@@ -62,6 +62,9 @@
                 </label> --%>
                 <div class="mt-1 rounded-md shadow-sm">
                     <input type="file" name="multipartFile"/>
+                    <p class="mt-1 text-sm mb-4 text-red-500">
+                        <form:errors path="multipartFile"></form:errors>
+                    </p>
                 </div>
             </div>
 

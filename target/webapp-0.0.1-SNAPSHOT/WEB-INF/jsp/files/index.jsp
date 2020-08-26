@@ -77,7 +77,7 @@
                                                     ${activeStorageFile.description}
                                             </p> --%>
                                             <div class="text-sm text-gray-500 mt-1">
-                                                <%--Posted--%> By ${activeStorageFile.user.firstName} ·
+                                                <%--Posted--%> By ${activeStorageFile.user.firstName} ${activeStorageFile.user.lastName.charAt(0)}. on
                                                 <fmt:formatDate value="${activeStorageFile.createdAt.time}" type = "date" dateStyle = "long" timeStyle = "long"></fmt:formatDate>
                                                 <%-- · 73 KB --%>
                                             </div>

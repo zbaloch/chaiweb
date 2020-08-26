@@ -1,5 +1,6 @@
 (function() {
-  var HOST = "https://d13txem1unpe48.cloudfront.net/"
+  // var HOST = "https://d13txem1unpe48.cloudfront.net/"
+  var HOST = "/chaiweb/cloudfront"
 
   addEventListener("trix-attachment-add", function(event) {
     if (event.attachment.file) {
