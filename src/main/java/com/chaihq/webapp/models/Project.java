@@ -22,7 +22,7 @@ public class Project {
 
 
     @OneToOne
-    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User user;
 
     @ManyToMany
