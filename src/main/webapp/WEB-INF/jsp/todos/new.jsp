@@ -3,9 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
 
 
 <%@ include file="../includes/head.jsp"%>
+
+<jsp:useBean id="now" class="java.util.Date" />
 
 <body class="font-sans bg-gray-100">
 
@@ -92,7 +95,8 @@
                                 </label>
                                 <div class="mt-1 rounded-md">
 
-                                    <input type="date" id="dueDateVariable" name="dueDateVariable" value="2020-08-11"
+                                    <input type="date" id="dueDateVariable" name="dueDateVariable"
+                                           value="<fmt:formatDate pattern = "yyyy-MM-dd" value = "${now}" />"
                                             class=" form-input block w-full pl-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
 
                                     <p class="mt-1 text-sm mb-4 text-red-500">

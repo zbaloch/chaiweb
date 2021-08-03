@@ -2,10 +2,13 @@ package com.chaihq.webapp.controllers;
 
 import com.chaihq.webapp.models.Project;
 import com.chaihq.webapp.models.ProjectUserForm;
+import com.chaihq.webapp.models.Timesheet;
 import com.chaihq.webapp.models.User;
 import com.chaihq.webapp.repositories.ProjectRepository;
+import com.chaihq.webapp.repositories.TimesheetRepository;
 import com.chaihq.webapp.repositories.UserRepository;
 import com.chaihq.webapp.utilities.Constants;
+import com.chaihq.webapp.utilities.Util;
 import com.chaihq.webapp.validator.ProjectValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,10 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -34,6 +37,9 @@ public class ProjectsController {
 
     @Autowired
     private ProjectValidator projectValidator;
+
+    @Autowired
+    private TimesheetRepository timesheetRepository;
 
 
     // @GetMapping("/projects")
@@ -68,6 +74,14 @@ public class ProjectsController {
         List<Project> teamsPartOf = projectRepository.findByUsersInAndProjectTypeIs(users, Constants.PROJECT_TYPE_TEAM);
         teams.addAll(teamsPartOf);
         model.put("teams", teams);
+
+        // Get current users timelog to display on the homepage
+        List<Timesheet> timesheets = timesheetRepository.findAllByUserOrderByTimeLogDateDesc(currentUser);
+        Util util = new Util();
+        for(Timesheet timesheet: timesheets) {
+            timesheet.setNotesHTML( util.markdownToHtml(timesheet.getNotes()));
+        }
+        model.put("timesheets", timesheets);
 
         return "projects/index";
     }

@@ -187,7 +187,7 @@ public class UsersController {
         Util util = new Util();
 
         File avatarDir = new File( servletContext.getRealPath("/WEB-INF/jsp/user/avatars/") );
-        File avatar = new File(avatarDir.getAbsolutePath() + "\\" + util.reduceNumber(userId) + ".svg");
+        File avatar = new File(avatarDir.getAbsolutePath() + "/" + util.reduceNumber(userId) + ".svg");
         String avatarString = IOUtils.toString(new FileReader(avatar));
         avatarString = avatarString.replace("_USER_INITIAL_", userInitials);
 

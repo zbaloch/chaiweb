@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"  %>
 
 <%@ include file="../includes/head.jsp"%>
 
@@ -161,6 +162,103 @@
                             </c:forEach>
                         </div>
                     </div>
+
+                    <div class="mt-8">
+                        <div class="flex items-center">
+
+                            <a href="${contextUrl}/timesheet/new"
+                               class="flex-shrink-0 px-2 py-1 rounded-full border-2 border-gray-200 text-sm leading-5 tracking-wider font-medium bg-white text-gray-500">
+                                New
+                            </a>
+                            <div class="flex-1 border-t-2 border-gray-200"></div>
+                            <h4 class="flex-shrink-0 pr-4 pl-4 text-lg leading-5 tracking-wider font-medium text-gray-500">
+                                Timesheets
+                            </h4>
+                            <div class="flex-1 border-t-2 border-gray-200"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 mb-8">
+                        <div class="flex flex-wrap -mx-3">
+                            <!-- This example requires Tailwind CSS v2.0+ -->
+                            <div class="flex flex-col">
+                                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-200 table-auto">
+                                                <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Task
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        User
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Project
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Hours
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Actions
+                                                    </th>
+                                                    <%-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Hours
+                                                    </th> --%>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${timesheets}" var="timesheet" varStatus="loop">
+                                                <tr class="bg-white">
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm align-top">
+                                                        <div class="font-medium text-gray-900">${timesheet.task}</div>
+                                                        <div class="text-xs text-gray-500">${timesheet.notesHTML}</div>
+
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-top">
+                                                        ${timesheet.user.firstName} ${timesheet.user.lastName}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-top">
+                                                        ${timesheet.project.name}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-top">
+
+                                                            <fmt:formatDate type = "date"  value = "${timesheet.timeLogDate}" />
+
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-top">
+                                                      ${timesheet.manHours}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium align-top">
+                                                        <div class="flex">
+                                                            <a href="/timesheet/${timesheet.id}/edit" class="text-indigo-600 hover:text-red-900">
+                                                                <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2"><path _ngcontent-kqr-c26="" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                                            </a>
+                                                            <a href="/timesheet/${timesheet.id}/delete" class="text-red-600 hover:text-red-900">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5"><path _ngcontent-kqr-c26="" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <%-- <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                    </td> --%>
+                                                </tr>
+                                                </c:forEach>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
         </div>
