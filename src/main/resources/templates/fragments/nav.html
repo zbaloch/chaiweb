@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Navigation</title>
-</head>
-<body>
+<!-- src/main/resources/templates/fragments/nav.html -->
+<div th:fragment="nav">
     <form id="logoutForm" method="POST" th:action="@{/logout}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
     </form>
 
-    <div th:if="${#authentication.name != null}">
+    <div sec:authorize="!isAuthenticated()">
         <!-- Logged-in user navigation -->
         <nav>
             <div class="max-w-4xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -23,9 +19,9 @@
                     <div class="hidden lg:ml-4 lg:flex lg:items-center">
                         <div class="ml-4 relative flex-shrink-0">
                             <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
-                                <img class="h-8 w-8 rounded-full"
-                                     th:src="@{/avatar/{id}/{name}.svg(id=${session.current_user.id}, name=${session != null ? session.current_user.initialFirstNameLastName : ''})"
-                                     th:title="${session.current_user.firstName} + ' ' + ${session.current_user.lastName}" />
+                                <!-- <img class="h-8 w-8 rounded-full"
+                                     th:src="@{/avatar/{id}/{name}.svg(id=${#authentication.principal.id}, name=${#authentication.principal.initialFirstNameLastName})"
+                                     th:title="${#authentication.principal.firstName} + ' ' + ${#authentication.principal.lastName}" /> -->
                             </button>
                             <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
                                 <div class="py-1 rounded-md bg-white shadow-xs">
@@ -40,7 +36,7 @@
         </nav>
     </div>
 
-    <div th:if="${#authentication.name == null}">
+    <div sec:authorize="isAuthenticated()">
         <!-- Guest user navigation -->
         <nav>
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,5 +62,4 @@
             </div>
         </nav>
     </div>
-</body>
-</html>
+</div>
