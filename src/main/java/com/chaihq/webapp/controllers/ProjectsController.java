@@ -49,7 +49,7 @@ public class ProjectsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         // TODO: Maybe put this user in the session so that its not required to inqure from database again and again.
-        User user = userRepository.findByUsername(currentPrincipalName);
+        User user = userRepository.findByEmail(currentPrincipalName);
         String intialFirstNameLastName = "" + user.getFirstName().charAt(0) + "" + user.getLastName().charAt(0);
         user.setInitialFirstNameLastName(intialFirstNameLastName);
         httpSession.setAttribute(Constants.CURRENT_USER, user); // current_user is a term used within ruby on rails framework.

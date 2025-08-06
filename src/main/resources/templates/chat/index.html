@@ -1,16 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
-
-
-<%@ include file="../includes/head.jsp"%>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
 
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-    <jsp:include page="../includes/nav.jsp"></jsp:include>
+    <div th:replace="fragments/nav :: nav"></div>
 
     <div class="">
         <div class="py-4">
@@ -19,14 +14,14 @@
                 <div class="bg-white rounded-lg shadow p-6">
                     <div class="flex justify-between">
                         <nav class="flex items-center text-sm leading-5 font-medium">
-                            <a href="${contextUrl}/projects" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                            <a th:href="@{/projects}" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
                                 Home
                             </a>
                             <svg class="flex-shrink-0 mx-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            <a href="${contextUrl}/project/${project.id}" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                                ${project.name}
+                            <a th:href="@{'/project/' + ${project.id}}" class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                                <span th:text="${project.name}">Project Name</span>
                             </a>
                         </nav>
 
@@ -81,40 +76,35 @@
                                                 <!-- Chat messages -->
                                                 <div class="flex flex-col min-h-full">
                                                     <div class="flex-1 py-4 flex-1 overflow-y-scroll" id="chat-window">
-                                                        <c:forEach items="${chatMessages}" var="chatMessage">
-                                                            <div class="flex items-start mb-4 text-sm" id="chat_message_${chatMessage.id}">
-                                                                <img title="${chatMessage.user.firstName} ${chatMessage.user.lastName}"
-                                                                        src="${contextUrl}/avatar/${chatMessage.user.id}/${chatMessage.user.firstName.charAt(0)}${chatMessage.user.lastName.charAt(0)}.svg"
-                                                                     class="w-10 h-10 rounded-full mr-3">
-                                                                <div class="flex-1 overflow-hidden">
-                                                                    <div class="flex justify-between">
+                                                        <div th:each="chatMessage : ${chatMessages}" class="flex items-start mb-4 text-sm" th:id="'chat_message_' + ${chatMessage.id}">
+                                                            <img th:title="${chatMessage.user.firstName + ' ' + chatMessage.user.lastName}"
+                                                                    th:src="@{'/avatar/' + ${chatMessage.user.id} + '/' + ${chatMessage.user.firstName.charAt(0)} + ${chatMessage.user.lastName.charAt(0)} + '.svg'}"
+                                                                 class="w-10 h-10 rounded-full mr-3">
+                                                            <div class="flex-1 overflow-hidden">
+                                                                <div class="flex justify-between">
+                                                                    <div>
                                                                         <div>
-                                                                            <div>
-                                                                                <span class="font-bold">
-                                                                                    ${chatMessage.user.firstName} ${chatMessage.user.lastName}
-                                                                                </span>
-                                                                                <span class="text-grey text-xs">
-                                                                                    <fmt:formatDate value="${chatMessage.createdAt.time}" pattern="MMM dd, yyyy"/> at <fmt:formatDate value="${chatMessage.createdAt.time}" pattern="h:m a"/>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <c:if test="${chatMessage.user.id == sessionScope.current_user.id}">
-                                                                                <a v-on:click.stop="deleteChatMessage(${project.id}, ${chatMessage.id})" class="underline text-red-500 cursor-pointer ">
-                                                                                    <svg fill="none" class="h-5 w-5 mr-4" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                                                    </svg>
-                                                                                </a>
-                                                                            </c:if>
-
+                                                                            <span class="font-bold">
+                                                                                <span th:text="${chatMessage.user.firstName + ' ' + chatMessage.user.lastName}">User Name</span>
+                                                                            </span>
+                                                                            <span class="text-grey text-xs">
+                                                                                <span th:text="${#dates.format(chatMessage.createdAt.time, 'MMM dd, yyyy')}">Date</span> at <span th:text="${#dates.format(chatMessage.createdAt.time, 'h:m a')}">Time</span>
+                                                                            </span>
                                                                         </div>
                                                                     </div>
-                                                                    <p class="text-black leading-normal">
-                                                                        ${chatMessage.message}
-                                                                    </p>
+                                                                    <div>
+                                                                        <a th:if="${chatMessage.user.id == session.current_user.id}" th:onclick="|deleteChatMessage(${project.id}, ${chatMessage.id})|" class="underline text-red-500 cursor-pointer ">
+                                                                            <svg fill="none" class="h-5 w-5 mr-4" viewBox="0 0 24 24" stroke="currentColor">
+                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                                            </svg>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
+                                                                <p class="text-black leading-normal">
+                                                                    <span th:text="${chatMessage.message}">Message Content</span>
+                                                                </p>
                                                             </div>
-                                                        </c:forEach>
+                                                        </div>
                                                     </div>
                                                     <div class="flex-none">
                                                         <div>
@@ -138,16 +128,19 @@
 </div>
 
 
-<%@ include file="../includes/notifications.jsp"%>
+<div th:replace="fragments/notifications :: notifications"></div>
 
-<%@ include file="../includes/footer.jsp"%>
+<div th:replace="fragments/footer :: footer"></div>
 
 
-<input type="hidden" id="user.username" value="${sessionScope.current_user.username}"/>
-<input type="hidden" id="user.id" value="${sessionScope.current_user.id}"/>
-<input type="hidden" id="user.firstName" value="${sessionScope.current_user.firstName}"/>
-<input type="hidden" id="user.lastName" value="${sessionScope.current_user.lastName}"/>
-<input type="hidden" id="user.initials" value="${sessionScope.current_user.firstName.charAt(0)}${sessionScope.current_user.lastName.charAt(0)}"/>
-<input type="hidden" id="project.id" value="${project.id}"/>
+<input type="hidden" id="user.username" th:value="${session.current_user.username}"/>
+<input type="hidden" id="user.id" th:value="${session.current_user.id}"/>
+<input type="hidden" id="user.firstName" th:value="${session.current_user.firstName}"/>
+<input type="hidden" id="user.lastName" th:value="${session.current_user.lastName}"/>
+<input type="hidden" id="user.initials" th:value="${session.current_user.firstName.charAt(0) + session.current_user.lastName.charAt(0)}"/>
+<input type="hidden" id="project.id" th:value="${project.id}"/>
 <input type="hidden" id="isChatPage" value="true"/>
-<input type="hidden" id="chat.contextUrl" value="${contextUrl}"/>
+<input type="hidden" id="chat.contextUrl" th:value="@{/}"/>
+
+</body>
+</html>

@@ -1,16 +1,11 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
-
-<%@ include file="includes/head.jsp"%>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
 
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-<jsp:include page="includes/nav.jsp"></jsp:include>
+<div th:replace="fragments/nav :: nav"></div>
 
 <div class=" min-h-screen">
     <div class="py-4">
@@ -20,87 +15,83 @@
                             Sign up
                             <p class="mt-2 text-center text-sm leading-5 text-gray-600">
                                 or
-                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" href="${contextPath}/login">sign in if you have already joined</a>
+                                <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" th:href="@{/login}">sign in if you have already joined</a>
                             </p>
                         </h2>
                     </div>
 
                     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                            <form:form method="POST" modelAttribute="userForm">
-                                <div>
-                                    <spring:bind path="firstName">
-                                        <label for="firstName" class="block text-sm font-medium leading-5 text-gray-700">
-                                            First name
-                                        </label>
-                                        <div class="mt-1 rounded-md shadow-sm">
-                                            <form:input type="text" path="firstName" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                                        placeholder="First name"></form:input>
-                                        </div>
-                                        <p class="mt-1 text-sm mb-4 text-red-500">
-                                            <form:errors path="firstName"></form:errors>
-                                        </p>
-                                        <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
 
-                                        </div> --%>
-                                    </spring:bind>
+                        <div th:if="${message != null}" class="rounded-md bg-green-50 p-4">
+                        <div class="flex">
+                            <div class="ml-3">
+                                <h3 class="text-sm leading-5 font-medium text-green-700">
+                                    <span th:text="${message}"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${error != null}" class="rounded-md bg-red-50 p-4">
+                        <div class="flex">
+                            <div class="ml-3">
+                                <h3 class="text-sm leading-5 font-medium text-red-700">
+                                    <span th:text="${error}"></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 mt-4">
+                            <form method="POST" th:object="${user}" th:action="@{/registration}">
+                                <div>
+                                    <label for="firstName" class="block text-sm font-medium leading-5 text-gray-700">
+                                        First name
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm">
+                                        <input th:field="*{firstName}" type="text" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                                    placeholder="First name">
+                                    </div>
+                                    <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                                    </p>
                                 </div>
-                                <div>
-                                    <spring:bind path="lastName">
-                                        <label for="lastName" class="block text-sm font-medium leading-5 text-gray-700">
-                                            Last name
-                                        </label>
-                                        <div class="mt-1 rounded-md shadow-sm">
-                                            <form:input type="text" path="lastName" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                                        placeholder="Last name"></form:input>
-                                        </div>
-                                        <p class="mt-1 text-sm mb-4 text-red-500">
-                                            <form:errors path="lastName"></form:errors>
-                                        </p>
-                                        <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
-
-                                        </div> --%>
-                                    </spring:bind>
-                                </div>
-
-                                <div>
-                                    <spring:bind path="username">
-                                        <label for="username" class="block text-sm font-medium leading-5 text-gray-700">
-                                            Email
-                                        </label>
-                                        <div class="mt-1 rounded-md shadow-sm">
-                                            <form:input type="email" path="username" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                                        placeholder="john@doe.com"></form:input>
-                                        </div>
-                                        <p class="mt-1 text-sm mb-4 text-red-500">
-                                            <form:errors path="username"></form:errors>
-                                        </p>
-                                        <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
-
-                                        </div> --%>
-                                    </spring:bind>
+                                <div class="mt-4">
+                                    <label for="lastName" class="block text-sm font-medium leading-5 text-gray-700">
+                                        Last name
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm">
+                                        <input th:field="*{lastName}" type="text" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                                    placeholder="Last name">
+                                    </div>
+                                    <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
+                                    </p>
                                 </div>
 
-                                <div>
-                                    <spring:bind path="password">
-                                        <label for="password" class="block text-sm font-medium leading-5 text-gray-700">
-                                            Password
-                                        </label>
-                                        <div class="mt-1 rounded-md shadow-sm">
-                                            <form:input type="password" path="password" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                                        placeholder="password"></form:input>
-                                        </div>
-                                        <p class="mt-1 text-sm mb-4 text-red-500">
-                                            <form:errors path="password"></form:errors>
-                                        </p>
-                                        <%-- <div class="form-group ${status.error ? 'has-error' : ''}">
-
-                                        </div> --%>
-                                    </spring:bind>
+                                <div class="mt-4">
+                                    <label for="email" class="block text-sm font-medium leading-5 text-gray-700">
+                                        Email
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm">
+                                        <input th:field="*{email}" type="email" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                                    placeholder="john@doe.com">
+                                    </div>
+                                    <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                    </p>
                                 </div>
 
+                                <!-- <div>
+                                    <label for="password" class="block text-sm font-medium leading-5 text-gray-700">
+                                        Password
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm">
+                                        <input th:field="*{password}" type="password" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                                    placeholder="password">
+                                    </div>
+                                    <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                                    </p>
+                                </div> -->
 
-                                <!-- TODO: Gotta do something about roles <input value="candidate" type="hidden" name="user[user_role]" id="user_user_role"> -->
                                 <div class="mt-6">
                                   <span class="block w-full rounded-md shadow-sm">
                                       <button class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out" type="submit">
@@ -109,13 +100,16 @@
                                   </span>
                                 </div>
 
+                             
 
-
-                                </form:form>
+                                </form>
                                 </div>
                     </div>
                 </div>
 
             </div>
         </div>
-<%@ include file="includes/footer.jsp"%>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

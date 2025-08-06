@@ -30,49 +30,45 @@
 
                         <div class="sm:col-span-6">
                             <label class="block text-sm font-medium leading-5 text-gray-700">
-                                <spring:message code="user.username.label" />
+                                <span th:text="#{user.username.label}">Username</span>
                             </label>
                             <div class="mt-1 rounded-md shadow-sm">
-                                <form:input path="username" disabled="true" cssClass="form-input block w-full bg-gray-100 transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
+                                <input th:field="*{username}" readonly="readonly" class="form-input block w-full bg-gray-100 transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
                             </div>
-                            <p class="mt-1 text-sm mb-4 text-red-500">
-                                <form:errors path="username"></form:errors>
+                            <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                             </p>
                         </div>
 
                         <div class="sm:col-span-6">
                             <label class="block text-sm font-medium leading-5 text-gray-700">
-                                <spring:message code="user.firstName.label" />
+                                <span th:text="#{user.firstName.label}">First Name</span>
                             </label>
                             <div class="mt-1 rounded-md shadow-sm">
-                                <form:input path="firstName" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
+                                <input th:field="*{firstName}" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
                             </div>
-                            <p class="mt-1 text-sm mb-4 text-red-500">
-                                <form:errors path="firstName"></form:errors>
+                            <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
                             </p>
                         </div>
 
                         <div class="sm:col-span-6">
                             <label class="block text-sm font-medium leading-5 text-gray-700">
-                                <spring:message code="user.lastName.label" />
+                                <span th:text="#{user.lastName.label}">Last Name</span>
                             </label>
                             <div class="mt-1 rounded-md shadow-sm">
-                                <form:input path="lastName" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
+                                <input th:field="*{lastName}" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
                             </div>
-                            <p class="mt-1 text-sm mb-4 text-red-500">
-                                <form:errors path="lastName"></form:errors>
+                            <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
                             </p>
                         </div>
 
                         <div class="sm:col-span-6">
                             <label class="block text-sm font-medium leading-5 text-gray-700">
-                                <spring:message code="user.password.label" />
+                                <span th:text="#{user.password.label}">Password</span>
                             </label>
                             <div class="mt-1 rounded-md shadow-sm">
-                                <form:password path="password" cssClass="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 " />
+                                <input type="password" th:field="*{password}" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
                             </div>
-                            <p class="mt-1 text-sm mb-4 text-red-500">
-                                <form:errors path="password"></form:errors>
+                            <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
                             </p>
                         </div>
 

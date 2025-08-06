@@ -2,8 +2,11 @@ package com.chaihq.webapp.controllers;
 
 
 import com.chaihq.webapp.models.ActiveStorageFile;
+import com.chaihq.webapp.models.Project;
 import com.chaihq.webapp.models.User;
-import com.chaihq.webapp.services.SecurityService;
+import com.chaihq.webapp.repositories.ProjectRepository;
+import com.chaihq.webapp.repositories.UserRepository;
+import com.chaihq.webapp.services.EmailService;
 import com.chaihq.webapp.services.UserService;
 import com.chaihq.webapp.utilities.Constants;
 import com.chaihq.webapp.utilities.Util;
@@ -21,6 +24,8 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,12 +35,39 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
+
+
+import java.security.Principal;
+import java.security.SecureRandom;
+import java.util.Calendar;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.codec.Hex;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
+
+
 
 @Controller
 public class UsersController {
@@ -47,35 +79,82 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SecurityService securityService;
 
     @Autowired
     private UserValidator userValidator;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    // private SecurityContextRepository securityContextRepository;
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+
+    private final SecureRandom random = new SecureRandom();
+    private static final int TOKEN_BYTE_SIZE = 32;
+
+    private static Logger log = LoggerFactory.getLogger(UsersController.class);
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        model.addAttribute("user", new User());
 
         return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("user") User userForm, 
+            BindingResult bindingResult, 
+            Model model, 
+            HttpServletRequest request,
+            HttpServletResponse response
+        ) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
+        User existingUser = userRepository.findByEmail(userForm.getEmail());
+        String token = generateToken();
+
+        if(existingUser != null) {
+            
+            existingUser.setToken(token);
+            Calendar expirationDate = Calendar.getInstance();
+            expirationDate.add(Calendar.HOUR, 1);
+            existingUser.setTokenExpirationDate( expirationDate );
+            existingUser.setTokenUsedDate(null);
+            userRepository.save(existingUser);
+            emailService.sendEmail(existingUser);
+
+        } else {
+
+            userForm.setToken(token);
+            Calendar expirationDate = Calendar.getInstance();
+            expirationDate.add(Calendar.HOUR, 1);
+            userForm.setTokenExpirationDate( expirationDate );
+            userForm.setTokenUsedDate(null);
+            userRepository.save(userForm);
+            emailService.sendEmail(userForm);
+
+        }
+
+        log.info("token " + token);
+        model.addAttribute("user", new User());
+        
+        model.addAttribute("message", "Check your email for the magic link to login to your account.");
+
         userService.save(userForm);
 
-        securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/projects";
+        return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -89,6 +168,91 @@ public class UsersController {
         return "login";
     }
 
+    @PostMapping("/login-magic")
+    public String loginMagic(User user, 
+        Model model,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) {
+        User existingUser = userRepository.findByEmail(user.getEmail());
+
+        String token = generateToken();
+
+        if(existingUser != null) {
+            
+            existingUser.setToken(token);
+            Calendar expirationDate = Calendar.getInstance();
+            expirationDate.add(Calendar.HOUR, 1);
+            existingUser.setTokenExpirationDate( expirationDate );
+            existingUser.setTokenUsedDate(null);
+            userRepository.save(existingUser);
+
+            log.info("token " + token);
+            model.addAttribute("user", new User());
+
+            emailService.sendEmail(existingUser);
+
+            model.addAttribute("message", "Check your email for the magic link to login to your account.");
+            
+            return "login";
+
+        } else {
+
+            log.info("token " + token);
+            model.addAttribute("user", new User());
+
+            model.addAttribute("error", "No account for this email. Sign up first.");
+
+           return "registration";
+
+        }
+        
+    }
+
+    @GetMapping("/verify-token-and-login")
+    public String verifyTokenAndLogin(User user, 
+        Model model,
+        @Param(value = "token") String token,
+        @Param(value = "email") String email,
+        HttpServletRequest request,
+        HttpServletResponse response,
+        RedirectAttributes redirectAttrs
+    ) {
+        if(email.contains(" ")) {
+            email = email.replaceAll(" ", "+");
+        }
+        log.info(email);
+        log.info(token);
+        User existingUser = userRepository.findByEmailAndToken(email, token);
+        if(existingUser != null) {
+
+             SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+            final Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    user.getEmail(), null, java.util.Collections.emptyList());
+            context.setAuthentication(authentication);
+            securityContextHolderStrategy.setContext(context);
+            securityContextRepository.saveContext(context, request, response);
+
+            redirectAttrs.addFlashAttribute("success", "Login successfull.");
+
+            // Invalidate the token
+            existingUser.setToken(null);
+            existingUser.setTokenUsedDate(null);
+            existingUser.setTokenExpirationDate(null);
+            userRepository.save(existingUser);
+
+            model.addAttribute("user", existingUser);
+
+            return "redirect:/projects";
+        } else {
+            model.addAttribute("error", "No account for this email. Signup now to selling on Async.");
+
+           return "login";
+        }
+
+
+    }
+
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profile(Model model, HttpSession httpSession) {
@@ -96,7 +260,7 @@ public class UsersController {
         User userForm = new User();
         userForm.setFirstName(user.getFirstName());
         userForm.setLastName(user.getLastName());
-        userForm.setUsername(user.getUsername());
+        userForm.setEmail(user.getEmail());
         model.addAttribute("userForm", userForm);
         return "user/profile";
     }
@@ -109,12 +273,11 @@ public class UsersController {
                          HttpSession httpSession) {
 
         User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-        userForm.setUsername(currentUser.getUsername());
+        userForm.setEmail(currentUser.getEmail());
 
-        System.out.println("userForm.getUsername: " + userForm.getUsername());
+        System.out.println("userForm.getEmail: " + userForm.getEmail());
         System.out.println("userForm.getFirstName: " + userForm.getFirstName());
         System.out.println("userForm.getLastName: " + userForm.getLastName());
-        System.out.println("userForm.getPassword: " + userForm.getPassword());
 
         userValidator.validateUpdate(userForm, bindingResult);
 
@@ -144,13 +307,12 @@ public class UsersController {
 
     @PostMapping("/reset")
     public String resetPasword(@ModelAttribute("userForm") User userForm, Model model) {
-        System.out.println("userForm.getUsername(): " + userForm.getUsername());
+        System.out.println("userForm.getEmail(): " + userForm.getEmail());
         model.addAttribute("message", "Check your inbox for a link to reset your password");
         // TODO: Change this later - For now this just prints the password for the admin who has access to the logs.
         // Admin picks up the password and sends to user. The user is then advised to change their password after
         // the login.
-        User user = userService.findByUsername(userForm.getUsername());
-        System.out.println("user.getPassword(): " + user.getPassword());
+        User user = userService.findByEmail(userForm.getEmail());
 
         // userToUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return "reset";
@@ -211,5 +373,22 @@ public class UsersController {
                 .body(new ByteArrayResource( IOUtils.toByteArray(is) ));
 
     }
+
+
+    private void autoLoginAfterSignup(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+    }
+
+    private String generateToken() {
+        
+        byte[] bytes = new byte[TOKEN_BYTE_SIZE];
+        random.nextBytes(bytes);
+        return String.valueOf(Hex.encode(bytes));
+    }
+
 
 }

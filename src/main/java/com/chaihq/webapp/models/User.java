@@ -2,19 +2,26 @@ package com.chaihq.webapp.models;
 
 import org.hibernate.annotations.Type;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
 @Entity(name = "users")
+@Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String username; // Use this is a handle
-    private String name; // This is made up field from firstName and lastName
+
+    private String email; // Use this is a handle
 
     @Column(name = "first_name")
     private String firstName;
@@ -22,9 +29,9 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "created_at")
-    private Calendar createdAt;
-    private String password;
+    private Instant createdAt;
+    private Instant updatedAt;
+
 
     @Transient
     private String passwordConfirm;
@@ -32,7 +39,14 @@ public class User {
     @Transient
     private String initialFirstNameLastName;
 
+    @Transient
+    private boolean addedAlready;
+
     private String status;
+
+    private String token;
+    private Calendar tokenExpirationDate;
+    private Calendar tokenUsedDate;
 
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
@@ -46,118 +60,15 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @Transient
-    private boolean isAddedAlready;
-
-    public long getId() {
-        return id;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    // @PrePersist
+    // protected void onUpdate() {
+    //     updatedAt = Instant.now();
+    // }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Calendar getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Calendar createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getInitialFirstNameLastName() {
-        return initialFirstNameLastName;
-    }
-
-    public void setInitialFirstNameLastName(String initialFirstNameLastName) {
-        this.initialFirstNameLastName = initialFirstNameLastName;
-    }
-
-    public boolean isAddedAlready() {
-        return isAddedAlready;
-    }
-
-    public void setAddedAlready(boolean addedAlready) {
-        isAddedAlready = addedAlready;
-    }
 }

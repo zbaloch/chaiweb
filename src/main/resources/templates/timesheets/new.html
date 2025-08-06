@@ -1,17 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<jsp:useBean id="now" class="java.util.Date" />
-
-<%@ include file="../includes/head.jsp"%>
+<div th:replace="fragments/head :: head"></div>
 
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-<jsp:include page="../includes/nav.jsp"></jsp:include>
+<div th:replace="fragments/nav :: nav"></div>
 
 <div class=" min-h-screen">
     <div class="py-4">
@@ -139,5 +134,6 @@
 
 </div>
 
-<%@ include file="../includes/footer.jsp"%>
+<div th:replace="fragments/footer :: footer"></div>
 
+</html>

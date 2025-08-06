@@ -29,23 +29,14 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "required.field");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required.field");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "required.field");
-        if (Pattern.matches(Constants.EMAIL_REGEX, user.getUsername())) {
-            errors.rejectValue("username", "email.invalid");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "required.field");
+        if (Pattern.matches(Constants.EMAIL_REGEX, user.getEmail())) {
+            errors.rejectValue("email", "email.invalid");
         }
-        if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("username", "email.taken");
-        }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required.field");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "password.size");
+        if (userService.findByEmail(user.getEmail()) != null) {
+            errors.rejectValue("email", "email.taken");
         }
 
-        /* Confirm password not required
-        if (!user.getPasswordConfirm().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
-        } */
     }
 
 
@@ -55,19 +46,10 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "required.field");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required.field");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "required.field");
-        if (Pattern.matches(Constants.EMAIL_REGEX, user.getUsername())) {
-            errors.rejectValue("username", "email.invalid");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "required.field");
+        if (Pattern.matches(Constants.EMAIL_REGEX, user.getEmail())) {
+            errors.rejectValue("email", "email.invalid");
         }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required.field");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "password.size");
-        }
-
-        /* Confirm password not required
-        if (!user.getPasswordConfirm().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
-        } */
+        
     }
 }

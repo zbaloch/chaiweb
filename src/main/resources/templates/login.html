@@ -8,7 +8,7 @@
 <body class="font-sans bg-gray-100">
 <div id="app">
 
-    <!-- <div th:replace="fragments/nav :: nav"></div> -->
+    <div th:replace="fragments/nav :: nav"></div>
 
     <div class="min-h-screen">
         <div class="py-4">
@@ -18,10 +18,10 @@
                     <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                         Sign in
                     </h2>
-                    <p class="mt-2 text-center text-sm leading-5 text-gray-600">
+                    <!-- <p class="mt-2 text-center text-sm leading-5 text-gray-600">
                         Or
                         <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" th:href="@{/registration}">sign up</a>
-                    </p>
+                    </p> -->
                 </div>
 
                 <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -46,31 +46,31 @@
                     </div>
 
                     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 mt-4">
-                        <form th:action="@{/login}" method="post">
+                        <form th:action="@{/login-magic}" method="post" >
                             <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
                             <div>
-                                <label for="username" class="block text-sm font-medium leading-5 text-gray-700">
+                                <label for="email" class="block text-sm font-medium leading-5 text-gray-700">
                                     Email address
                                 </label>
                                 <div class="mt-1 rounded-md shadow-sm">
-                                    <input type="email" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" name="username" id="username">
+                                    <input type="email" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" name="email" id="email" autocomplete="email" required>
                                 </div>
                             </div>
 
-                            <div class="mt-6">
+                            <!-- <div class="mt-6">
                                 <label for="password" class="block text-sm font-medium leading-5 text-gray-700">
                                     Password
                                 </label>
                                 <div class="mt-1 rounded-md shadow-sm">
                                     <input class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" type="password" name="password" id="password">
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="mt-6 flex items-center justify-between">
+                            <!-- <div class="mt-6 flex items-center justify-between">
                                 <div class="text-sm leading-5">
                                     <a class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150" th:href="@{/reset}">Forgot your password?</a>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="mt-6">
                                 <span class="block w-full rounded-md shadow-sm">
@@ -79,6 +79,13 @@
                                     </button>
                                 </span>
                             </div>
+
+                               <p class="mt-10 text-center text-sm text-gray-500">
+          Don't have an account?
+          <a href="/registration" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign up now</a>
+        </p>
+
+                            
                         </form>
                     </div>
                 </div>
