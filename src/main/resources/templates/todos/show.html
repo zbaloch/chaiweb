@@ -34,15 +34,15 @@
 
                         <div>
                             <span class="inline-flex rounded-full shadow-sm">
-                                    <c:if test="${todo.createdBy.id == currentUser.id}">
-                                       <a th:href="@{/project/{projectId}/todo/{todoId}/edit(projectId=${project.id}, todoId=${todo.id})}" class="text-indigo-600 underline mr-2">
-                                           Edit
-                                       </a>
-                                    </c:if>
-                               </span>
+                                <span th:if="${todo.createdBy != null and currentUser != null and todo.createdBy.id == currentUser.id}">
+                                    <a th:href="@{/project/{projectId}/todo/{todoId}/edit(projectId=${project.id}, todoId=${todo.id})}" class="text-indigo-600 underline mr-2">
+                                        Edit
+                                    </a>
+                                </span>
+                            </span>
 
                                 <span class="inline-flex rounded-full shadow-sm">
-                                    <span th:if="${todo.createdBy.id == currentUser.id} and ${todo.done != true}"></span>
+                                    <span th:if="${todo.createdBy != null and currentUser != null and todo.createdBy.id == currentUser.id and todo.done != true}">
                                         <a th:href="@{/project/{projectId}/todo/{todoId}/complete(projectId=${project.id}, todoId=${todo.id})}"
                                            class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:border-green-600 focus:shadow-outline-green active:bg-green-600 transition ease-in-out duration-150">
                                             Mark this complete
@@ -117,8 +117,7 @@
                                     <dt class="text-sm leading-5 font-medium text-gray-500">
                                         Notes
                                     </dt>
-                                    <dd class="mt-1 text-sm leading-5 text-gray-900" th:text="${todo.notes}">
-                                        <c:if test="${todo.notes == null}">No notes here.</c:if>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900" th:utext="${todo.notes}"></dd>
                                     </dd>
 
                                     <dd class="mt-1 text-sm leading-5 text-gray-900" th:if="${todo.notes == null}">
@@ -186,28 +185,25 @@
                                     <div class="relative">
                                         <div class="absolute left-0 top-0">
                                             <img 
+                                            th:if="${currentUser != null}"
                                             th:src="@{'https://ui-avatars.com/api/?name=' + ${currentUser.firstName} + '+' + ${currentUser.lastName} + '&background=random&color=fff'}"
-                                                th:alt="${currentUser.firstName + ' ' + currentUser.lastName}"
-                                                th:title="${currentUser.firstName + ' ' + currentUser.lastName}"
-                                                class="h-12 w-12 rounded-full ">
+                                            th:alt="${currentUser.firstName + ' ' + currentUser.lastName}"
+                                            th:title="${currentUser.firstName + ' ' + currentUser.lastName}"
+                                            class="h-12 w-12 rounded-full ">
+                                            <span th:if="${currentUser == null}">Unknown User</span>
                                         </div>
-
-                                        <form:form modelAttribute="comment">
-                                            <script type="x-template" id="comment-template">
-                                                <div>
-                                                    <input type="hidden" id="newComment" name="text"/>
-                                                    <trix-editor input="newComment" class="trix-editor-comment"></trix-editor>
-                                                </div>
-                                            </script>
+                                        
+                                        <form method="post" th:action="@{/project/{projectId}/todo/{todoId}/comment(projectId=${project.id}, todoId=${todo.id})}"  x-data="{ title: '', content: ''}">
                                             <div class="ml-16">
-                                                <comment-editor></comment-editor>
+                                                <trix-editor input="post" x-on:trix-change="content = $event.target.value" class="trix-editor"></trix-editor>
                                                 <div class="mt-4">
                                                     <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                                                         Add this comment
                                                     </button>
                                                 </div>
                                             </div>
-                                        </form:form>
+                                        </form>
+                                        
                                     </div>
                                 </div>
                             </a>
@@ -222,15 +218,6 @@
 
 
     <div th:replace="fragments/notifications :: notifications"></div>
-
-        <script>
-
-            Vue.component("comment-editor", {
-                template: "#comment-template"
-            });
-
-        </script>
-
 
     <div th:replace="fragments/footer :: footer"></div>
 

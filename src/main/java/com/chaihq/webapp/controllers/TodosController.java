@@ -169,7 +169,7 @@ public class TodosController {
 
         User currentUser = userRepository.findByEmail(principal.getName());
         model.put("currentUser", currentUser);
-        
+
         Project project = projectRepository.getOne(project_id);
         model.put("project", project);
 
@@ -311,18 +311,19 @@ public class TodosController {
         return "redirect:/project/" + project_id + "/todos";
     }
 
-    @PostMapping("/project/{project_id}/todo/{todo_id}")
+    @PostMapping("/project/{project_id}/todo/{todo_id}/comment")
     public String addComment(@ModelAttribute("comment") Comment comment,
-                             HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
-                             Map<String, Object> model, RedirectAttributes redirectAttributes,
+                             Principal principal, @PathVariable Long project_id, @PathVariable Long todo_id,
+                             Model model, RedirectAttributes redirectAttributes,
                              BindingResult bindingResult) throws Exception {
-
+        User currentUser = userRepository.findByEmail(principal.getName());
         Project project = projectRepository.getOne(project_id);
 
         Todo todo = todoRepository.getOne(todo_id);
 
-        model.put("project", project);
-        model.put("todo", todo);
+        model.addAttribute("project", project);
+        model.addAttribute("todo", todo);
+        model.addAttribute("currentUser", currentUser);
 
         commentValidator.validate(comment, bindingResult);
         if(bindingResult.hasErrors()) {
@@ -333,7 +334,7 @@ public class TodosController {
         System.out.println("comment.getText(): " + comment.getText());
         // TODO: Make sure the user has the rights to add a comment here.
         comment.setProjectId(project_id);
-        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        
         comment.setUser(currentUser);
         comment.setCreatedAt(Calendar.getInstance());
         comment.setCommentType(Constants.TODO);
@@ -377,8 +378,9 @@ public class TodosController {
 
         redirectAttributes.addFlashAttribute("notice", "Your comment has been added!");
         // model.put("notice", "Your comment has been added!");
-        model.put("project", project);
-        model.put("todo", todo);
+        model.addAttribute("project", project);
+        model.addAttribute("todo", todo);
+        model.addAttribute("currentUser", currentUser);
         // model.put(Constants.COMMENTS, comments);
         return "redirect:/project/" + project_id + "/todo/" + todo.getId() + "#comment_" + comment.getId();
         // return "messages/show";
