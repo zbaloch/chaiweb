@@ -52,7 +52,7 @@ I built Chai from ground-up and does not use design or code assets from Basecamp
 #### Environment variables with SQLite Database
 
 ```
-export spring_port=8080
+export chai_spring_port=8080
 # export chai_spring_jpa_database_platform=com.github.gwenn.hibernate.dialect.SQLiteDialect
 
 export chai_spring_jpa_database_platform=org.sqlite.hibernate.dialect.SQLiteDialect
@@ -73,6 +73,12 @@ export chai_spring_jpa_database_platform=org.sqlite.hibernate.dialect.SQLiteDial
 
 # export chai_spring_jpa_database_platform=com.github.gwenn.hibernate.dialect.SQLiteDialect
 
+export chai_spring_email_from=hey@chaihq.com
+export chai_spring_mail_host=sandbox.smtp.mailtrap.io
+export chai_spring_mail_port=2525
+export chai_spring_mail_username=
+export chai_spring_mail_password=
+export chai_spring_host_url=http://localhost:8080
 
 
 ```

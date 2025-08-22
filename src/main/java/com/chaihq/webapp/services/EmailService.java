@@ -49,7 +49,7 @@ public class EmailService {
         message.setFrom(from);
         
         message.setTo(user.getEmail()); 
-        message.setSubject("Threadli login magic link"); 
+        message.setSubject("Chai login magic link"); 
         message.setText("Please use this link to login: \n\n" + url + "/verify-token-and-login?email=" + user.getEmail()+"&token=" + user.getToken());
         log.info("Please use this link to login: \n\n" + url + "/verify-token-and-login?email=" + user.getEmail()+"&token=" + user.getToken());
         mailSender.send(message);
