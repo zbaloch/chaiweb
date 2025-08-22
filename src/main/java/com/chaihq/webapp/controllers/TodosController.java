@@ -6,6 +6,9 @@ import com.chaihq.webapp.storage.StorageService;
 import com.chaihq.webapp.utilities.Constants;
 import com.chaihq.webapp.validator.CommentValidator;
 import com.chaihq.webapp.validator.TodoValidator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +22,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import java.security.Principal;
+
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 
 @Controller
 public class TodosController {
+
+    private static final Logger logger = LoggerFactory.getLogger(TodosController.class);
 
     private final StorageService storageService;
 
@@ -71,41 +78,33 @@ public class TodosController {
         model.addAttribute("completedTodos", completedTodos);
         model.addAttribute("pendingTodos", pendingTodos);
 
+        logger.info("completedTodos, " + completedTodos.size());
+        logger.info("pendingTodos, " + pendingTodos.size());
+
+        logger.info("Showing todos for project: " + project.getName());
+
         return "todos/index";
     }
 
 
     @GetMapping("/project/{project_id}/todo/new")
-    public String neew(@ModelAttribute("todo") Todo todo,
-                       @ModelAttribute("project") Project project,
+    public String neew(@ModelAttribute("project") Project project,
                        HttpSession httpSession,
                        @PathVariable Long project_id, Map<String, Object> model) {
 
-        System.out.println("project_id: " + + project_id);
 
-        todo = new Todo();
-
-        todo.setDueDate(Calendar.getInstance());
-
-        User user = (User) httpSession.getAttribute(Constants.CURRENT_USER);
         project = projectRepository.getOne(project_id); // TODO make show this belongs to the user
-        System.out.println(project.getName());
-
-
         model.put("project", project);
-        model.put("todo", todo);
-        System.out.println("neew");
+        model.put("todo", new Todo());
         return "todos/new";
 
     }
 
     @PostMapping("/project/{project_id}/todo/new")
     public String save(@ModelAttribute("todo") Todo todo,
-                       HttpSession httpSession, @PathVariable Long project_id,
+                        Principal principal, @PathVariable Long project_id,
                        Map<String, Object> model, RedirectAttributes redirectAttributes,
                        BindingResult bindingResult) throws Exception {
-
-        System.out.println("Todo: " + todo);
 
         Project project = projectRepository.getOne(project_id);
 
@@ -118,7 +117,7 @@ public class TodosController {
 
         // Todo: validate
 
-        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        User currentUser = userRepository.findByEmail(principal.getName());
         todo.setCreatedBy(currentUser);
         User assignedToUser = userRepository.getOne(todo.getAssignedToVariable());
         todo.setAssignedTo(assignedToUser);
@@ -165,13 +164,15 @@ public class TodosController {
     }
 
     @GetMapping("/project/{project_id}/todo/{todo_id}")
-    public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long todo_id,
+    public String show( Principal principal, @PathVariable Long project_id, @PathVariable Long todo_id,
                         Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
 
-        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
-
+        User currentUser = userRepository.findByEmail(principal.getName());
+        model.put("currentUser", currentUser);
+        
         Project project = projectRepository.getOne(project_id);
         model.put("project", project);
+
 
         Todo todo = todoRepository.getOne(todo_id);
         model.put("todo", todo);

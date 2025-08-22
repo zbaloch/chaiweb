@@ -44,7 +44,7 @@
         </div>
 
         <div class="">
-            <form th:action="@{'/project/' + ${project.id} + '/todos/new'}" th:object="${todo}" method="post">
+            <form th:action="@{'/project/' + ${project.id} + '/todo/new'}" th:object="${todo}" method="post">
                 <div>
                     <div>
                         <div class="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
@@ -56,8 +56,7 @@
                                 <div class="mt-1 rounded-md shadow-sm">
                                     <!-- <input type="text" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/> -->
                                     <input th:field="*{description}" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="Type a title..."/>
-                                        <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
-                                        </p>
+                                        <p class="mt-1 text-sm mb-4 text-red-500" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
                                 </div>
                             </div>
 
@@ -68,8 +67,7 @@
                                 <div class="mt-1 rounded-md shadow-sm">
                                     <select th:field="*{assignedToVariable}" id="location" class="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                                         <option th:each="user : ${project.users}" th:value="${user.id}" th:text="${user.firstName + ' ' + user.lastName}">User Name</option>
-                                        <option th:if="${project.user.id == session.current_user.id}" th:value="${session.current_user.id}" th:text="${session.current_user.firstName + ' ' + session.current_user.lastName}">Current User</option>
-                                        <option th:if="${project.user.id != session.current_user.id}" th:value="${project.user.id}" th:text="${project.user.firstName + ' ' + project.user.lastName}">Project Owner</option>
+                                        <option th:value="${project.user.id}" th:text="${project.user.firstName + ' ' + project.user.lastName}">User Name</option>
                                     </select>
                                 </div>
                             </div>

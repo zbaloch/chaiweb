@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+
+import java.security.Principal;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -110,10 +112,12 @@ public class ProjectsController {
     }
 
     @GetMapping("/project/{id}")
-    public String show(@PathVariable Long id, Map<String, Object> model) {
+    public String show(@PathVariable Long id, Model model, Principal principal) {
+        User currentUser = userRepository.findByEmail(principal.getName());
         Project project = projectRepository.getOne(id);
         System.out.println(project.getName());
-        model.put("project", project);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("project", project);
         return "projects/show";
     }
 

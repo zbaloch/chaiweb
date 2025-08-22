@@ -84,6 +84,7 @@
                                             <div class="flex overflow-hidden">
                                                 <img class="first:ml-0 mr-1 inline-block h-8 w-8 rounded-full text-white shadow-solid"
                                                 th:src="@{'https://ui-avatars.com/api/?name=' + ${team.user.firstName} + '+' + ${team.user.lastName} + '&background=random&color=fff'}"
+                                                th:alt="${team.user.firstName + ' ' + team.user.lastName}"
                                                 th:title="${team.user.firstName + ' ' + team.user.lastName}">
 
                                                 <img th:each="user : ${team.users}" 

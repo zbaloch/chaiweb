@@ -20,7 +20,7 @@
                                     Home
                                 </a>
                             </nav>
-                            <div th:if="${project.user.id == session.current_user.id and project.projectType != 'hq'}" class="relative">
+                            <div th:if="${project.user.id == currentUser.id and project.projectType != 'hq'}" class="relative">
                                 <button v-on:click="isProjectActionsOpen = !isProjectActionsOpen" class="text-gray-800 font-bold z-10 relative">
                                     <svg class="fill-current w-4 h-4 mr-2" fill="none" stroke-linejoin="round" stroke-width="2" viewBox="0 0 20 20" stroke="currentColor">
                                         <path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
@@ -60,7 +60,7 @@
                                      th:src="@{'/avatar/' + ${user.id} + '/' + ${#strings.substring(user.firstName,0,1)} + ${#strings.substring(user.lastName,0,1)} + '.svg'}"
                                      th:title="${user.firstName + ' ' + user.lastName}">
                                 
-                                <a th:if="${project.user.id == session.current_user.id}" 
+                                <a th:if="${project.user.id == currentUser.id}" 
                                    th:href="@{'/project/' + ${project.id} + '/users'}" 
                                    class="ml-2 text-xs text-gray-500 px-2 py-2 border border-gray-200 rounded-full">
                                     Add/Remove people
