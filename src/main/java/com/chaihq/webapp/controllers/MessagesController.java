@@ -24,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.naming.Binding;
 import javax.servlet.http.HttpSession;
+
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -159,16 +161,20 @@ public class MessagesController {
     }
 
     @GetMapping("/project/{project_id}/message/{message_id}")
-    public String show( HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
-                       Map<String, Object> model, RedirectAttributes redirectAttributes) throws Exception {
+    public String show( Principal principal, @PathVariable Long project_id, @PathVariable Long message_id,
+                       Model model, RedirectAttributes redirectAttributes) throws Exception {
 
-        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        User currentUser = userRepository.findByEmail(principal.getName());
+
+        model.addAttribute("currentUser", currentUser);
 
         Project project = projectRepository.getOne(project_id);
-        model.put("project", project);
+        model.addAttribute("project", project);
 
         Message message = messageRepository.getOne(message_id);
-        model.put("message", message);
+        model.addAttribute("message", message);
+
+        model.addAttribute("comment", new Comment());
 
         // List<Comment> comments = commentRepository.findAllByMessageIdOrderByCreatedAtAsc(message_id);
         List<Comment> comments = message.getComments();
@@ -273,20 +279,22 @@ public class MessagesController {
         return "redirect:/project/" + project_id + "/messages";
     }
 
-    @PostMapping("/project/{project_id}/message/{message_id}")
-    public String addComment(@ModelAttribute("comment") Comment comment, HttpSession httpSession, @PathVariable Long project_id, @PathVariable Long message_id,
-                             Map<String, Object> model, RedirectAttributes redirectAttributes,
+    @PostMapping("/project/{project_id}/message/{message_id}/comment")
+    public String addComment(@ModelAttribute("comment") Comment comment, 
+            Principal principal, @PathVariable Long project_id, @PathVariable Long message_id,
+                             Model model, RedirectAttributes redirectAttributes,
                              BindingResult bindingResult) throws Exception {
 
 
 
-
+        User currentUser = userRepository.findByEmail(principal.getName());
         Project project = projectRepository.getOne(project_id);
 
         Message message = messageRepository.getOne(message_id);
 
-        model.put("project", project);
-        model.put("message", message);
+        model.addAttribute("project", project);
+        model.addAttribute("message", message);
+        model.addAttribute("currentUser", currentUser);
 
         commentValidator.validate(comment, bindingResult);
         if(bindingResult.hasErrors()) {
@@ -297,7 +305,7 @@ public class MessagesController {
         System.out.println("comment.getText(): " + comment.getText());
         // TODO: Make sure the user has the rights to add a comment here.
         comment.setProjectId(project_id);
-        User currentUser = (User) httpSession.getAttribute(Constants.CURRENT_USER);
+        
         comment.setUser(currentUser);
         comment.setCreatedAt(Calendar.getInstance());
         comment.setCommentType(Constants.MESSAGE);
@@ -341,8 +349,8 @@ public class MessagesController {
 
         redirectAttributes.addFlashAttribute("notice", "Your comment has been added!");
         // model.put("notice", "Your comment has been added!");
-        model.put("project", project);
-        model.put("message", message);
+        model.addAttribute("project", project);
+        model.addAttribute("message", message);
         // model.put(Constants.COMMENTS, comments);
         return "redirect:/project/" + project_id + "/message/" + message.getId() + "#comment_" + comment.getId();
         // return "messages/show";
